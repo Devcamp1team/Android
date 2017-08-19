@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.park.yapp_1team">
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/nobar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,12 +21,16 @@
             </intent-filter>
         </activity>
 
-        <!--splash-->
-        <activity android:name=".SplashActivity"
-            android:screenOrientation="portrait"
+        <!-- splash -->
+        <activity
+            android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <!--splash-->
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- splash -->
+        <activity android:name=".RealActivity">
+
+        </activity>
     </application>
 
 </manifest>
