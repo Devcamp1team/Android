@@ -23,7 +23,7 @@ public class movie_info_crawling extends AsyncTask {
     private String url;
     private String select;
 
-    private List<movieListItem> items = new ArrayList<>();
+    private ArrayList<movieListItem> items = new ArrayList<>();
 
     public movie_info_crawling(String url, String select)
     {
@@ -53,14 +53,13 @@ public class movie_info_crawling extends AsyncTask {
                 Log.e("item", "img = " + img + " name = " + name);
             }
 
-            return items;
 
         } catch (IOException ie)
         {
             ie.printStackTrace();
         }
 
-        return null;
+        return items;
     }
 
 

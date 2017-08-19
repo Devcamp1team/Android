@@ -109,11 +109,21 @@
     <orderEntry type="library" exported="" name="constraint-layout-1.0.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.3" level="project" />
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" name="annotations-4.0.0" level="project" />
+=======
     <orderEntry type="library" exported="" name="jsoup-1.10.3" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" exported="" name="transition-25.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.1.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-26.0.0-alpha1" level="project" />
+=======
+>>>>>>> 76b279760f865dedd21b80916abf114fd2d0e331
+    <orderEntry type="library" exported="" name="support-core-ui-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-25.0.0" level="project" />
+    <orderEntry type="library" exported="" name="gifdecoder-4.0.0" level="project" />
+>>>>>>> f4b1c8cf381cc44a7092ec3848ade447a9e59890
     <orderEntry type="library" exported="" scope="TEST" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.1.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="espresso-core-2.2.2" level="project" />
