@@ -1,6 +1,7 @@
 package com.example.park.yapp_1team;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -22,5 +23,6 @@ public class SplashActivity extends Activity {
                 finish();
             }
         }, 3000);// 3 초
+
     }
 }

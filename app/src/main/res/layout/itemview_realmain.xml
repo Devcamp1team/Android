@@ -18,14 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="test Poster"
-        android:id="@+id/text1_recyclerview1"/>
+        android:id="@+id/text1_recyclerview1"
+            android:textColor="#000000"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="test Poster2"
         android:id="@+id/text2_recyclerview1"
-        android:layout_toRightOf="@+id/text1_recyclerview1"/>
+        android:layout_toRightOf="@+id/text1_recyclerview1"
+        android:textColor="#000000"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
