@@ -24,11 +24,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar"/>
         <!--splash-->
-
-        <activity android:name=".SelectActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
