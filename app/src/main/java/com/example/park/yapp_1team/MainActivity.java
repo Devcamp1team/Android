@@ -1,6 +1,7 @@
 package com.example.park.yapp_1team;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MainRecyclerviewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final MainRecyclerviewAdapter.ViewHolder holder, int position) {
             movieListItem movieListItem = datas.get(position);
             Glide.with(getApplicationContext()).load(movieListItem.getURL()).into(holder.imageView);
             final Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
