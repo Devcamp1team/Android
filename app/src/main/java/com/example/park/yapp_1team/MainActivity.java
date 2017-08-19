@@ -14,11 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.park.yapp_1team.items.MovieInfoListItem;
+import com.example.park.yapp_1team.items.TheaterCodeItem;
+import com.example.park.yapp_1team.network.MovieListCrawling;
+import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.network.movie_info_crawling;
 import com.example.park.yapp_1team.items.movieListItem;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.park.yapp_1team.utils.Strings.CGV;
+import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 import static com.example.park.yapp_1team.utils.URL.NAVER_SELECT;
 import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
@@ -33,6 +39,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startActivity(new Intent(this, SplashActivity.class));
+
+
+        // cgv theater info crawling
+        TheaterInfoCrawling theaterInfoCrawling = new TheaterInfoCrawling(CGV);
+        ArrayList<TheaterCodeItem> cgv_theater = new ArrayList<>();
+
+        try{
+            cgv_theater = (ArrayList<TheaterCodeItem>)theaterInfoCrawling.execute().get();
+        } catch (ExecutionException e){
+            e.printStackTrace();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+
+        // lotte theater info crawling
+        theaterInfoCrawling = new TheaterInfoCrawling(LOTTE);
+        ArrayList<TheaterCodeItem> lotte_theater = new ArrayList<>();
+
+        try{
+            lotte_theater = (ArrayList<TheaterCodeItem>)theaterInfoCrawling.execute().get();
+        } catch (ExecutionException e){
+            e.printStackTrace();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+
+        // lotte movie time crawling
+        MovieListCrawling movieListCrawling = new MovieListCrawling(lotte_theater.get(1).getTheater(), lotte_theater.get(1).getArea(), lotte_theater.get(1).getDetailarea());
+        ArrayList<MovieInfoListItem> lotte_movie = new ArrayList<>();
+
+        try{
+            lotte_movie = (ArrayList<MovieInfoListItem>)movieListCrawling.execute().get();
+        } catch (ExecutionException e){
+            e.printStackTrace();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
 
         ArrayList<movieListItem> data_array = new ArrayList<>();
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview_start);
