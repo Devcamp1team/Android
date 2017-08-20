@@ -1,6 +1,9 @@
 package com.example.park.yapp_1team;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +23,7 @@ import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.network.movie_info_crawling;
 import com.example.park.yapp_1team.items.movieListItem;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     MainRecyclerviewAdapter mainRecyclerviewAdapter;
+    ImageView image1,image2;
+    TextView textview1;
+    static int s = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<movieListItem> data_array = new ArrayList<>();
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview_start);
+        image1 = (ImageView)findViewById(R.id.image1_underbar_start);
+        image2 = (ImageView)findViewById(R.id.image2_underbar_start);
+        textview1 = (TextView)findViewById(R.id.text1_underbar_start);
 
         movie_info_crawling test = new movie_info_crawling(NAVER_URL, NAVER_SELECT);
 
@@ -105,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+
+
         mainRecyclerviewAdapter = new MainRecyclerviewAdapter();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -113,7 +126,21 @@ public class MainActivity extends AppCompatActivity {
             mainRecyclerviewAdapter.add(data_array.get(i));
         }
 
+
         recyclerView.setAdapter(mainRecyclerviewAdapter);
+
+
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> string_array = new ArrayList<>();
+                string_array = mainRecyclerviewAdapter.get();
+
+                Intent intent = new Intent(getApplicationContext(),RealActivity.class);
+                intent.putStringArrayListExtra("STRING",string_array);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -122,18 +149,25 @@ public class MainActivity extends AppCompatActivity {
     {
 
         ArrayList<movieListItem> datas = new ArrayList<>();
+        ArrayList<String> movieName = new ArrayList<>();
 
         public void add(movieListItem movieListItem)
         {
             datas.add(movieListItem);
         }
 
+        public ArrayList<String> get()
+        {
+            return movieName;
+        }
+
         public class ViewHolder extends RecyclerView.ViewHolder
         {
-                ImageView imageView;
+                ImageView imageView, imageView2;
             public ViewHolder(View itemView) {
                 super(itemView);
-                imageView = (ImageView) itemView.findViewById(R.id.image1_recyclerview2);
+                imageView = (ImageView)itemView.findViewById(R.id.image1_recyclerview2);
+                imageView2 =(ImageView)itemView.findViewById(R.id.image2_recyclerview2);
             }
         }
 
@@ -144,15 +178,53 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MainRecyclerviewAdapter.ViewHolder holder, int position) {
-            movieListItem movieListItem = datas.get(position);
+        public void onBindViewHolder(final MainRecyclerviewAdapter.ViewHolder holder, int position) {
+            final movieListItem movieListItem = datas.get(position);
+
+
             Glide.with(getApplicationContext()).load(movieListItem.getURL()).into(holder.imageView);
-            final Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
-            intent.putExtra("MOVIENAME",movieListItem.getName());
+
+            try {
+                if(movieListItem.getCheck()==1)
+                {
+                    holder.imageView.setColorFilter(Color.parseColor("#99000000"));
+                    holder.imageView2.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    holder.imageView.setColorFilter(Color.parseColor("#00000000"));
+                    holder.imageView2.setVisibility(View.INVISIBLE);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Log.e("aaaaaaaaaa",""+e);
+            }
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(intent);
+
+                   if(movieListItem.getCheck()== 0) {                                  //check 안되어있으면
+
+                       holder.imageView.setColorFilter(Color.parseColor("#99000000"));
+                       movieListItem.setCheck(1);
+                       movieName.add(movieListItem.getName());
+                       Log.e("aaaaaaaa",""+movieName);
+
+                       holder.imageView2.setVisibility(View.VISIBLE);
+                       //textview1.setText(movieName.size());
+                    }
+                    else if(movieListItem.getCheck()== 1)
+                    {
+                        holder.imageView.setColorFilter(Color.parseColor("#00000000"));
+                        movieListItem.setCheck(0);
+                        movieName.remove(movieListItem.getName());
+                        Log.e("aaaaaaaa",""+movieName);
+
+                        holder.imageView2.setVisibility(View.INVISIBLE);
+                     //   textview1.setText(movieName.size());
+                    }
                 }
             });
         }
@@ -162,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
             return datas.size();
         }
     }
+
+
+
+
 
 
 }

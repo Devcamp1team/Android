@@ -1,11 +1,15 @@
 package com.example.park.yapp_1team;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class RealActivity extends AppCompatActivity {
 
@@ -22,19 +26,17 @@ public class RealActivity extends AppCompatActivity {
         realRecyclerviewAdapter = new RealRecyclerviewAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        ArrayList<String> string_array = new ArrayList<>();
 
-        realRecyclerviewAdapter.add(new RealitemData("aaaa","bbb"));
-        realRecyclerviewAdapter.add(new RealitemData("cccc","eee"));
-        realRecyclerviewAdapter.add(new RealitemData("gggg","fff"));
-        realRecyclerviewAdapter.add(new RealitemData("hhhh","iii"));
-        realRecyclerviewAdapter.add(new RealitemData("aaaa","bbb"));
-        realRecyclerviewAdapter.add(new RealitemData("cccc","eee"));
-        realRecyclerviewAdapter.add(new RealitemData("gggg","fff"));
-        realRecyclerviewAdapter.add(new RealitemData("hhhh","iii"));
-        realRecyclerviewAdapter.add(new RealitemData("aaaa","bbb"));
-        realRecyclerviewAdapter.add(new RealitemData("cccc","eee"));
-        realRecyclerviewAdapter.add(new RealitemData("gggg","fff"));
-        realRecyclerviewAdapter.add(new RealitemData("hhhh","iii"));
+        Intent intent = getIntent();
+        string_array = intent.getStringArrayListExtra("STRING");
+
+        for(int i=0;i<string_array.size();i++)
+        {
+            String a = string_array.get(i);
+            realRecyclerviewAdapter.add(new RealitemData(a,"aaa"));
+
+        }
 
         recyclerView.setAdapter(realRecyclerviewAdapter);
 

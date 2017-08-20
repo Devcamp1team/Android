@@ -8,13 +8,25 @@ public class movieListItem {
 
     private String name;
     private String url;
+    private int check;
 
-    public movieListItem(String name, String url)
+    public movieListItem(String name, String url,int check)
     {
         this.name = name;
         this.url = url;
+        this.check = check;
+    }
+    public movieListItem(String name,String url)
+    {
+        this.name = name;
+        this.url = url;
+
     }
 
+    public movieListItem()
+    {
+
+    }
     public String getName()
     {
         return name;
@@ -35,4 +47,11 @@ public class movieListItem {
         this.url = url;
     }
 
+    public int getCheck() {
+        return check;
+    }
+
+    public void setCheck(int check) {
+        this.check = check;
+    }
 }
