@@ -22,7 +22,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 3000);// 3 초
+        }, 1000);// 1 초
 
     }
 }
