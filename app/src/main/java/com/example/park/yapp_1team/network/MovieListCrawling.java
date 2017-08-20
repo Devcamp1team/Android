@@ -5,12 +5,14 @@ import android.util.Log;
 
 import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
+import com.example.park.yapp_1team.items.movieListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -20,7 +22,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.park.yapp_1team.utils.Strings.CGV;
 import static com.example.park.yapp_1team.utils.Strings.LOTTE;
+import static com.example.park.yapp_1team.utils.URL.CGV_SELECT;
+import static com.example.park.yapp_1team.utils.URL.CGV_THEATER_MOVIE_INFO;
 import static com.example.park.yapp_1team.utils.URL.LOTTE_THEATER_MOVIE_INFO;
 
 /**
@@ -50,6 +55,16 @@ public class MovieListCrawling extends AsyncTask {
         this.company = LOTTE;
     }
 
+    // CGV
+    public MovieListCrawling(String cinemaID, String division)
+    {
+        this.url = CGV_THEATER_MOVIE_INFO;
+        this.cinemaID = cinemaID;
+        this.division = division;
+
+        this.company = CGV;
+    }
+
 
     @Override
     protected List<MovieInfoListItem> doInBackground(Object[] params) {
@@ -58,8 +73,49 @@ public class MovieListCrawling extends AsyncTask {
         {
             lotte();
         }
+        else if(company.equals(CGV))
+        {
+            cgv();
+        }
 
         return items;
+    }
+
+    public void cgv()
+    {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+            Date today = new Date();
+
+            Document document = Jsoup.connect(CGV_THEATER_MOVIE_INFO+"?areacode="+division+"&theatercode="+cinemaID+"&date="+sdf.format(today)).get();
+            Elements elements = document.select(CGV_SELECT);
+
+            for (Element element : elements) {
+
+                String name = element.select("strong").text();
+
+                Elements tempEle = element.select("div.info-timetable li");
+
+                for(Element t : tempEle){
+
+                    String start = t.select("a em").text();
+
+                    String remain = t.select("span.txt-lightblue").text();
+
+                    MovieInfoListItem item = new MovieInfoListItem(name, start, remain);
+
+                    Log.e("log", "name : " + name + " start : " + start + " seat : " + remain);
+
+                    items.add(item);
+                }
+            }
+
+
+        } catch (IOException ie)
+        {
+            ie.printStackTrace();
+        }
     }
 
     public void lotte()
@@ -79,8 +135,6 @@ public class MovieListCrawling extends AsyncTask {
                     .post();
 
             Elements elements = document.select("body");
-
-            Log.e("json", elements.text().toString());
 
             JSONObject jsonObj =  new JSONObject(elements.text());
 
@@ -106,8 +160,6 @@ public class MovieListCrawling extends AsyncTask {
             for(int i = 0 ; i < jsonArr.length() ; ++i) {
                 JSONObject jsonTemp = jsonArr.getJSONObject(i);
 
-                MovieInfoListItem item = new MovieInfoListItem();
-
                 String movieCode = jsonTemp.get("MovieCode").toString();
                 String movieName = "Missing";
                 String startTime = jsonTemp.get("StartTime").toString();
@@ -120,9 +172,7 @@ public class MovieListCrawling extends AsyncTask {
                     movieName = movie.get(movieCode);
                 }
 
-                item.setSeat(bookingSeat);
-                item.setTime(startTime);
-                item.setTitle(movieName);
+                MovieInfoListItem item = new MovieInfoListItem(movieName, startTime, bookingSeat);
 
                 Log.e("parsing data","movie code : " + movieCode + " movie name : " + movieName + " start time : " + startTime +
                         "end time : " + endTime + " total seat : " + totalSeat + " booking seat : " + bookingSeat + "screen number : " + screenNum);

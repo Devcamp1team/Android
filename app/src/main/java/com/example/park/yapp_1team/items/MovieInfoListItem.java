@@ -11,6 +11,12 @@ public class MovieInfoListItem {
     private String time;
     private String seat;
 
+    public MovieInfoListItem(String title, String time, String seat){
+        this.title = title;
+        this.time = time;
+        this.seat = seat;
+    }
+
     public int getId() {
         return id;
     }

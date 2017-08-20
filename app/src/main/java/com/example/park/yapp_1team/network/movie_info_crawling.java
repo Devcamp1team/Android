@@ -39,8 +39,6 @@ public class movie_info_crawling extends AsyncTask {
             Document document = Jsoup.connect(url).get();
             Elements elements = document.select(select);
 
-            Log.e("naver", elements.toString());
-
             for (Element element : elements) {
 
                 String img = element.attr("src");

@@ -53,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // cgv movie time crawling
+        MovieListCrawling movieListCrawling = new MovieListCrawling(cgv_theater.get(1).getTheater(), cgv_theater.get(1).getArea());
+        ArrayList<MovieInfoListItem> cgv_movie = new ArrayList<>();
+
+        try{
+            cgv_movie = (ArrayList<MovieInfoListItem>)movieListCrawling.execute().get();
+        } catch (ExecutionException e){
+            e.printStackTrace();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
 
         // lotte theater info crawling
         theaterInfoCrawling = new TheaterInfoCrawling(LOTTE);
@@ -68,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // lotte movie time crawling
-        MovieListCrawling movieListCrawling = new MovieListCrawling(lotte_theater.get(1).getTheater(), lotte_theater.get(1).getArea(), lotte_theater.get(1).getDetailarea());
+        movieListCrawling = new MovieListCrawling(lotte_theater.get(1).getTheater(), lotte_theater.get(1).getArea(), lotte_theater.get(1).getDetailarea());
         ArrayList<MovieInfoListItem> lotte_movie = new ArrayList<>();
 
         try{
