@@ -1,73 +1,28 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.park.yapp_1team.RealActivity">
+    tools:context="com.example.park.yapp_1team.activities.RealActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+
+    <include
         android:id="@+id/toolbar_main"
-        android:background="#EEEEEE">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text1_toolbar_main"
-            android:text="지금 바로"
-            android:textSize="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text2_toolbar_main"
-                android:text="장천동"
-                android:textSize="20dp"
-                android:layout_toRightOf="@id/text1_toolbar_main"
-                android:layout_marginLeft="5dp"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/image1_toolbar_main"
-                android:src="@drawable/test"
-                android:layout_toRightOf="@+id/text2_toolbar_main"
-                android:layout_marginLeft="3dp"/>
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/image2_toolbar_main"
-            android:src="@drawable/test"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"/>
-    </RelativeLayout>
-
+        layout="@layout/toolbar_activity_real" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerview_main"
         android:layout_below="@+id/toolbar_main"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
+        android:scrollbars="vertical" />
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="24dp"
+        android:layout_marginRight="24dp"
+        android:src="@drawable/ic_add_black_24dp" />
 
 </RelativeLayout>

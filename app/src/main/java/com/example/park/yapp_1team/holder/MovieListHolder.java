@@ -1,7 +1,6 @@
 package com.example.park.yapp_1team.holder;
 
 import com.example.park.yapp_1team.items.MovieInfoListItem;
-import com.example.park.yapp_1team.items.movieListItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.example.park.yapp_1team.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.park.yapp_1team.items.movieListItem;
+import com.example.park.yapp_1team.items.MovieListItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,20 +12,19 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Park on 2017-08-19.
  */
 
-public class movie_info_crawling extends AsyncTask {
+public class MovieInfoCrawling extends AsyncTask {
 
     private String url;
     private String select;
 
-    private ArrayList<movieListItem> items = new ArrayList<>();
+    private ArrayList<MovieListItem> items = new ArrayList<>();
 
-    public movie_info_crawling(String url, String select)
+    public MovieInfoCrawling(String url, String select)
     {
         this.url = url;
         this.select = select;
@@ -44,7 +43,7 @@ public class movie_info_crawling extends AsyncTask {
                 String img = element.attr("src");
                 String name = element.attr("alt");
 
-                movieListItem item = new movieListItem(name, img);
+                MovieListItem item = new MovieListItem(name, img);
 
                 items.add(item);
 
