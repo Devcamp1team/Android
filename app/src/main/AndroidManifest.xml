@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/nobar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,8 +28,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- splash -->
-        <activity android:name=".RealActivity" />
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".activities.RealActivity" />
+        <activity android:name=".activities.DetailActivity"></activity>
     </application>
 
 </manifest>

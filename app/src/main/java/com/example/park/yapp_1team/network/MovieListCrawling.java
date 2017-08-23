@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
-import com.example.park.yapp_1team.items.movieListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
