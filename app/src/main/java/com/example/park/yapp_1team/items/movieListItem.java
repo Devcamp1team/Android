@@ -4,13 +4,13 @@ package com.example.park.yapp_1team.items;
  * Created by Park on 2017-08-19.
  */
 
-public class MovieListItem {
+public class movieListItem {
 
     private String name;
     private String url;
     private int check;
 
-    public MovieListItem(String name, String url)
+    public movieListItem(String name, String url)
     {
         this.name = name;
         this.url = url;

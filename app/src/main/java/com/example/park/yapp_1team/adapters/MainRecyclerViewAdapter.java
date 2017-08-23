@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
-import com.example.park.yapp_1team.items.MovieListItem;
+import com.example.park.yapp_1team.items.movieListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder> {
 
-    private List<MovieListItem> datas = new ArrayList<>();
+    private List<movieListItem> datas = new ArrayList<>();
     private List<String> movieName = new ArrayList<>();
 
     private Context mContext;
@@ -31,8 +31,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         this.mContext = context;
     }
 
-    public void add(MovieListItem MovieListItem) {
-        datas.add(MovieListItem);
+    public void add(movieListItem movieListItem) {
+        datas.add(movieListItem);
     }
 
     public List<String> get() {
@@ -57,16 +57,16 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final MovieListItem MovieListItem = datas.get(position);
+        final movieListItem movieListItem = datas.get(position);
 
-        if(MovieListItem.getURL().isEmpty()) {
+        if(movieListItem.getURL().isEmpty()) {
             Glide.with(mContext).load(R.drawable.ic_panorama_black_24dp).into(holder.imageView);
         } else {
-            Glide.with(mContext).load(MovieListItem.getURL()).into(holder.imageView);
+            Glide.with(mContext).load(movieListItem.getURL()).into(holder.imageView);
         }
 
         // maybe save status
-        if (MovieListItem.getCheck() == 1) {
+        if (movieListItem.getCheck() == 1) {
             holder.imageView.setColorFilter(Color.parseColor("#99000000"));
             holder.imageView2.setVisibility(View.VISIBLE);
         } else {
@@ -78,19 +78,19 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             @Override
             public void onClick(View v) {
 
-                if (MovieListItem.getCheck() == 0) {                                  //check 안되어있으면
+                if (movieListItem.getCheck() == 0) {                                  //check 안되어있으면
 
                     holder.imageView.setColorFilter(Color.parseColor("#99000000"));
-                    MovieListItem.setCheck(1);
-                    movieName.add(MovieListItem.getName());
+                    movieListItem.setCheck(1);
+                    movieName.add(movieListItem.getName());
                     Log.e("aaaaaaaa", "" + movieName);
 
                     holder.imageView2.setVisibility(View.VISIBLE);
                     //textview1.setText(movieName.size());
-                } else if (MovieListItem.getCheck() == 1) {
+                } else if (movieListItem.getCheck() == 1) {
                     holder.imageView.setColorFilter(Color.parseColor("#00000000"));
-                    MovieListItem.setCheck(0);
-                    movieName.remove(MovieListItem.getName());
+                    movieListItem.setCheck(0);
+                    movieName.remove(movieListItem.getName());
                     Log.e("aaaaaaaa", "" + movieName);
 
                     holder.imageView2.setVisibility(View.INVISIBLE);

@@ -3,11 +3,9 @@ package com.example.park.yapp_1team.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.park.yapp_1team.holder.TheaterCodeHolder;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,17 +23,11 @@ import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 public class TheaterInfoCrawling extends AsyncTask {
 
     private String company;
-    private String url;
     private List<TheaterCodeItem> items = new ArrayList<>();
 
     public TheaterInfoCrawling(String company)
     {
         this.company = company;
-    }
-
-    public TheaterInfoCrawling(String company, String url)
-    {
-
     }
 
     @Override
@@ -52,6 +44,8 @@ public class TheaterInfoCrawling extends AsyncTask {
 
         return items;
     }
+
+
 
     private void cgv() {
 
