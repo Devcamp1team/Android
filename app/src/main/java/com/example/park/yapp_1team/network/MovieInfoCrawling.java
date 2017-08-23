@@ -24,8 +24,7 @@ public class MovieInfoCrawling extends AsyncTask {
 
     private ArrayList<movieListItem> items = new ArrayList<>();
 
-    public MovieInfoCrawling(String url, String select)
-    {
+    public MovieInfoCrawling(String url, String select) {
         this.url = url;
         this.select = select;
     }
@@ -33,26 +32,25 @@ public class MovieInfoCrawling extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
 
-        try{
+        try {
 
             Document document = Jsoup.connect(url).get();
             Elements elements = document.select(select);
 
+            int order = 1000;
             for (Element element : elements) {
-
                 String img = element.attr("src");
                 String name = element.attr("alt");
 
                 movieListItem item = new movieListItem(name, img);
 
                 items.add(item);
+                order++;
 
                 Log.e("item", "img = " + img + " name = " + name);
             }
 
-
-        } catch (IOException ie)
-        {
+        } catch (IOException ie) {
             ie.printStackTrace();
         }
 

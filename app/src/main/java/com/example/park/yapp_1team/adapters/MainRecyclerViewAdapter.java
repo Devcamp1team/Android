@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
+import com.example.park.yapp_1team.interfaces.CheckEvent;
 import com.example.park.yapp_1team.items.movieListItem;
 
 import java.util.ArrayList;
@@ -25,10 +26,27 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     private List<movieListItem> datas = new ArrayList<>();
     private List<String> movieName = new ArrayList<>();
 
+    private int currentOrder = 0;
+
     private Context mContext;
 
-    public MainRecyclerViewAdapter(Context context) {
+    private CheckEvent checkEvent;
+
+    public int getCurrentOrder() {
+        return currentOrder;
+    }
+
+    public void setCurrentOrder(int currentOrder) {
+        this.currentOrder = currentOrder;
+    }
+
+    public MainRecyclerViewAdapter(Context context, CheckEvent checkEvent) {
         this.mContext = context;
+        this.checkEvent = checkEvent;
+    }
+
+    public void addList(List<MovieListItem> items) {
+        datas = items;
     }
 
     public void add(movieListItem movieListItem) {
@@ -49,6 +67,10 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         }
     }
 
+    public void clear() {
+        datas.clear();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview_main, parent, false);
@@ -58,7 +80,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final movieListItem movieListItem = datas.get(position);
-
+      
         if(movieListItem.getURL().isEmpty()) {
             Glide.with(mContext).load(R.drawable.ic_panorama_black_24dp).into(holder.imageView);
         } else {
@@ -77,25 +99,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkEvent.check(position,holder.imageView, holder.imageView2);
 
-                if (movieListItem.getCheck() == 0) {                                  //check 안되어있으면
-
-                    holder.imageView.setColorFilter(Color.parseColor("#99000000"));
-                    movieListItem.setCheck(1);
-                    movieName.add(movieListItem.getName());
-                    Log.e("aaaaaaaa", "" + movieName);
-
-                    holder.imageView2.setVisibility(View.VISIBLE);
-                    //textview1.setText(movieName.size());
-                } else if (movieListItem.getCheck() == 1) {
-                    holder.imageView.setColorFilter(Color.parseColor("#00000000"));
-                    movieListItem.setCheck(0);
-                    movieName.remove(movieListItem.getName());
-                    Log.e("aaaaaaaa", "" + movieName);
-
-                    holder.imageView2.setVisibility(View.INVISIBLE);
-                    //   textview1.setText(movieName.size());
-                }
             }
         });
 

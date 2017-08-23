@@ -1,23 +1,30 @@
 package com.example.park.yapp_1team.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.MainRecyclerViewAdapter;
+import com.example.park.yapp_1team.interfaces.CheckEvent;
 import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.movieListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
 import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
+import com.example.park.yapp_1team.utils.CustomComparator;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,10 +36,41 @@ import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private RecyclerView movieListRecyclerView;
     private MainRecyclerViewAdapter movieListRecyclerViewAdapter;
     private FloatingActionButton fabButton1, fabButton2;
+
+    private List<MovieListItem> dataArray;
+    private List<String> movieNames = new ArrayList<>();
+
+    private CustomComparator customComparator = new CustomComparator();
+
+    private CheckEvent checkEvent = new CheckEvent() {
+        @Override
+        public void check(int position, ImageView imageView1, ImageView imageView2) {
+            Log.e("main", dataArray.get(position).getName() + " : " + dataArray.get(position).getCurrentOrder());
+            if (dataArray.get(position).getCheck() == 0) {
+                imageView1.setColorFilter(Color.parseColor("#99000000"));
+                dataArray.get(position).setCheck(1);
+                movieNames.add(dataArray.get(position).getName());
+                imageView2.setVisibility(View.VISIBLE);
+                dataArray.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
+                movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder()+1);
+                Log.e("main", "order : " + movieListRecyclerViewAdapter.getCurrentOrder());
+            } else {
+                imageView1.setColorFilter(Color.parseColor("#00000000"));
+                dataArray.get(position).setCheck(0);
+                movieNames.add(dataArray.get(position).getName());
+                imageView2.setVisibility(View.INVISIBLE);
+                dataArray.get(position).setCurrentOrder(dataArray.get(position).getOriginalOrder());
+            }
+            Log.e("main","before sort" + dataArray.size());
+            Collections.sort(dataArray, customComparator);
+            Log.e("main","after sort" + dataArray.size());
+            movieListRecyclerViewAdapter.addList(dataArray);
+            movieListRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         initialize();
 
-        List<movieListItem> dataArray = movieCrawling();
+        dataArray = movieCrawling();
 
         Iterator iterator = dataArray.iterator();
         while (iterator.hasNext()) {
@@ -74,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         fabButton2 = (FloatingActionButton) findViewById(R.id.image2_underbar_start);
 
         movieListRecyclerView.setHasFixedSize(true);
-        movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this);
+        movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this, checkEvent);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
     }
