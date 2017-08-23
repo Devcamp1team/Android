@@ -10,23 +10,12 @@ public class MovieListItem {
     private String url;
     private int check;
 
-    public MovieListItem(String name, String url, int check)
-    {
-        this.name = name;
-        this.url = url;
-        this.check = check;
-    }
     public MovieListItem(String name, String url)
     {
         this.name = name;
         this.url = url;
-
     }
 
-    public MovieListItem()
-    {
-
-    }
     public String getName()
     {
         return name;
