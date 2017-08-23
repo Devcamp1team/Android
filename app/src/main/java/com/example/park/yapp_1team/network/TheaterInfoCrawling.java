@@ -28,6 +28,7 @@ public class TheaterInfoCrawling extends AsyncTask {
     private String url;
     private List<TheaterCodeItem> items = new ArrayList<>();
 
+
     public TheaterInfoCrawling(String company)
     {
         this.company = company;
@@ -51,6 +52,11 @@ public class TheaterInfoCrawling extends AsyncTask {
         }
 
         return items;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
     }
 
     private void cgv() {
