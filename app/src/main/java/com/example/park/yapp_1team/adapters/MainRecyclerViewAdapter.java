@@ -3,7 +3,6 @@ package com.example.park.yapp_1team.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
-import com.example.park.yapp_1team.items.movieListItem;
+import com.example.park.yapp_1team.items.MovieListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder> {
 
-    private List<movieListItem> datas = new ArrayList<>();
+    private List<MovieListItem> datas = new ArrayList<>();
     private List<String> movieName = new ArrayList<>();
 
     private int currentOrder = 0;
@@ -49,8 +48,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         datas = items;
     }
 
-    public void add(movieListItem movieListItem) {
-        datas.add(movieListItem);
+    public void add(MovieListItem MovieListItem) {
+        datas.add(MovieListItem);
     }
 
     public List<String> get() {
@@ -78,17 +77,17 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final movieListItem movieListItem = datas.get(position);
-      
-        if(movieListItem.getURL().isEmpty()) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final MovieListItem MovieListItem = datas.get(position);
+
+        if (MovieListItem.getURL().isEmpty()) {
             Glide.with(mContext).load(R.drawable.ic_panorama_black_24dp).into(holder.imageView);
         } else {
-            Glide.with(mContext).load(movieListItem.getURL()).into(holder.imageView);
+            Glide.with(mContext).load(MovieListItem.getURL()).into(holder.imageView);
         }
 
         // maybe save status
-        if (movieListItem.getCheck() == 1) {
+        if (MovieListItem.getCheck() == 1) {
             holder.imageView.setColorFilter(Color.parseColor("#99000000"));
             holder.imageView2.setVisibility(View.VISIBLE);
         } else {
@@ -99,7 +98,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkEvent.check(position,holder.imageView, holder.imageView2);
+                checkEvent.check(position, holder.imageView, holder.imageView2);
 
             }
         });

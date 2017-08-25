@@ -9,6 +9,7 @@ public class URL {
     public static final String NAVER_SELECT = "div.thumb a img";
 
     public static final String LOTTE_THEATER_MOVIE_INFO = "http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx";
+    public static final String LOTTE_MOVIE_PICTURE_URL = "http://www.lottecinema.co.kr/LCWS/Movie/MovieData.aspx";
 
     public static final String CGV_THEATER_MOVIE_INFO = "http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx";
     public static final String CGV_SELECT = "div.col-times";

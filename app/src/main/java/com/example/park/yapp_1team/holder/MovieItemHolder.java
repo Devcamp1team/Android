@@ -1,6 +1,6 @@
 package com.example.park.yapp_1team.holder;
 
-import com.example.park.yapp_1team.items.movieListItem;
+import com.example.park.yapp_1team.items.MovieListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
 
 public class MovieItemHolder {
 
-    private List<movieListItem> list;
+    private List<MovieListItem> list;
 
     public MovieItemHolder(){
         list = new ArrayList<>();
     }
 
-    public void setList(List<movieListItem> list)
+    public void setList(List<MovieListItem> list)
     {
         this.list = list;
     }
