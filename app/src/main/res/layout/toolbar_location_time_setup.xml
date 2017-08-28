@@ -6,7 +6,8 @@
     android:focusableInTouchMode="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:weightSum="4">
 
     <ImageView
         android:layout_width="15dp"
@@ -20,10 +21,10 @@
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:text="리스트 상세 정보"
         android:gravity="center"
         android:textSize="15dp"
-        android:layout_marginRight="45dp"/>
+        android:layout_marginRight="45dp" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_centerInParent="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
@@ -20,7 +20,7 @@
         <ImageView
             android:layout_height="15dp"
             android:layout_width="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/magnifier_test" />
 
         <EditText
@@ -39,9 +39,102 @@
             android:id="@+id/location_search_button"
             android:layout_height="15dp"
             android:layout_width="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/location_search_test"/>
 
     </LinearLayout>
-z
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/location_setup_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        app:layoutManager="LinearLayoutManager"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white">
+
+
+        <TextView
+            android:text="시간"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:textColor="#8b8989"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:weightSum="4">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/clock_test"/>
+
+            <TextView
+                android:layout_weight="4"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:text="현재 시간"/>
+
+            <ImageButton
+                android:id="@+id/check_time_button1"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="15dp"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/check_test"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/alarm_test"/>
+
+            <TextView
+                android:layout_weight="4"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:text="영화 시간 설정"/>
+
+            <ImageButton
+                android:id="@+id/check_time_button2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="15dp"
+                android:focusableInTouchMode="true"
+                android:background="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>
