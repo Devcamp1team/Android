@@ -5,4 +5,12 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#B4B4B4</color>
+    <color name="colorTextGray">#B2B2B2</color>
+
+    <color name="colorGrayTransport">#88B4B4B4</color>
+    
+    <color name="colorTextUsingSeat">#D1D1D1</color>
+    <color name="colorTextRemainderSeat">#D3D3D3</color>
 </resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@color/colorGray"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_near_me_black_24dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp">
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9:00"
+            android:textColor="@color/colorBlack"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txt_item_movie_info_start_time"
+            android:text=" - 13:00"
+            android:textColor="@color/colorGray"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_item_movie_info_start_time"
+            android:text="Orange is the New Black"
+            android:textColor="@color/colorTextGray"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_remainder_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="/200"
+            android:textColor="@color/colorTextRemainderSeat" />
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_using_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/txt_item_movie_info_remainder_seat"
+            android:text="13"
+            android:textColor="@color/colorTextUsingSeat" />
+
+        <ImageView
+            android:id="@+id/img_dump"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_location_on_gray_24dp" />
+
+        <TextView
+            android:id="@+id/txt_item_movie_info_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/img_dump"
+            android:text="CGV 청담·2.20km·프리미엄"
+            android:textColor="@color/colorTextGray"
+            android:textSize="12dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
