@@ -23,7 +23,6 @@ import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.utils.CustomComparator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 movieNames.add(dataArray.get(position).getName());
                 imageView2.setVisibility(View.VISIBLE);
                 dataArray.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
-                movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder()+1);
+                movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder() + 1);
                 Log.e("main", "order : " + movieListRecyclerViewAdapter.getCurrentOrder());
             } else {
                 imageView1.setColorFilter(Color.parseColor("#00000000"));
@@ -64,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 imageView2.setVisibility(View.INVISIBLE);
                 dataArray.get(position).setCurrentOrder(dataArray.get(position).getOriginalOrder());
             }
-            Log.e("main","before sort" + dataArray.size());
+            Log.e("main", "before sort" + dataArray.size());
             Collections.sort(dataArray, customComparator);
-            Log.e("main","after sort" + dataArray.size());
-            movieListRecyclerViewAdapter.addList(dataArray);
+            Log.e("main", "after sort" + dataArray.size());
+//            movieListRecyclerViewAdapter.addList(dataArray);
             movieListRecyclerViewAdapter.notifyDataSetChanged();
         }
     };
@@ -78,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        startActivity(new Intent(this, SplashActivity.class));
+
+        startActivity(new Intent(this, MapActivity.class));
 
         initialize();
 
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     private void initialize() {
         movieListRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_start);
         fabButton1 = (FloatingActionButton) findViewById(R.id.image1_underbar_start);
-        fabButton2 = (FloatingActionButton) findViewById(R.id.image2_underbar_start);
 
         movieListRecyclerView.setHasFixedSize(true);
         movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this, checkEvent);
@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         // lotte theater info crawling
         theaterInfoCrawling = new TheaterInfoCrawling(LOTTE);
         ArrayList<TheaterCodeItem> lotte_theater = new ArrayList<>();
@@ -165,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         // lotte movie time crawling
         movieListCrawling = new MovieListCrawling(lotte_theater.get(1).getTheater(), lotte_theater.get(1).getArea(), lotte_theater.get(1).getDetailarea());
         ArrayList<MovieInfoListItem> lotte_movie = new ArrayList<>();
@@ -175,7 +173,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }

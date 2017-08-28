@@ -3,6 +3,8 @@
     package="com.example.park.yapp_1team">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +31,14 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- splash -->
         <activity android:name=".activities.RealActivity" />
-        <activity android:name=".activities.DetailActivity"></activity>
+        <activity android:name=".activities.DetailActivity" />
+        <activity android:name=".activities.MapActivity"
+            android:theme="@style/MapBar"></activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/app_key" />
+
     </application>
 
 </manifest>

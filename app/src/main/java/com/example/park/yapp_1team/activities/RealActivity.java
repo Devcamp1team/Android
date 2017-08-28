@@ -37,7 +37,6 @@ public class RealActivity extends AppCompatActivity {
             realRecyclerviewAdapter.add(new RealItemData(a, "aaa"));
 
         }
-
         recyclerView.setAdapter(realRecyclerviewAdapter);
 
     }
