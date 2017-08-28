@@ -15,7 +15,7 @@ import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.MainRecyclerViewAdapter;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
 import com.example.park.yapp_1team.items.MovieInfoListItem;
-import com.example.park.yapp_1team.items.MovieListItem;
+import com.example.park.yapp_1team.items.movieListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
 import com.example.park.yapp_1team.network.MovieListCrawling;
@@ -83,9 +83,10 @@ public class MainActivity extends AppCompatActivity {
         initialize();
 
         dataArray = movieCrawling();
+
         Iterator iterator = dataArray.iterator();
         while (iterator.hasNext()) {
-            movieListRecyclerViewAdapter.add((MovieListItem) iterator.next());
+            movieListRecyclerViewAdapter.add((movieListItem) iterator.next());
         }
 
 //        for (int i = 0; i < dataArray.size(); i++) {
@@ -116,12 +117,12 @@ public class MainActivity extends AppCompatActivity {
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
     }
 
-    private List<MovieListItem> movieCrawling() {
+    private List<movieListItem> movieCrawling() {
         MovieInfoCrawling test = new MovieInfoCrawling(NAVER_URL, NAVER_SELECT);
 
-        List<MovieListItem> items = new ArrayList<>();
+        List<movieListItem> items = new ArrayList<>();
         try {
-            items = (ArrayList<MovieListItem>) test.execute().get();
+            items = (ArrayList<movieListItem>) test.execute().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

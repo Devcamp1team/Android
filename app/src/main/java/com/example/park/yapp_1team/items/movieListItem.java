@@ -4,7 +4,7 @@ package com.example.park.yapp_1team.items;
  * Created by Park on 2017-08-19.
  */
 
-public class MovieListItem {
+public class movieListItem {
 
     private int originalOrder;
     private int currentOrder;
@@ -12,10 +12,10 @@ public class MovieListItem {
     private String url;
     private int check;
 
-    public MovieListItem(String name, String url, int check) {
+    public movieListItem(String name, String url)
+    {
         this.name = name;
         this.url = url;
-        this.check = check;
     }
 
     public MovieListItem(int originalOrder, String name, String url) {
@@ -49,7 +49,8 @@ public class MovieListItem {
         this.url = url;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
