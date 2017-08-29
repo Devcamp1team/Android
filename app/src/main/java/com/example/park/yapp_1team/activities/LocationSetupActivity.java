@@ -69,6 +69,5 @@ public class LocationSetupActivity extends AppCompatActivity {
         searchRecView.setAdapter(new LocationSearchViewAdapter(items));
         searchRecView.setItemAnimator(new DefaultItemAnimator());
 
-
     }
 }
