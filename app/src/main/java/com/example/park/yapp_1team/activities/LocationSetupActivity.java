@@ -68,6 +68,5 @@ public class LocationSetupActivity extends AppCompatActivity {
         searchRecView = (RecyclerView) findViewById(R.id.location_setup_recycle_view);
         searchRecView.setAdapter(new LocationSearchViewAdapter(items));
         searchRecView.setItemAnimator(new DefaultItemAnimator());
-
     }
 }
