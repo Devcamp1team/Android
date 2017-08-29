@@ -19,7 +19,6 @@ public class RealRecyclerviewAdapter extends RecyclerView.Adapter<RealRecyclervi
 
     ArrayList<RealItemData> data_array = new ArrayList<>();
 
-
     public void add(RealItemData realItemData) {
         data_array.add(realItemData);
     }

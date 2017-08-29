@@ -26,6 +26,7 @@
         <activity android:name=".activities.RealActivity" />
         <activity android:name=".activities.DetailActivity"/>
         <activity android:name=".activities.LocationSetupActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

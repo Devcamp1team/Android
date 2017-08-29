@@ -1,140 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/toolbar_location_setup"
-        layout="@layout/toolbar_location_time_setup"/>
-
     <LinearLayout
+        android:id="@+id/location_setup_mainlayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_height="15dp"
-            android:layout_width="15dp"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/magnifier_test" />
+        <include
+            android:id="@+id/toolbar_location_setup"
+            layout="@layout/toolbar_location_time_setup" />
 
-        <EditText
-            android:id="@+id/location_search"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:inputType="text"
-            android:hint="서울시 마포구 청담동"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="4"
-            android:background="@android:color/transparent"
-            android:scrollbarAlwaysDrawHorizontalTrack="true"/>
-
-        <ImageView
-            android:id="@+id/location_search_button"
-            android:layout_height="15dp"
-            android:layout_width="15dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/location_search_test"/>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/location_setup_recycle_view"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"
-        app:layoutManager="LinearLayoutManager"
-        />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white">
-
-
-        <TextView
-            android:text="시간"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
             android:gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:textColor="#8b8989"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:weightSum="4">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="15dp"
-                android:background="@drawable/clock_test"/>
+                android:background="@drawable/magnifier_test" />
 
-            <TextView
-                android:layout_weight="4"
-                android:layout_height="match_parent"
+            <EditText
+                android:id="@+id/location_search"
                 android:layout_width="0dp"
-                android:layout_marginStart="15dp"
-                android:gravity="center_vertical"
-                android:text="현재 시간"/>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="4"
+                android:background="@android:color/transparent"
+                android:hint="서울시 마포구 청담동"
+                android:inputType="text"
+                android:scrollbarAlwaysDrawHorizontalTrack="true" />
 
-            <ImageButton
-                android:id="@+id/check_time_button1"
+            <ImageView
+                android:id="@+id/location_search_button"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginEnd="15dp"
-                android:focusableInTouchMode="true"
-                android:background="@drawable/check_test"/>
+                android:src="@drawable/location_search_test" />
 
         </LinearLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/location_setup_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            app:layoutManager="LinearLayoutManager" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:weightSum="4">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_gravity="center"
-                android:background="@drawable/alarm_test"/>
 
             <TextView
-                android:layout_weight="4"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:text="영화 시간 설정"/>
+                android:text="시간"
+                android:textColor="#8b8989" />
 
-            <ImageButton
-                android:id="@+id/check_time_button2"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginEnd="15dp"
+
+            <LinearLayout
+                android:id="@+id/current_time"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
                 android:focusableInTouchMode="true"
-                android:background="@android:color/white"/>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/clock_test" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:text="현재 시간" />
+
+                <ImageView
+                    android:id="@+id/check_time_button1"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/check_test"
+                    android:focusableInTouchMode="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/setup_time"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/alarm_test" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:text="영화 시간 설정" />
+
+                <ImageView
+                    android:id="@+id/check_time_button2"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@android:color/white"
+                    android:focusableInTouchMode="true" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
