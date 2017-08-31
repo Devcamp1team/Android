@@ -1,22 +1,28 @@
 package com.example.park.yapp_1team.items;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Park on 2017-08-30.
  */
 
-public class SearchListItem {
+public class SearchListItem extends RealmObject {
 
-    String location;
+    @PrimaryKey
+    private String location;
+
+    public SearchListItem(){}
 
     public SearchListItem(String location){
         this.location = location;
     }
 
-    public String getlocation(){
+    public String getLocation(){
         return location;
     }
 
-    public void setlocation(String location){
+    public void setLocation(String location){
         this.location = location;
     }
 }

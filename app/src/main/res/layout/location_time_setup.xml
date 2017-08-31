@@ -18,45 +18,34 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="10dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@android:color/white">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginStart="15dp"
-                android:background="@drawable/magnifier_test" />
-
-            <EditText
-                android:id="@+id/location_search"
-                android:layout_width="0dp"
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="4"
-                android:background="@android:color/transparent"
-                android:hint="서울시 마포구 청담동"
-                android:inputType="text"
-                android:scrollbarAlwaysDrawHorizontalTrack="true" />
+                android:layout_weight="4"/>
 
-            <ImageView
-                android:id="@+id/location_search_button"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginEnd="15dp"
-                android:src="@drawable/location_search_test" />
+            <!--<ImageView-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/location_search_test"-->
+                <!--android:layout_marginEnd="15dp" />-->
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView
             android:id="@+id/location_setup_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:background="@android:color/white"
-            app:layoutManager="LinearLayoutManager" />
-
+            app:rrvEmptyLayoutId="@layout/location_search_empty"
+            app:rrvLayoutType="LinearLayout"
+            app:rrvSwipeToDelete="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +89,7 @@
                     android:text="현재 시간" />
 
                 <ImageView
-                    android:id="@+id/check_time_button1"
+                    android:id="@+id/check_time1"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="15dp"
@@ -134,11 +123,10 @@
                     android:text="영화 시간 설정" />
 
                 <ImageView
-                    android:id="@+id/check_time_button2"
+                    android:id="@+id/check_time2"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="15dp"
-                    android:background="@android:color/white"
                     android:focusableInTouchMode="true" />
 
             </LinearLayout>

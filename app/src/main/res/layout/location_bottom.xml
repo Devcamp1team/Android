@@ -15,21 +15,50 @@
         android:gravity="center_vertical"
         android:text="영화 시간 설정" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:gravity="center"
-        android:text="Select Space" />
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/number_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:descendantFocusability="blocksDescendants"
+            android:scaleX=".8"
+            android:scaleY=".8"/>
+
+        <NumberPicker
+            android:id="@+id/number_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            android:descendantFocusability="blocksDescendants"
+            android:scaleX=".8"
+            android:scaleY=".8"/>
+
+
+    </LinearLayout>
 
     <Button
-        android:layout_height="50dp"
+        android:id="@+id/bottom_button"
         android:layout_width="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@android:color/black"
         android:text="시간 설정"
-        android:textColor="@android:color/white"
-        android:background="@android:color/black" />
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>
