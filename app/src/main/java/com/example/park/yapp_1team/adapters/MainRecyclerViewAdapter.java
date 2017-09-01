@@ -99,7 +99,6 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             @Override
             public void onClick(View v) {
                 checkEvent.check(position, holder.imageView, holder.imageView2);
-
             }
         });
 

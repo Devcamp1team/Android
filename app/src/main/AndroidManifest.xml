@@ -16,11 +16,6 @@
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/nobar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- splash -->
@@ -31,13 +26,30 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- splash -->
         <activity android:name=".activities.RealActivity" />
+
+        <activity android:name=".activities.LocationSetupActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
         <activity android:name=".activities.DetailActivity" />
         <activity android:name=".activities.MapActivity"
-            android:theme="@style/MapBar"></activity>
+            android:theme="@style/MapBar">
+
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/app_key" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s"/>
 
     </application>
 
