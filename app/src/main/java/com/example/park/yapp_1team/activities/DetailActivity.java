@@ -10,7 +10,6 @@ import com.example.park.yapp_1team.R;
 
 public class DetailActivity extends AppCompatActivity {
 
-
     TextView textView1;
     String movieName;
 

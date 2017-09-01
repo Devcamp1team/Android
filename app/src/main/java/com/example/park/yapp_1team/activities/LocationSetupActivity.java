@@ -21,7 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
@@ -153,19 +152,17 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
             }
         });
 
-        setTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.show();
-            }
-
-        });
         curTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
                 curTime.setBackground(getResources().getDrawable(R.drawable.check_test));
                 setupTime.setBackgroundColor(Color.WHITE);
+            }
+        });
+        setTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.show();
             }
         });
 
@@ -233,6 +230,8 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
     }
 
+
+    // get time string[]
     private String[] getTimesFromCalendar()
     {
         Calendar calendar = Calendar.getInstance();
@@ -280,6 +279,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         return times.toArray(new String[times.size() - 1]);
     }
 
+    // get dates string[]
     private String[] getDatesFromCalendar()
     {
         Calendar calendar = Calendar.getInstance();
@@ -297,10 +297,14 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         return dates.toArray(new String[dates.size() - 1]);
     }
 
+
+    // Realm get all UserData
     private RealmResults<SearchListItem> getUserList(){
         return realm.where(SearchListItem.class).findAll();
     }
 
+
+    // Realm Insert data
     private void insertUserData(String location){
         realm.beginTransaction();
 
