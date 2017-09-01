@@ -311,10 +311,10 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         RealmResults<SearchListItem> tmpItem = realm.where(SearchListItem.class).equalTo("location", location).findAll();
         RealmResults<SearchListItem> tmpdelete = realm.where(SearchListItem.class).findAll();
 
-        if(tmpdelete.size() > 3)
+        if(tmpdelete.size() > 2)
         {
             Log.e("delete", "in");
-            tmpdelete.last().deleteFromRealm();
+            tmpdelete.first().deleteFromRealm();
         }
 
         if(tmpItem.size() == 0) {
