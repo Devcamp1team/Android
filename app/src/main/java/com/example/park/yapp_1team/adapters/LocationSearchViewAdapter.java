@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.items.SearchListItem;
-
-import java.util.List;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 
 import io.realm.Realm;
 import io.realm.RealmBasedRecyclerViewAdapter;
@@ -26,12 +24,14 @@ import io.realm.RealmViewHolder;
 public class LocationSearchViewAdapter
         extends RealmBasedRecyclerViewAdapter<SearchListItem, LocationSearchViewAdapter.ViewHolder> {
 
-    private List<SearchListItem> locationList;
     private Realm realm;
+    private PlaceAutocompleteFragment autocompleteFragment;
 
-    public LocationSearchViewAdapter(Context context, RealmResults<SearchListItem> realmResults, boolean automaticUpdate, boolean animate)
+    public LocationSearchViewAdapter(Context context, RealmResults<SearchListItem> realmResults, boolean automaticUpdate, boolean animate, PlaceAutocompleteFragment autocompleteFragment)
     {
         super(context, realmResults, automaticUpdate, animate);
+
+        this.autocompleteFragment = autocompleteFragment;
 
         Realm.init(context);
 
@@ -42,13 +42,7 @@ public class LocationSearchViewAdapter
         Realm.setDefaultConfiguration(config);
 
         realm = Realm.getDefaultInstance();
-        RealmResults<SearchListItem> searchList = getUserList();
     }
-
-    private RealmResults<SearchListItem> getUserList(){
-        return realm.where(SearchListItem.class).findAll();
-    }
-
 
     @Override
     public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int i) {
@@ -77,17 +71,22 @@ public class LocationSearchViewAdapter
             }
         });
 
+        viewHolder.searchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autocompleteFragment.setText(viewHolder.searchText.getText());
+            }
+        });
+
     }
 
     public class ViewHolder extends RealmViewHolder {
 
-        private ImageView searchImg;
         private TextView searchText;
         private FrameLayout removeImg;
 
         public ViewHolder(View itemView){
             super(itemView);
-            this.searchImg = (ImageView) itemView.findViewById(R.id.search_location_icon);
             this.searchText = (TextView) itemView.findViewById(R.id.search_location_item);
             this.removeImg = (FrameLayout) itemView.findViewById(R.id.search_location_remove);
         }

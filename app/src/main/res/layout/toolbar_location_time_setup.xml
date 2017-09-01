@@ -10,18 +10,18 @@
     android:weightSum="4">
 
     <ImageView
+        android:id="@+id/location_setup_button"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:src="@drawable/location_setup_test"
-        android:id="@+id/location_setup_button"
         android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"/>
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/location_setup_test" />
 
     <TextView
-        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="4"
+        android:layout_gravity="center_vertical"
         android:text="LIST SETTING"
         android:gravity="center"
         android:textSize="20dp"

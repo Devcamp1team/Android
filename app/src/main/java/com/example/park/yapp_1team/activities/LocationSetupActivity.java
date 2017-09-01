@@ -1,7 +1,6 @@
 package com.example.park.yapp_1team.activities;
 
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
@@ -62,7 +61,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
 
     // GoogleAPI
-    private GoogleApiClient mGoogleApiClient;
+//    private GoogleApiClient mGoogleApiClient;
 
 
     // 초기 설정되어있는 위치, 시간 값 받아오기
@@ -86,12 +85,13 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
          *  Google API
          */
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
+        // have to?
+//        mGoogleApiClient = new GoogleApiClient
+//                .Builder(this)
+//                .addApi(Places.GEO_DATA_API)
+//                .addApi(Places.PLACE_DETECTION_API)
+//                .enableAutoManage(this, this)
+//                .build();
 
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
 //                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)        // 만나서 질문
@@ -183,7 +183,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
         realm = Realm.getDefaultInstance();
         RealmResults<SearchListItem> searchList = getUserList();
-        LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList,true,false);
+        LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList,true,false, autocompleteFragment);
         RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.location_setup_recycle_view);
         realmRecyclerView.setAdapter(searchAdapter);
     }
