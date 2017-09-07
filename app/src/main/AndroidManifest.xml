@@ -15,7 +15,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/nobar"></activity>
+            android:theme="@style/nobar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- splash -->
         <activity
@@ -26,11 +32,7 @@
         <!-- splash -->
         <activity android:name=".activities.RealActivity" />
         <activity android:name=".activities.LocationSetupActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activities.DetailActivity" />
         <activity

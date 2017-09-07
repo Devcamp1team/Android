@@ -53,6 +53,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
     private Button bottomButton;
     private ImageView setupTime;
     private ImageView curTime;
+    private ImageView backBtn;
     private int defaultValue;
 
     private String returnTime;
@@ -72,7 +73,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.location_time_setup);
+        setContentView(R.layout.activity_location_time_setup);
 
         initial();
     }
@@ -115,6 +116,14 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
             @Override
             public void onError(Status status) {
                 Log.e("suggestion system error", "Error occur"+status);
+            }
+        });
+
+        backBtn = (ImageView) findViewById(R.id.img_location_setup_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

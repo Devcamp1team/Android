@@ -62,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
-                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="4">
@@ -95,7 +94,6 @@
                 android:id="@+id/setup_time"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:weightSum="4">

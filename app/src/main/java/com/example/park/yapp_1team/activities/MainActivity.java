@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        startActivity(new Intent(this, SplashActivity.class));
 
-        startActivity(new Intent(this, MapActivity.class));
+        //startActivity(new Intent(this, MapActivity.class));
 
         initialize();
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<String> string_array = (ArrayList) movieListRecyclerViewAdapter.get();
 
-                Intent intent = new Intent(getApplicationContext(), RealActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
                 intent.putStringArrayListExtra("STRING", string_array);
                 startActivity(intent);
             }
