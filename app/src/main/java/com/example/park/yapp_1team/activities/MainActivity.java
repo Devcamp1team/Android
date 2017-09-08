@@ -78,7 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        startActivity(new Intent(this, SplashActivity.class));
 
+<<<<<<< HEAD
 //        startActivity(new Intent(this, MapActivity.class));
+=======
+        //startActivity(new Intent(this, MapActivity.class));
+>>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
 
         initialize();
 
@@ -100,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<String> string_array = (ArrayList) movieListRecyclerViewAdapter.get();
 
+<<<<<<< HEAD
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+=======
+                Intent intent = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
+>>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
                 intent.putStringArrayListExtra("STRING", string_array);
                 startActivity(intent);
             }

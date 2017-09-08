@@ -10,7 +10,7 @@
     android:weightSum="4">
 
     <ImageView
-        android:id="@+id/location_setup_button"
+        android:id="@+id/img_location_setup_back"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginRight="15dp"

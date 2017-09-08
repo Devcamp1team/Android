@@ -42,11 +42,11 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
     @Override
     public SelectMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
-        if (viewType == HEAD && isMulti == false) {
-            v = LayoutInflater.from(context).inflate(R.layout.itemview_main, parent, false);
-        } else {
+//        if (viewType == HEAD && isMulti == false) {
+//            v = LayoutInflater.from(context).inflate(R.layout.itemview_main, parent, false);
+//        } else {
             v = LayoutInflater.from(context).inflate(R.layout.item_rcv_movie_info, parent, false);
-        }
+//        }
         return new SelectMovieHolder(v);
     }
 

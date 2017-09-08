@@ -32,6 +32,10 @@
         <!-- splash -->
         <activity android:name=".activities.RealActivity" />
         <activity android:name=".activities.LocationSetupActivity">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
         </activity>
         <activity android:name=".activities.DetailActivity" />
         <activity
