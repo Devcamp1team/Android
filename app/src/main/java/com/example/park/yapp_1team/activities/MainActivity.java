@@ -2,7 +2,6 @@ package com.example.park.yapp_1team.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +33,7 @@ import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 import static com.example.park.yapp_1team.utils.URL.NAVER_SELECT;
 import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        statusBarChange();
         initialize();
         event();
     }

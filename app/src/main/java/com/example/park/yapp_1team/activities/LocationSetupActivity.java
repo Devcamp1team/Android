@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
@@ -42,7 +41,7 @@ import static android.util.Pair.create;
  * Created by Park on 2017-08-27.
  */
 
-public class LocationSetupActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LocationSetupActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private BottomSheetDialog bottomSheetDialog;
     private LinearLayout setTimeLayout;
@@ -77,7 +76,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_time_setup);
-
+        statusBarChange();
         initial();
         event();
     }
@@ -146,7 +145,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         bottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.check_test));
+                setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.check_test));
                 curTime.setBackgroundColor(Color.WHITE);
 
                 returnTime = pairStr.first[bottomDate.getValue()] + " " + pairStr.second[bottomTime.getValue()].toString();
@@ -160,7 +159,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         curTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
-                curTime.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.check_test));
+                curTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.check_test));
                 setupTime.setBackgroundColor(Color.WHITE);
             }
         });

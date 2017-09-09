@@ -3,7 +3,6 @@ package com.example.park.yapp_1team.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,7 @@ import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectMovieInfoActivity extends AppCompatActivity {
+public class SelectMovieInfoActivity extends BaseActivity {
 
     private static final String TAG = SelectMovieInfoActivity.class.getSimpleName();
 
@@ -47,7 +46,7 @@ public class SelectMovieInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_movie_info);
-
+        statusBarChange();
         // TODO: 2017-09-02 intent로 count 받아오기
         Intent intent = getIntent();
         names = intent.getStringArrayListExtra("names");
