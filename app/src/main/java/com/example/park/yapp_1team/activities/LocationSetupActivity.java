@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.NumberPicker;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.LocationSearchViewAdapter;
 import com.example.park.yapp_1team.items.SearchListItem;
+import com.example.park.yapp_1team.sql.RealmRest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -31,8 +34,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 import static android.util.Pair.create;
@@ -41,13 +42,11 @@ import static android.util.Pair.create;
  * Created by Park on 2017-08-27.
  */
 
-public class LocationSetupActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
-{
+public class LocationSetupActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private BottomSheetDialog bottomSheetDialog;
     private LinearLayout setTimeLayout;
     private LinearLayout curTimeLayout;
-    private Realm realm;
     private NumberPicker bottomDate;
     private NumberPicker bottomTime;
     private Button bottomButton;
@@ -56,9 +55,13 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
     private ImageView backBtn;
     private int defaultValue;
 
+    private Toolbar locationToolbar;
+    private PlaceAutocompleteFragment autocompleteFragment;
+
     private String returnTime;
     private Place returnPlace;
 
+    private RealmRest realmRest;
 
     // GoogleAPI
 //    private GoogleApiClient mGoogleApiClient;
@@ -76,56 +79,28 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         setContentView(R.layout.activity_location_time_setup);
 
         initial();
+        event();
     }
 
     private void initial() {
 
+        locationToolbar = (Toolbar) findViewById(R.id.toolbar_location_setup);
+        locationToolbar.setContentInsetsAbsolute(0, 0);
+        setSupportActionBar(locationToolbar);
 
-        /*
-         *  Google API
-         */
-
-        // have to?
-//        mGoogleApiClient = new GoogleApiClient
-//                .Builder(this)
-//                .addApi(Places.GEO_DATA_API)
-//                .addApi(Places.PLACE_DETECTION_API)
-//                .enableAutoManage(this, this)
-//                .build();
+        realmRest = new RealmRest();
 
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)        // 만나서 질문
                 .setCountry("KR")
                 .build();
 
-        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setHint("서울특별시 마포구 망원동");
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                Log.e("get info", "Place : " + place.getName());
-
-                insertUserData(place.getName().toString());
-
-                returnPlace = place;
-            }
-
-            @Override
-            public void onError(Status status) {
-                Log.e("suggestion system error", "Error occur"+status);
-            }
-        });
 
         backBtn = (ImageView) findViewById(R.id.img_location_setup_back);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         /*
          * BottomSheet
@@ -136,7 +111,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
         bottomSheetDialog = new BottomSheetDialog(LocationSetupActivity.this);
 
-        final View bottomView = getLayoutInflater().inflate(R.layout.location_bottom, null);
+        final View bottomView = getLayoutInflater().inflate(R.layout.layout_location_bottom, null);
         bottomSheetDialog.setContentView(bottomView);
 
         bottomDate = (NumberPicker) bottomView.findViewById(R.id.number_date);
@@ -145,15 +120,36 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         setupTime = (ImageView) findViewById(R.id.check_time2);
         curTime = (ImageView) findViewById(R.id.check_time1);
 
-        final Pair<String[], String[]> pairStr = setDate();
 
+        /*
+         *  Realm
+         */
+
+        RealmResults<SearchListItem> searchList = realmRest.getUserList();
+
+        LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList, true, false, autocompleteFragment);
+
+        RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.location_setup_recycle_view);
+
+        realmRecyclerView.setAdapter(searchAdapter);
+    }
+
+    private void event() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        final Pair<String[], String[]> pairStr = setDate();
         bottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupTime.setBackground(getResources().getDrawable(R.drawable.check_test));
+                setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.check_test));
                 curTime.setBackgroundColor(Color.WHITE);
 
-                returnTime = pairStr.first[bottomDate.getValue()].toString()+" "+pairStr.second[bottomTime.getValue()].toString();
+                returnTime = pairStr.first[bottomDate.getValue()] + " " + pairStr.second[bottomTime.getValue()].toString();
 
                 Log.e("Time setup", returnTime);
 
@@ -164,7 +160,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
         curTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
-                curTime.setBackground(getResources().getDrawable(R.drawable.check_test));
+                curTime.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.check_test));
                 setupTime.setBackgroundColor(Color.WHITE);
             }
         });
@@ -175,27 +171,24 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
             }
         });
 
-        /*
-         *  Realm
-         */
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.e("get info", "Place : " + place.getName());
 
-        Realm.init(getApplicationContext());
+                realmRest.insertUserData(place.getName().toString());
 
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .build();
+                returnPlace = place;
+            }
 
-        Realm.setDefaultConfiguration(config);
-
-        realm = Realm.getDefaultInstance();
-        RealmResults<SearchListItem> searchList = getUserList();
-        LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList,true,false, autocompleteFragment);
-        RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.location_setup_recycle_view);
-        realmRecyclerView.setAdapter(searchAdapter);
+            @Override
+            public void onError(Status status) {
+                Log.e("suggestion system error", "Error occur" + status);
+            }
+        });
     }
 
-    private Pair<String[], String[]> setDate()
-    {
+    private Pair<String[], String[]> setDate() {
 
         /*
          * Date
@@ -241,13 +234,12 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
 
     // get time string[]
-    private String[] getTimesFromCalendar()
-    {
+    private String[] getTimesFromCalendar() {
         Calendar calendar = Calendar.getInstance();
 
-        List<String> times = new ArrayList<String>();
+        List<String> times = new ArrayList<>();
 
-        if(calendar.get(Calendar.MINUTE) < 30)
+        if (calendar.get(Calendar.MINUTE) < 30)
             calendar.set(Calendar.MINUTE, 0);
         else
             calendar.set(Calendar.MINUTE, 30);
@@ -257,27 +249,23 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
         defaultValue = curHour * 2 + 1;
 
-        if(!(curMin < 30))
+        if (!(curMin < 30))
             curHour++;
 
-        String timeStr = "";
+        String timeStr;
 
-        for(int time = 0 ; time <= 23 ; ++time)
-        {
+        for (int time = 0; time <= 23; ++time) {
             timeStr = "";
 
-            if(time < 12)
-            {
+            if (time < 12) {
                 timeStr += "오전 ";
 
-                if(time == 0) timeStr += "12:";
+                if (time == 0) timeStr += "12:";
                 else timeStr += time + ":";
-            }
-            else
-            {
+            } else {
                 timeStr += "오후 ";
 
-                if(time != 12) timeStr += (time-12) + ":";
+                if (time != 12) timeStr += (time - 12) + ":";
                 else timeStr += time + ":";
             }
 
@@ -289,16 +277,14 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
     }
 
     // get dates string[]
-    private String[] getDatesFromCalendar()
-    {
+    private String[] getDatesFromCalendar() {
         Calendar calendar = Calendar.getInstance();
 
-        List<String> dates = new ArrayList<String>();
+        List<String> dates = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)");
         dates.add(dateFormat.format(calendar.getTime()));
 
-        for(int i = 0 ; i < 30 ; ++i)
-        {
+        for (int i = 0; i < 30; ++i) {
             calendar.add(Calendar.DATE, 1);
             dates.add(dateFormat.format(calendar.getTime()));
         }
@@ -308,30 +294,7 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
 
     // Realm get all UserData
-    private RealmResults<SearchListItem> getUserList(){
-        return realm.where(SearchListItem.class).findAll();
-    }
 
-
-    // Realm Insert data
-    private void insertUserData(String location){
-        realm.beginTransaction();
-
-        RealmResults<SearchListItem> tmpItem = realm.where(SearchListItem.class).equalTo("location", location).findAll();
-        RealmResults<SearchListItem> tmpdelete = realm.where(SearchListItem.class).findAll();
-
-        if(tmpdelete.size() > 2)
-        {
-            Log.e("delete", "in");
-            tmpdelete.first().deleteFromRealm();
-        }
-
-        if(tmpItem.size() == 0) {
-            realm.createObject(SearchListItem.class, location);
-        }
-
-        realm.commitTransaction();
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -341,13 +304,18 @@ public class LocationSetupActivity extends AppCompatActivity implements GoogleAp
 
 
     // return Time
-    public String getTime()
-    {
+    public String getTime() {
         return returnTime;
     }
+
     // return Place
-    public Object getLocation()
-    {
+    public Object getLocation() {
         return returnPlace;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realmRest.closeRealm();
     }
 }

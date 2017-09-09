@@ -1,15 +1,15 @@
 package com.example.park.yapp_1team.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.MainRecyclerViewAdapter;
@@ -22,6 +22,7 @@ import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.utils.CustomComparator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -35,9 +36,11 @@ import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private RecyclerView movieListRecyclerView;
     private MainRecyclerViewAdapter movieListRecyclerViewAdapter;
-    private FloatingActionButton fabButton1, fabButton2;
+    private LinearLayout layoutShowMovieTIme;
 
     private List<MovieListItem> dataArray;
     private List<String> movieNames = new ArrayList<>();
@@ -46,27 +49,22 @@ public class MainActivity extends AppCompatActivity {
 
     private CheckEvent checkEvent = new CheckEvent() {
         @Override
-        public void check(int position, ImageView imageView1, ImageView imageView2) {
-            Log.e("main", dataArray.get(position).getName() + " : " + dataArray.get(position).getCurrentOrder());
-            if (dataArray.get(position).getCheck() == 0) {
-                imageView1.setColorFilter(Color.parseColor("#99000000"));
-                dataArray.get(position).setCheck(1);
-                movieNames.add(dataArray.get(position).getName());
-                imageView2.setVisibility(View.VISIBLE);
-                dataArray.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
+        public void check(int position, ImageView imgMovieThumbnail, ImageView imgLine) {
+            List<MovieListItem> items = movieListRecyclerViewAdapter.getDatas();
+            Log.e(TAG, items.get(position).getName() + " " + items.get(position).getOriginalOrder() + " : " + items.get(position).getCurrentOrder());
+            if (items.get(position).getCheck() == 0) {
                 movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder() + 1);
-                Log.e("main", "order : " + movieListRecyclerViewAdapter.getCurrentOrder());
+                items.get(position).setCheck(1);
+                movieNames.add(items.get(position).getName());
+                items.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
             } else {
-                imageView1.setColorFilter(Color.parseColor("#00000000"));
-                dataArray.get(position).setCheck(0);
-                movieNames.add(dataArray.get(position).getName());
-                imageView2.setVisibility(View.INVISIBLE);
-                dataArray.get(position).setCurrentOrder(dataArray.get(position).getOriginalOrder());
+                items.get(position).setCheck(0);
+                movieNames.remove(items.get(position).getName());
+                items.get(position).setCurrentOrder(items.get(position).getOriginalOrder());
             }
-            Log.e("main", "before sort" + dataArray.size());
-            Collections.sort(dataArray, customComparator);
-            Log.e("main", "after sort" + dataArray.size());
-//            movieListRecyclerViewAdapter.addList(dataArray);
+
+            Collections.sort(items, customComparator);
+            movieListRecyclerViewAdapter.addList(items);
             movieListRecyclerViewAdapter.notifyDataSetChanged();
         }
     };
@@ -76,53 +74,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        startActivity(new Intent(this, SplashActivity.class));
-
-<<<<<<< HEAD
-//        startActivity(new Intent(this, MapActivity.class));
-=======
-        //startActivity(new Intent(this, MapActivity.class));
->>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
-
         initialize();
+        event();
+    }
 
-        dataArray = movieCrawling();
-
-        Iterator iterator = dataArray.iterator();
-        while (iterator.hasNext()) {
-            movieListRecyclerViewAdapter.add((MovieListItem) iterator.next());
-        }
-
-//        for (int i = 0; i < dataArray.size(); i++) {
-//            movieListRecyclerViewAdapter.add(dataArray.get(i));
-//        }
-
-        movieListRecyclerView.setAdapter(movieListRecyclerViewAdapter);
-
-        fabButton1.setOnClickListener(new View.OnClickListener() {
+    private void event() {
+        layoutShowMovieTIme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> string_array = (ArrayList) movieListRecyclerViewAdapter.get();
-
-<<<<<<< HEAD
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-=======
-                Intent intent = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
->>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
-                intent.putStringArrayListExtra("STRING", string_array);
-                startActivity(intent);
+                if (movieNames.size() > 0) {
+                    Intent it = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
+                    it.putExtra("names", (Serializable) movieNames);
+                    startActivity(it);
+                } else {
+                    Toast.makeText(getApplicationContext(), "영화를 한 개 이상 선택하세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void initialize() {
         movieListRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_start);
-        fabButton1 = (FloatingActionButton) findViewById(R.id.image1_underbar_start);
-
+        layoutShowMovieTIme = (LinearLayout) findViewById(R.id.layout_show_movie_time);
         movieListRecyclerView.setHasFixedSize(true);
         movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this, checkEvent);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
+
+        dataArray = movieCrawling();
+        Iterator iterator = dataArray.iterator();
+        while (iterator.hasNext()) {
+            movieListRecyclerViewAdapter.add((MovieListItem) iterator.next());
+        }
+        movieListRecyclerView.setAdapter(movieListRecyclerViewAdapter);
     }
 
     private List<MovieListItem> movieCrawling() {

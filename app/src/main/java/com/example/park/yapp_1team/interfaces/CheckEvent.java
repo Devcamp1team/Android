@@ -7,5 +7,5 @@ import android.widget.ImageView;
  */
 
 public interface CheckEvent {
-    void check(int position, ImageView imageView1, ImageView imageView2);
+    void check(int position, ImageView imgMovieThumbnail, ImageView imgLine);
 }

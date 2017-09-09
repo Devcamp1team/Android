@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     tools:context="com.example.park.yapp_1team.activities.MainActivity">
 
-    <include
-        android:id="@+id/toolbar_main"
-        layout="@layout/toolbar_activity_main" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_start"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_main" />
+        android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/toolbar_main"
+            layout="@layout/toolbar_activity_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/image1_underbar_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginRight="24dp"
-        android:src="@drawable/ic_add_black_24dp" />
+        <LinearLayout
+            android:id="@+id/layout_show_movie_time"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_access_time_black_24dp" />
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:text="상영시간 보기"
+                android:textColor="@color/colorWhite"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/layout_show_movie_time"
+            android:layout_below="@id/toolbar_main"
+            android:layout_marginTop="18dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="top"
+        android:background="@color/colorBlack"
+        app:layout_anchor="@id/toolbar_main"
+        app:layout_anchorGravity="bottom"/>
+
+</android.support.design.widget.CoordinatorLayout>

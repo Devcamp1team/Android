@@ -42,7 +42,7 @@ public class MovieInfoCrawling extends AsyncTask {
                 String img = element.attr("src");
                 String name = element.attr("alt");
 
-                MovieListItem item = new MovieListItem(name, img);
+                MovieListItem item = new MovieListItem(order,name, img);
 
                 items.add(item);
                 order++;

@@ -10,7 +10,7 @@ public class MovieListItem {
     private int currentOrder;
     private String name;
     private String url;
-    private int check;
+    private int check=0;
 
     public MovieListItem(String name, String url)
     {

@@ -13,15 +13,16 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/test" />
+        android:src="@drawable/ic_search_black_24dp" />
 
     <EditText
         android:id="@+id/edit_start"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="영화 제목을 입력하세요."
-        android:textColor="#000000"
-        android:textSize="20dp" />
+        android:layout_marginLeft="13dp"
+        android:textColorHint="@color/colorGray"
+        android:hint="영화 검색"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp" />
 
 </LinearLayout>

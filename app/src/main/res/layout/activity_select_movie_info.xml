@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.park.yapp_1team.activities.SelectMovieInfoActivity">
 
+    <include
+        android:id="@+id/toolbar_select"
+        layout="@layout/toolbar_select_movie_info" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_select_movie_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_select">
 
     </android.support.v7.widget.RecyclerView>
 

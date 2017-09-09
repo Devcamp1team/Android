@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,21 +24,15 @@
             </intent-filter>
         </activity>
 
-        <!-- splash -->
+        <!-- activity_splash -->
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- splash -->
-        <activity android:name=".activities.RealActivity" />
-        <activity android:name=".activities.LocationSetupActivity">
-<<<<<<< HEAD
-=======
-
->>>>>>> 08d7de38e2819c17111115089a5653f0efc42be8
-        </activity>
-        <activity android:name=".activities.DetailActivity" />
+        <!-- activity_splash -->
+        <activity android:name=".activities.LocationSetupActivity"
+            android:theme="@style/MapBar"></activity>
         <activity
             android:name=".activities.MapActivity"
             android:theme="@style/MapBar"></activity>
@@ -49,7 +44,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s" />
 
-        <activity android:name=".activities.SelectMovieInfoActivity"></activity>
+        <activity android:name=".activities.SelectMovieInfoActivity"
+            android:theme="@style/MapBar"></activity>
     </application>
 
 </manifest>

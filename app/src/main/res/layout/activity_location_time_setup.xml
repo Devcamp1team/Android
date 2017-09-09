@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar_location_setup"
+            android:id="@+id/toolbar_location"
             layout="@layout/toolbar_location_time_setup" />
 
         <LinearLayout
@@ -36,7 +36,7 @@
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:background="@android:color/white"
-            app:rrvEmptyLayoutId="@layout/location_search_empty"
+            app:rrvEmptyLayoutId="@layout/layout_location_search_empty"
             app:rrvLayoutType="LinearLayout"
             app:rrvSwipeToDelete="true" />
 

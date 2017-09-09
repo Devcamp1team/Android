@@ -1,7 +1,6 @@
 package com.example.park.yapp_1team.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,8 @@ import java.util.List;
  */
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder> {
+
+    private static final String TAG = MainRecyclerViewAdapter.class.getSimpleName();
 
     private List<MovieListItem> datas = new ArrayList<>();
     private List<String> movieName = new ArrayList<>();
@@ -44,6 +45,10 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         this.checkEvent = checkEvent;
     }
 
+    public List<MovieListItem> getDatas() {
+        return datas;
+    }
+
     public void addList(List<MovieListItem> items) {
         datas = items;
     }
@@ -57,12 +62,13 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView, imageView2;
+        ImageView imgThumbnail;
+        ImageView imgLine;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.image1_recyclerview2);
-            imageView2 = (ImageView) itemView.findViewById(R.id.image2_recyclerview2);
+            imgThumbnail = (ImageView) itemView.findViewById(R.id.img_item_main_movie_thumbnail);
+            imgLine = (ImageView) itemView.findViewById(R.id.img_item_main_movie_line);
         }
     }
 
@@ -72,33 +78,32 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview_main, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rcv_main, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
         final MovieListItem MovieListItem = datas.get(position);
 
         if (MovieListItem.getURL().isEmpty()) {
-            Glide.with(mContext).load(R.drawable.ic_panorama_black_24dp).into(holder.imageView);
+            Glide.with(mContext).load(R.drawable.ic_panorama_black_24dp).into(holder.imgThumbnail);
         } else {
-            Glide.with(mContext).load(MovieListItem.getURL()).into(holder.imageView);
+            Glide.with(mContext).load(MovieListItem.getURL()).into(holder.imgThumbnail);
         }
 
         // maybe save status
         if (MovieListItem.getCheck() == 1) {
-            holder.imageView.setColorFilter(Color.parseColor("#99000000"));
-            holder.imageView2.setVisibility(View.VISIBLE);
+            holder.imgLine.setVisibility(View.VISIBLE);
         } else {
-            holder.imageView.setColorFilter(Color.parseColor("#00000000"));
-            holder.imageView2.setVisibility(View.INVISIBLE);
+            holder.imgLine.setVisibility(View.INVISIBLE);
         }
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.imgThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkEvent.check(position, holder.imageView, holder.imageView2);
+                checkEvent.check(position, holder.imgThumbnail, holder.imgLine);
             }
         });
 

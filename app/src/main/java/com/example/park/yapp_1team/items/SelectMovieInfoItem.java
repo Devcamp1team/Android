@@ -13,6 +13,7 @@ public class SelectMovieInfoItem {
     private String useSeat;
     private String location;
 
+
     public String getStartTime() {
         return startTime;
     }

@@ -46,7 +46,7 @@ public class LocationSearchViewAdapter
 
     @Override
     public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int i) {
-        View v = inflater.inflate(R.layout.itemview_location_search, viewGroup, false);
+        View v = inflater.inflate(R.layout.layout_location_search, viewGroup, false);
         ViewHolder vh = new ViewHolder((LinearLayout) v);
 
         return vh;
