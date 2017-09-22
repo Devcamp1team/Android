@@ -31,11 +31,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- activity_splash -->
-        <activity android:name=".activities.LocationSetupActivity"
-            android:theme="@style/MapBar"></activity>
+        <activity
+            android:name=".activities.LocationSetupActivity"
+            android:theme="@style/MapBar" />
         <activity
             android:name=".activities.MapActivity"
-            android:theme="@style/MapBar"></activity>
+            android:theme="@style/MapBar" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -44,8 +45,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s" />
 
-        <activity android:name=".activities.SelectMovieInfoActivity"
-            android:theme="@style/MapBar"></activity>
+        <activity
+            android:name=".activities.SelectMovieInfoActivity"
+            android:theme="@style/MapBar" />
     </application>
 
 </manifest>

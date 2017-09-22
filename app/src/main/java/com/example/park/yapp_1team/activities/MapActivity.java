@@ -30,7 +30,6 @@ public class MapActivity extends BaseActivity {
         getKeyHash();
 
         initialize();
-
     }
 
     private void initialize() {

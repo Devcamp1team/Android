@@ -312,9 +312,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         return returnPlace;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realmRest.closeRealm();
-    }
+
+
 }

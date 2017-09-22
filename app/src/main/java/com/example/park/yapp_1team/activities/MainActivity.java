@@ -1,6 +1,7 @@
 package com.example.park.yapp_1team.activities;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +20,11 @@ import com.example.park.yapp_1team.items.TheaterCodeItem;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
 import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
+import com.example.park.yapp_1team.sql.RealmRest;
 import com.example.park.yapp_1team.utils.CustomComparator;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +47,8 @@ public class MainActivity extends BaseActivity {
 
     private List<MovieListItem> dataArray;
     private List<String> movieNames = new ArrayList<>();
+
+    private RealmRest realmRest;
 
     private CustomComparator customComparator = new CustomComparator();
 
@@ -73,8 +79,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         statusBarChange();
+
         initialize();
         event();
+        if(realmRest.getCGVInfo()==null || realmRest.getCGVInfo().size()==0) {
+            saveCGVasset();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        new RealmRest().closeRealm();
+        super.onDestroy();
     }
 
     private void event() {
@@ -100,6 +116,8 @@ public class MainActivity extends BaseActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
 
+        realmRest = new RealmRest();
+
         dataArray = movieCrawling();
         Iterator iterator = dataArray.iterator();
         while (iterator.hasNext()) {
@@ -119,6 +137,32 @@ public class MainActivity extends BaseActivity {
         }
 
         return items;
+    }
+
+
+    private void saveCGVasset() {
+        try {
+            AssetManager assetManager = getAssets();
+            InputStream is = assetManager.open("CGV.txt");
+
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String text = new String(buffer);
+            String[] cgvList = text.split("\n");
+            String[][] cgv = new String[cgvList.length][];
+            for (int i = 0; i < cgv.length; i++) {
+                cgv[i] = cgvList[i].split(",");
+            }
+
+            for (int i = 0; i < cgv.length; i++) {
+                realmRest.insertCGVInfo(cgv[i]);
+            }
+
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.example.park.yapp_1team.sql;
 
 import android.util.Log;
 
+import com.example.park.yapp_1team.items.CGVRealmModel;
 import com.example.park.yapp_1team.items.SearchListItem;
 
 import io.realm.Realm;
@@ -23,6 +24,21 @@ public class RealmRest {
 
     private void initRealm() {
         realm = Realm.getDefaultInstance();
+    }
+
+    public void insertCGVInfo(String[] info) {
+        realm.beginTransaction();
+        CGVRealmModel cgvRealmModel = realm.createObject(CGVRealmModel.class, info[0]);
+        cgvRealmModel.setLat(Double.parseDouble(info[1]));
+        cgvRealmModel.setLng(Double.parseDouble(info[2]));
+        cgvRealmModel.setAreaCode(info[3]);
+        cgvRealmModel.setTheaterCode(info[4]);
+        cgvRealmModel.setRegionCode(info[5]);
+        realm.commitTransaction();
+    }
+
+    public RealmResults<CGVRealmModel> getCGVInfo() {
+        return realm.where(CGVRealmModel.class).findAll();
     }
 
     public RealmResults<SearchListItem> getUserList(){
