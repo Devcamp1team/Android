@@ -5,7 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.example.park.yapp_1team.R;
+import com.example.park.yapp_1team.interfaces.FragmentButtonClick;
 import com.example.park.yapp_1team.views.fragments.FirstIntroFragment;
 import com.example.park.yapp_1team.views.fragments.FourthIntroFragment;
 import com.example.park.yapp_1team.views.fragments.SecondIntroFragment;
@@ -17,18 +22,46 @@ import com.github.paolorotolo.appintro.AppIntro;
  */
 
 public class IntroActivity extends AppIntro {
+
+    private Fragment firstFragment;
+    private Fragment secondFragment;
+    private Fragment thirdFragment;
+    private FourthIntroFragment fourthFragment;
+
+    private Button startButton ;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Fragment firstFragment = new FirstIntroFragment();
-        Fragment secondFragment = new SecondIntroFragment();
-        Fragment thirdFragment = new ThirdIntroFragment();
-        Fragment fourthFragment = new FourthIntroFragment();
+
         // Note here that we DO NOT use setContentView();
+        firstFragment = new FirstIntroFragment();
+        secondFragment = new SecondIntroFragment();
+        thirdFragment = new ThirdIntroFragment();
+        fourthFragment = new FourthIntroFragment();
+        fourthFragment.setClick(new FragmentButtonClick() {
+            @Override
+            public void click() {
+                startActivity(new Intent(getApplication(),MainActivity.class));
+                finish();
+            }
+        });
+
+        final View fourthFrag = getLayoutInflater().inflate(R.layout.fragment_onboard4, null);
+
+        startButton = (Button) fourthFrag.findViewById(R.id.onboard_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("click", "click");
+            }
+        });
 
         // Add your slide fragments here.
-        // AppIntro will automatically generate the dots indicator and buttons.
+        // AppIntro will automatically generate the
+        // dots indicator and buttons.
 
         addSlide(firstFragment);
         addSlide(secondFragment);
@@ -48,19 +81,23 @@ public class IntroActivity extends AppIntro {
         setNavBarColor("#00000000");
         setIndicatorColor(Color.parseColor("#6a7482"), Color.parseColor("#BDBDBD"));
 
+
+
         // Hide Skip/Done button.
         setColorSkipButton(Color.GRAY);
         setColorDoneText(Color.GRAY);
         setNextArrowColor(Color.GRAY);
 
+
         showSkipButton(true);
-        setProgressButtonEnabled(true);
+        setProgressButtonEnabled(false);
 
         // Turn vibration on and set intensity.
         // NOTE: you will probably need to ask VIBRATE permission in Manifest.
 //        setVibrate(true);
 //        setVibrateIntensity(30);
     }
+
 
     @Override
     public void onSkipPressed(Fragment currentFragment) {
@@ -81,6 +118,16 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
+        if(newFragment == fourthFragment) {
+            setIndicatorColor(Color.parseColor("#00000000"), Color.parseColor("#00000000"));
+            showSkipButton(false);
+        }
+        else
+        {
+            setIndicatorColor(Color.parseColor("#6a7482"), Color.parseColor("#BDBDBD"));
+
+            showSkipButton(true);
+        }
         // Do something when the slide changes.
     }
 }
