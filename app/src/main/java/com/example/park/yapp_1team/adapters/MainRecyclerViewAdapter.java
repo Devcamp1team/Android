@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
 import com.example.park.yapp_1team.items.MovieListItem;
+import com.example.park.yapp_1team.views.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             @Override
             public void onClick(View v) {
                 checkEvent.check(position, holder.imgThumbnail, holder.imgLine);
+
             }
         });
 
