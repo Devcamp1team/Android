@@ -98,7 +98,7 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rcvClickListener.itemClick(position);
+                    rcvClickListener.itemClick(position, listItems);
                 }
             });
         }

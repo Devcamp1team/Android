@@ -16,8 +16,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import com.example.park.yapp_1team.views.fragments.MapViewFragment;
@@ -33,12 +36,16 @@ public class MapActivity extends BaseActivity {
 
     private List<SelectMovieInfoItem> list;
 
+    private ImageView imgThumbnail;
+    private TextView txtItemMovieInfoTime;
+    private TextView txtItemMovieInfoTitle;
+    private TextView txtItemMovieInfoSeat;
+    private TextView txtItemMovieInfoLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
-        Intent intent = getIntent();
 
         statusBarChange();
         getKeyHash();
@@ -54,7 +61,29 @@ public class MapActivity extends BaseActivity {
 
         mapToolbar.setContentInsetsAbsolute(0, 0);
 
+        imgThumbnail = (ImageView)findViewById(R.id.img_item_movie_info_thumbnail);
+        txtItemMovieInfoLocation = (TextView)findViewById(R.id.txt_item_movie_info_location);
+        txtItemMovieInfoTime = (TextView)findViewById(R.id.txt_item_movie_info_start_time);
+        txtItemMovieInfoTitle = (TextView)findViewById(R.id.txt_item_movie_info_title);
+
+        Intent it = getIntent();
+        String title = it.getExtras().getString("title");
+        String time = it.getExtras().getString("time");
+        String location = it.getExtras().getString("location");
+        String thumbnail = it.getExtras().getString("thumbnail");
+        double lat = it.getExtras().getDouble("lat");
+        double lng = it.getExtras().getDouble("lng");
+
+        txtItemMovieInfoTitle.setText(title);
+        txtItemMovieInfoTime.setText(time);
+        txtItemMovieInfoLocation.setText(location);
+        Glide.with(this).load(thumbnail).into(imgThumbnail);
+
+        Log.e(TAG,"location : " + lat + " : " + lng);
+
         MapViewFragment fragment = new MapViewFragment();
+        fragment.setMovieLat(lat);
+        fragment.setMovieLng(lng);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.map_view_container, fragment);
