@@ -29,7 +29,9 @@
         <activity
             android:name=".views.MapActivity"
             android:theme="@style/MapBar" />
-        <activity android:name=".views.IntroActivity" />
+
+        <activity android:name=".views.IntroActivity"
+            android:theme="@style/AppFullScreenTheme"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -41,7 +43,8 @@
         <activity
             android:name=".views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
-        <activity android:name=".views.FilterActivity"></activity>
+
+        <activity android:name=".views.FilterActivity"/>
     </application>
 
 </manifest>
