@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.example.park.yapp_1team.items.MovieListItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,13 +23,11 @@ import java.util.ArrayList;
 public class MovieInfoCrawling extends AsyncTask {
 
     private String url;
-    private String select;
 
     private ArrayList<MovieListItem> items = new ArrayList<>();
 
-    public MovieInfoCrawling(String url, String select) {
+    public MovieInfoCrawling(String url) {
         this.url = url;
-        this.select = select;
     }
 
     @Override
@@ -34,24 +35,43 @@ public class MovieInfoCrawling extends AsyncTask {
 
         try {
 
-            Document document = Jsoup.connect(url).get();
-            Elements elements = document.select(select);
+            Document document = Jsoup.connect(url)
+                    .ignoreContentType(true)
+                    .data("paramList", "{\"MethodName\":\"GetMovies\",\"channelType\":\"HO\",\"osType\":\"Chrome\",\"osVersion\":\"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Mobile Safari/537.36\",\"multiLanguageID\":\"KR\",\"division\":1,\"moviePlayYN\":\"Y\",\"orderType\":\"1\",\"blockSize\":100,\"pageNo\":1}")
+                    .post();
+
+            Elements elements = document.select("body");
+
+            Log.e("ele", elements.toString());
+
+            JSONObject jsonObj =  new JSONObject(elements.text());
+
+            JSONArray jsonArr = jsonObj.getJSONObject("Movies").getJSONArray("Items");
 
             int order = 1000;
-            for (Element element : elements) {
-                String img = element.attr("src");
-                String name = element.attr("alt");
 
-                MovieListItem item = new MovieListItem(order,name, img);
+            for(int i = 0 ; i < jsonArr.length() ; ++i) {
+                JSONObject jsonTemp = jsonArr.getJSONObject(i);
 
-                items.add(item);
-                order++;
+                String img = jsonTemp.get("PosterURL").toString();
+                String name = jsonTemp.get("MovieNameKR").toString();
 
-                Log.e("item", "img = " + img + " name = " + name);
+                if(!name.equals("AD"))
+                {
+                    Log.e("log", name);
+
+                    MovieListItem item = new MovieListItem(order, name, img);
+
+                    items.add(item);
+                    order++;
+                }
+
             }
 
         } catch (IOException ie) {
             ie.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return items;
