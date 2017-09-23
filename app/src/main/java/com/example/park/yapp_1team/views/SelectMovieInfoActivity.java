@@ -1,4 +1,4 @@
-package com.example.park.yapp_1team.activities;
+package com.example.park.yapp_1team.views;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -24,10 +24,13 @@ import android.widget.Toast;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.SelectMovieRecyclerViewAdapter;
 import com.example.park.yapp_1team.interfaces.RcvClickListener;
-import com.example.park.yapp_1team.items.CGVDistance;
 import com.example.park.yapp_1team.items.CGVRealmModel;
+import com.example.park.yapp_1team.items.LotteRealmModel;
+import com.example.park.yapp_1team.items.MegaboxRealmModel;
 import com.example.park.yapp_1team.items.SelectMovieInfoItem;
+import com.example.park.yapp_1team.items.TheaterDisInfo;
 import com.example.park.yapp_1team.sql.RealmRest;
+import com.example.park.yapp_1team.utils.Strings;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -168,7 +171,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                     lat = mCurrentLocation.getLatitude();
                     lng = mCurrentLocation.getLongitude();
 
-                    findCGV(lat, lng);
+                    findTheater(lat, lng);
 
                 } else {
                     try {
@@ -183,36 +186,77 @@ public class SelectMovieInfoActivity extends BaseActivity {
         mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, onCompleteListener);
     }
 
-    private void findCGV(double lat, double lng) {
+    private void findTheater(double lat, double lng) {
 
-        RealmResults<CGVRealmModel> results = realmRest.getCGVInfo();
+        List<TheaterDisInfo> disInfo = new ArrayList<>();
+
         Location currentLocation = new Location("currentPosition");
         currentLocation.setLatitude(lat);
         currentLocation.setLongitude(lng);
 
-        Log.e(TAG, "findCGV result size : " + results.size());
-
-        List<CGVDistance> distances = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
+        RealmResults<CGVRealmModel> cgvResults = realmRest.getCGVInfo();
+        for (int i = 0; i < cgvResults.size(); i++) {
             Location cgvLocation = new Location("cgv");
-            cgvLocation.setLatitude(results.get(i).getLat());
-            cgvLocation.setLongitude(results.get(i).getLng());
-
+            double cgvLat = cgvResults.get(i).getLat();
+            double cgvLng = cgvResults.get(i).getLng();
+            cgvLocation.setLatitude(cgvLat);
+            cgvLocation.setLongitude(cgvLng);
             double dis = currentLocation.distanceTo(cgvLocation);
-            CGVDistance cgvDistance = new CGVDistance();
-            cgvDistance.setCgvRealmModel(results.get(i));
-            cgvDistance.setDistance(dis);
 
-            distances.add(cgvDistance);
+            TheaterDisInfo theaterDisInfo = new TheaterDisInfo();
+            theaterDisInfo.name = cgvResults.get(i).getName();
+            theaterDisInfo.lat = cgvLat;
+            theaterDisInfo.lng = cgvLng;
+            theaterDisInfo.distance = dis;
+            theaterDisInfo.code = Strings.THEATER_CODE_CGV;
+
+            disInfo.add(theaterDisInfo);
         }
 
-        Comparator<CGVDistance> comparator = new Comparator<CGVDistance>() {
+        RealmResults<MegaboxRealmModel> megaResult = realmRest.getMegaInfo();
+        for (int i = 0; i < megaResult.size(); i++) {
+            Location megaLocation = new Location("megabox");
+            double megaLat = megaResult.get(i).getLat();
+            double megaLng = megaResult.get(i).getLng();
+            megaLocation.setLatitude(megaLat);
+            megaLocation.setLongitude(megaLng);
+            double dis = currentLocation.distanceTo(megaLocation);
+
+            TheaterDisInfo theaterDisInfo = new TheaterDisInfo();
+            theaterDisInfo.name = megaResult.get(i).getName();
+            theaterDisInfo.lat = megaLat;
+            theaterDisInfo.lng = megaLng;
+            theaterDisInfo.distance = dis;
+            theaterDisInfo.code = Strings.THEATER_CODE_MEGA;
+
+            disInfo.add(theaterDisInfo);
+        }
+
+        RealmResults<LotteRealmModel> lotteResult = realmRest.getLotteInfo();
+        for (int i = 0; i < lotteResult.size(); i++) {
+            Location lotteLocation = new Location("Lotte");
+            double lotteLat = lotteResult.get(i).getLat();
+            double lotteLng = lotteResult.get(i).getLng();
+            lotteLocation.setLatitude(lotteLat);
+            lotteLocation.setLongitude(lotteLng);
+            double dis = currentLocation.distanceTo(lotteLocation);
+
+            TheaterDisInfo theaterDisInfo = new TheaterDisInfo();
+            theaterDisInfo.name = lotteResult.get(i).getName();
+            theaterDisInfo.lat = lotteLat;
+            theaterDisInfo.lng = lotteLng;
+            theaterDisInfo.distance = dis;
+            theaterDisInfo.code = Strings.THEATER_CODE_LOTTE;
+
+            disInfo.add(theaterDisInfo);
+        }
+
+        Comparator<TheaterDisInfo> comparator = new Comparator<TheaterDisInfo>() {
             @Override
-            public int compare(CGVDistance o1, CGVDistance o2) {
-                if (o1.getDistance() > o2.getDistance()) {
+            public int compare(TheaterDisInfo o1, TheaterDisInfo o2) {
+                if (o1.distance > o2.distance) {
                     return 1;
-                } else if (o1.getDistance() < o2.getDistance()) {
+                } else if (o1.distance < o2.distance) {
                     return -1;
                 } else {
                     return 0;
@@ -220,17 +264,38 @@ public class SelectMovieInfoActivity extends BaseActivity {
             }
         };
 
-        Collections.sort(distances, comparator);
+        Collections.sort(disInfo, comparator);
 
         // 가까운 영화관 3개로부터 정보 get
-        for(int i=0;i<3;i++) {
-            getMovieInfo(distances.get(i).getCgvRealmModel());
+        for (int i = 0; i < 10; i++) {
+
+            String brand = "";
+            switch (disInfo.get(i).code) {
+                case 1 : {
+                    brand = "CGV";
+                    break;
+                }
+                case 2: {
+                    brand = "MEGA BOX";
+                    break;
+                }
+                case 3: {
+                    brand = "Lotte Cinema";
+                    break;
+                }
+            }
+
+            String tag = brand + " " + disInfo.get(i).name + " : " + disInfo.get(i).distance;
+            Log.e(TAG, tag);
         }
     }
 
     private void getMovieInfo(CGVRealmModel realmModel) {
         // TODO: 2017-09-22 크롤링을 통해 영화 이름 비교 + 시간과 정보 가져오기
-        // TODO: 2017-09-22 주소 : http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode=0060&date=20170922
+        // TODO: 2017-09-22 CGV 주소 : http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode=0060&date=20170922
+        // TODO: 2017-09-23 CGV 주소2 : http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=103&theatercode=0040 
+        // TODO: 2017-09-23 MEGA 주소 : http://www.megabox.co.kr/?menuId=theater-detail&region=10&cinema=1372#menu3
+        // TODO: 2017-09-23 lotte 주소 :  http://www.lottecinema.co.kr/LCHS/Contents/Cinema/Cinema-Detail.aspx?divisionCode=1&detailDivisionCode=1&cinemaID=1013
         // areacode와 theatercode, date를 변경해가며 검색 (date는 기본 오늘)
         // TODO: 2017-09-22 가져온 값을 하나의 리스트에 저장하고 시간 순으로 정렬
     }

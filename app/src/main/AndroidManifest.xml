@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".views.MainActivity"
             android:theme="@style/MapBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,10 +32,10 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- activity_splash -->
         <activity
-            android:name=".activities.LocationSetupActivity"
+            android:name=".views.LocationSetupActivity"
             android:theme="@style/MapBar" />
         <activity
-            android:name=".activities.MapActivity"
+            android:name=".views.MapActivity"
             android:theme="@style/MapBar" />
 
         <meta-data
@@ -46,7 +46,7 @@
             android:value="AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s" />
 
         <activity
-            android:name=".activities.SelectMovieInfoActivity"
+            android:name=".views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
     </application>
 

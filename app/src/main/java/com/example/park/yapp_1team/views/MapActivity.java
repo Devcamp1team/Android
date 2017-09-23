@@ -1,4 +1,4 @@
-package com.example.park.yapp_1team.activities;
+package com.example.park.yapp_1team.views;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,7 +11,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.park.yapp_1team.R;
-import com.example.park.yapp_1team.activities.fragments.MapViewFragment;
+import com.example.park.yapp_1team.views.fragments.MapViewFragment;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

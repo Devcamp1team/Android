@@ -1,8 +1,11 @@
-package com.example.park.yapp_1team.activities;
+package com.example.park.yapp_1team.views;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,14 +17,21 @@ import android.widget.Toast;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.MainRecyclerViewAdapter;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
+import com.example.park.yapp_1team.items.LotteGsonModel;
+import com.example.park.yapp_1team.items.MegaboxRealmModel;
 import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.MovieListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
+import com.example.park.yapp_1team.network.MegaboxInfo;
+import com.example.park.yapp_1team.network.MegaboxInfoCrawling;
+import com.example.park.yapp_1team.network.MegaboxTheaterCrawling;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
 import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.sql.RealmRest;
 import com.example.park.yapp_1team.utils.CustomComparator;
+import com.example.park.yapp_1team.utils.JSON;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +41,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import io.realm.RealmResults;
 
 import static com.example.park.yapp_1team.utils.Strings.CGV;
 import static com.example.park.yapp_1team.utils.Strings.LOTTE;
@@ -82,8 +94,16 @@ public class MainActivity extends BaseActivity {
 
         initialize();
         event();
-        if(realmRest.getCGVInfo()==null || realmRest.getCGVInfo().size()==0) {
-            saveCGVasset();
+        if (realmRest.getCGVInfo() == null || realmRest.getCGVInfo().size() == 0) {
+            saveCGVAsset();
+        }
+
+        if (realmRest.getLotteInfo() == null || realmRest.getLotteInfo().size() == 0) {
+            saveLotteInfo();
+        }
+
+        if (realmRest.getMegaInfo() == null || realmRest.getMegaInfo().size() == 0) {
+            saveMegaAsset();
         }
     }
 
@@ -140,7 +160,47 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void saveCGVasset() {
+    private List<MegaboxInfo> list = new ArrayList<>();
+
+
+    private void saveLotteInfo() {
+        String info = JSON.LOTTE_THEATER_JSON;
+
+        Log.e(TAG, info);
+
+        Gson gson = new Gson();
+        LotteGsonModel model = gson.fromJson(info, LotteGsonModel.class);
+        Log.e(TAG, model.getCinemases().getItems().length + "");
+        for (int i = 0; i < model.getCinemases().getItems().length; i++) {
+            realmRest.insertLotteInfo(model.getCinemases().getItems()[i]);
+        }
+    }
+
+    private void saveMegaAsset() {
+        try {
+            AssetManager assetManager = getAssets();
+            InputStream is = assetManager.open("MegaLatLng.txt");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String text = new String(buffer);
+            String[] megaList = text.split("\n");
+            String[][] mega = new String[megaList.length][];
+            for (int i = 0; i < mega.length; i++) {
+                mega[i] = megaList[i].split(",");
+            }
+
+            for (int i = 0; i < mega.length; i++) {
+                realmRest.insertMegaInfo(mega[i]);
+            }
+
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+    }
+
+    private void saveCGVAsset() {
         try {
             AssetManager assetManager = getAssets();
             InputStream is = assetManager.open("CGV.txt");

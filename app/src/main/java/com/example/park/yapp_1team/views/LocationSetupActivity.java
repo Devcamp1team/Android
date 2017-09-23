@@ -1,4 +1,4 @@
-package com.example.park.yapp_1team.activities;
+package com.example.park.yapp_1team.views;
 
 import android.graphics.Color;
 import android.os.Bundle;

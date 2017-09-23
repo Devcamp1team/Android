@@ -10,5 +10,8 @@ public class Strings {
     public static final String LOTTE = "lotte";
     public static final String MEGA = "mega";
 
+    public final static int THEATER_CODE_CGV = 1;
+    public final static int THEATER_CODE_MEGA = 2;
+    public final static int THEATER_CODE_LOTTE = 3;
 
 }

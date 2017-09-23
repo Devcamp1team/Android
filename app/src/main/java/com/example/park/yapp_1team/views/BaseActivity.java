@@ -1,8 +1,5 @@
-package com.example.park.yapp_1team.activities;
+package com.example.park.yapp_1team.views;
 
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;

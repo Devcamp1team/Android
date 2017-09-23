@@ -9,14 +9,21 @@ import io.realm.annotations.PrimaryKey;
 
 public class CGVRealmModel extends RealmObject {
 
-    @PrimaryKey
     private String name;
-
+    private int cgv;
     private double lat;
     private double lng;
     private String areaCode;
     private String theaterCode;
     private String regionCode;
+
+    public int getCgv() {
+        return cgv;
+    }
+
+    public void setCgv(int cgv) {
+        this.cgv = cgv;
+    }
 
     public String getName() {
         return name;

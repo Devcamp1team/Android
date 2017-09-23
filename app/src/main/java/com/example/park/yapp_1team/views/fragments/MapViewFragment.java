@@ -1,4 +1,4 @@
-package com.example.park.yapp_1team.activities.fragments;
+package com.example.park.yapp_1team.views.fragments;
 
 import android.Manifest;
 import android.content.DialogInterface;
