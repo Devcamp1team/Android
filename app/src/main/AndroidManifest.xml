@@ -17,15 +17,14 @@
         <activity
             android:name=".views.MainActivity"
             android:theme="@style/SplashTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
-        <!-- activity_splash -->
-        <activity
-            android:name=".SplashActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- activity_splash -->
         <activity
             android:name=".views.LocationSetupActivity"
             android:theme="@style/MapBar" />
@@ -34,11 +33,6 @@
             android:theme="@style/MapBar" />
 
         <activity android:name=".views.IntroActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
