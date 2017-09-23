@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.views.fragments.MapViewFragment;
+import com.nhn.android.maps.maplib.NGeoPoint;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +28,12 @@ public class MapActivity extends BaseActivity {
 
     private static final String TAG = MapActivity.class.getSimpleName();
     private Toolbar mapToolbar;
+    NGeoPoint nGeoPoint;
+
+    public MapActivity(double longitude, double latitude)
+    {
+        nGeoPoint = new NGeoPoint(longitude, latitude);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
