@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -27,8 +28,10 @@ import com.example.park.yapp_1team.interfaces.RcvClickListener;
 import com.example.park.yapp_1team.items.CGVRealmModel;
 import com.example.park.yapp_1team.items.LotteRealmModel;
 import com.example.park.yapp_1team.items.MegaboxRealmModel;
+import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import com.example.park.yapp_1team.items.TheaterDisInfo;
+import com.example.park.yapp_1team.network.MovieCrawling;
 import com.example.park.yapp_1team.sql.RealmRest;
 import com.example.park.yapp_1team.utils.Strings;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import io.realm.RealmResults;
 
@@ -88,7 +92,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         Log.e(TAG, String.valueOf(count));
 
         initialize();
-        addItem();
+//        addItem();
         event();
 
         permissionCheck();
@@ -138,21 +142,35 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
     }
 
-    private void addItem() {
+    private void addItem(List<MovieInfoListItem> totalListItems) {
         List<SelectMovieInfoItem> list = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
-            SelectMovieInfoItem item = new SelectMovieInfoItem();
-            item.setTitle(names.get(0));
-            item.setStartTime("9:00");
-            item.setEndTIme(" - 13:00");
-            item.setLocation("CGV 청담·2.20km·프리미엄");
-            item.setUseSeat("13");
-            item.setLeftSeat("/200");
-
-            list.add(item);
-            adapter.setListItems(list);
+        for (int i = 0; i < totalListItems.size(); i++) {
+            SelectMovieInfoItem infoItem = new SelectMovieInfoItem();
+//            infoItem.setTitle();
+            infoItem.setTitle(totalListItems.get(i).getTitle());
+            infoItem.setLeftSeat("/" + totalListItems.get(i).getSeat());
+            infoItem.setUseSeat(totalListItems.get(i).getSeat());
+            infoItem.setStartTime(totalListItems.get(i).getTime());
+            infoItem.setLocation(totalListItems.get(i).getTheater() + "·"+totalListItems.get(i).getDistance()/1000+"km");
+            infoItem.setEndTIme("");
+            list.add(infoItem);
         }
+
+        adapter.setListItems(list);
+
+//        for (int i = 0; i < 10; i++) {
+//            SelectMovieInfoItem item = new SelectMovieInfoItem();
+//            item.setTitle(names.get(0));
+//            item.setStartTime("9:00");
+//            item.setEndTIme(" - 13:00");
+//            item.setLocation("CGV 청담·2.20km·프리미엄");
+//            item.setUseSeat("13");
+//            item.setLeftSeat("/200");
+//
+//            list.add(item);
+//            adapter.setListItems(list);
+//        }
     }
 
 
@@ -266,12 +284,15 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         Collections.sort(disInfo, comparator);
 
+
+        getMovieInfo(disInfo);
+
         // 가까운 영화관 3개로부터 정보 get
         for (int i = 0; i < 10; i++) {
 
             String brand = "";
             switch (disInfo.get(i).code) {
-                case 1 : {
+                case 1: {
                     brand = "CGV";
                     break;
                 }
@@ -290,7 +311,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         }
     }
 
-    private void getMovieInfo(CGVRealmModel realmModel) {
+    private void getMovieInfo(List<TheaterDisInfo> disInfo) {
         // TODO: 2017-09-22 크롤링을 통해 영화 이름 비교 + 시간과 정보 가져오기
         // TODO: 2017-09-22 CGV 주소 : http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode=0060&date=20170922
         // TODO: 2017-09-23 CGV 주소2 : http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=103&theatercode=0040 
@@ -298,6 +319,130 @@ public class SelectMovieInfoActivity extends BaseActivity {
         // TODO: 2017-09-23 lotte 주소 :  http://www.lottecinema.co.kr/LCHS/Contents/Cinema/Cinema-Detail.aspx?divisionCode=1&detailDivisionCode=1&cinemaID=1013
         // areacode와 theatercode, date를 변경해가며 검색 (date는 기본 오늘)
         // TODO: 2017-09-22 가져온 값을 하나의 리스트에 저장하고 시간 순으로 정렬
+
+        List<MovieInfoListItem> totalListItems = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            switch (disInfo.get(i).code) {
+                case 1: {
+                    // cgv
+                    RealmResults<CGVRealmModel> results = realmRest.getCGVInfo(disInfo.get(i).name);
+                    for (int j = 0; j < results.size(); j++) {
+
+                        MovieCrawling movieCrawling = new MovieCrawling(results.get(j).getTheaterCode(), results.get(j).getAreaCode(), (ArrayList) names);
+                        try {
+                            List<MovieInfoListItem> list = (List<MovieInfoListItem>) movieCrawling.execute().get();
+
+                            for (int k = 0; k < list.size(); k++) {
+                                MovieInfoListItem item = list.get(k);
+                                item.setId(1);
+                                item.setDistance(disInfo.get(i).distance);
+                                item.setTheater(disInfo.get(i).name);
+                                totalListItems.add(item);
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    break;
+                }
+                case 2: {
+                    // megabox
+
+                    RealmResults<MegaboxRealmModel> results = realmRest.getMegaInfo(disInfo.get(i).name);
+//                    Log.e(TAG,results.get(i).getWww());
+                    for (int j = 0; j < results.size(); j++) {
+                        String url = results.get(j).getWww();
+                        Log.e(TAG, url);
+
+                        String cinema = url.substring(url.lastIndexOf("=") + 1, url.length());
+
+                        MovieCrawling movieCrawling = new MovieCrawling(cinema, (ArrayList) names);
+                        try {
+                            List<MovieInfoListItem> listItems = (List<MovieInfoListItem>) movieCrawling.execute().get();
+                            for (int k = 0; k < listItems.size(); k++) {
+                                MovieInfoListItem item = listItems.get(k);
+                                item.setId(2);
+                                item.setDistance(disInfo.get(i).distance);
+                                item.setTheater(disInfo.get(i).name);
+                                totalListItems.add(item);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        Log.e(TAG, url.substring(url.lastIndexOf("=") + 1, url.length()));
+                    }
+
+                    break;
+                }
+                case 3: {
+                    // lotte
+                    RealmResults<LotteRealmModel> results = realmRest.getLotteInfo(disInfo.get(i).name);
+                    for (int j = 0; j < results.size(); j++) {
+                        MovieCrawling movieCrawling = new MovieCrawling(results.get(j).getCinemaID(), results.get(j).getDivisionCode(), results.get(j).getDetailDivisionCode(), (ArrayList) names);
+                        try {
+                            List<MovieInfoListItem> listItems = (List<MovieInfoListItem>) movieCrawling.execute().get();
+                            for (int k = 0; k < listItems.size(); k++) {
+                                MovieInfoListItem item = listItems.get(k);
+                                item.setId(3);
+                                item.setTheater(disInfo.get(i).name);
+                                item.setDistance(disInfo.get(i).distance);
+                                totalListItems.add(item);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        Comparator<MovieInfoListItem> comparator = new Comparator<MovieInfoListItem>() {
+            @Override
+            public int compare(MovieInfoListItem o1, MovieInfoListItem o2) {
+                if (!o1.getTime().equals("") && !o2.getTime().equals("")) {
+                    String s = o1.getTime().replaceAll(":", "");
+                    String m = o2.getTime().replaceAll(":", "");
+
+                    int a1 = Integer.parseInt(s);
+                    int a2 = Integer.parseInt(m);
+
+                    if (a1 < a2) {
+                        return -1;
+                    } else if (a1 > a2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else if (!o1.getTime().equals("")) {
+                    return -1;
+                } else if (!o2.getTime().equals("")) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        };
+
+        Collections.sort(totalListItems, comparator);
+
+        addItem(totalListItems);
+
+        for (int i = 0; i < totalListItems.size(); i++) {
+            Log.e(TAG, totalListItems.get(i).getTheater() + " " + totalListItems.get(i).getId() + " " + totalListItems.get(i).getTitle() + " " + totalListItems.get(i).getTime());
+        }
     }
 
     private boolean checkGPS() {
@@ -329,11 +474,16 @@ public class SelectMovieInfoActivity extends BaseActivity {
     }
 
     private void permissionCheck() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+            } else {
+                // TODO: 2017-08-11 already has permission granted, go to next step.
+                getLocation();
+            }
         } else {
-            // TODO: 2017-08-11 already has permission granted, go to next step.
             getLocation();
         }
     }
