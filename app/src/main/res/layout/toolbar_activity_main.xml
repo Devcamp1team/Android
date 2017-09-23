@@ -22,6 +22,7 @@
         android:layout_marginLeft="13dp"
         android:textColorHint="@color/colorGray"
         android:hint="영화 검색"
+        android:background="@null"
         android:textColor="@color/colorBlack"
         android:textSize="18dp" />
 

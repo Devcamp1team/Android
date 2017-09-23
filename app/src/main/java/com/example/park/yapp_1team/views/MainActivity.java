@@ -1,6 +1,12 @@
 package com.example.park.yapp_1team.views;
 
+<<<<<<< HEAD
+=======
+import android.app.ProgressDialog;
+import android.content.Context;
+>>>>>>> bd8ba7c0fd263517b671ac12591bc2b37242c8d3
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -85,6 +91,24 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+
+        SharedPreferences sp = getSharedPreferences("firstflag", Context.MODE_PRIVATE);
+
+        /**
+         * 사용자의 첫 방문인지 체크한다.
+         */
+        boolean hasVisited = sp.getBoolean("hasVisited", false);
+        if (!hasVisited) {
+
+            startActivity(new Intent(this, IntroActivity.class));
+
+            SharedPreferences.Editor e = sp.edit();
+            e.putBoolean("hasVisited", true);
+            e.commit();
+
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         statusBarChange();

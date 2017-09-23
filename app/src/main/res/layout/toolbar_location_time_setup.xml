@@ -26,9 +26,11 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="45dp"
+            android:lineSpacingExtra="8sp"
+            android:textSize="20sp"
+            android:textColor="#6a7482"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="LIST SETTING"
-            android:textSize="20dp" />
+            android:text="LIST SETTING"/>
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

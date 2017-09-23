@@ -7,9 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.example.park.yapp_1team.views.fragments.FirstIntroFragment;
-import com.example.park.yapp_1team.views.fragments.SecondFragment;
+import com.example.park.yapp_1team.views.fragments.FourthIntroFragment;
+import com.example.park.yapp_1team.views.fragments.SecondIntroFragment;
+import com.example.park.yapp_1team.views.fragments.ThirdIntroFragment;
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntroFragment;
 
 /**
  * Created by HunJin on 2017-09-23.
@@ -21,14 +22,18 @@ public class IntroActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 
         Fragment firstFragment = new FirstIntroFragment();
-        Fragment secondFragment = new SecondFragment();
-
+        Fragment secondFragment = new SecondIntroFragment();
+        Fragment thirdFragment = new ThirdIntroFragment();
+        Fragment fourthFragment = new FourthIntroFragment();
         // Note here that we DO NOT use setContentView();
 
         // Add your slide fragments here.
         // AppIntro will automatically generate the dots indicator and buttons.
+
         addSlide(firstFragment);
         addSlide(secondFragment);
+        addSlide(thirdFragment);
+        addSlide(fourthFragment);
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
@@ -36,10 +41,18 @@ public class IntroActivity extends AppIntro {
 
         // OPTIONAL METHODS
         // Override bar/separator color.
-        setBarColor(Color.parseColor("#3F51B5"));
-        setSeparatorColor(Color.parseColor("#2196F3"));
+        setFadeAnimation();
+
+        setBarColor(Color.parseColor("#00000000"));
+        setSeparatorColor(Color.parseColor("#00000000"));
+        setNavBarColor("#00000000");
+        setIndicatorColor(Color.parseColor("#6a7482"), Color.parseColor("#BDBDBD"));
 
         // Hide Skip/Done button.
+        setColorSkipButton(Color.GRAY);
+        setColorDoneText(Color.GRAY);
+        setNextArrowColor(Color.GRAY);
+
         showSkipButton(true);
         setProgressButtonEnabled(true);
 
