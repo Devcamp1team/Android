@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import com.example.park.yapp_1team.views.fragments.FirstIntroFragment;
 import com.example.park.yapp_1team.views.fragments.SecondFragment;
 import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 /**
