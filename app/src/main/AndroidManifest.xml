@@ -9,7 +9,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -17,14 +17,12 @@
         <activity
             android:name=".views.MainActivity"
             android:theme="@style/SplashTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".views.LocationSetupActivity"
             android:theme="@style/MapBar" />
@@ -45,6 +43,8 @@
         <activity
             android:name=".views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
+
+        <activity android:name=".views.FilterActivity"/>
     </application>
 
 </manifest>

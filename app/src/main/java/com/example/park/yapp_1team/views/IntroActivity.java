@@ -41,7 +41,7 @@ public class IntroActivity extends AppIntro {
 
         // OPTIONAL METHODS
         // Override bar/separator color.
-        setZoomAnimation();
+        setFadeAnimation();
 
         setBarColor(Color.parseColor("#00000000"));
         setSeparatorColor(Color.parseColor("#00000000"));
