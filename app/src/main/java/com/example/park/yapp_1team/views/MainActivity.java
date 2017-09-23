@@ -46,6 +46,7 @@ import io.realm.RealmResults;
 
 import static com.example.park.yapp_1team.utils.Strings.CGV;
 import static com.example.park.yapp_1team.utils.Strings.LOTTE;
+import static com.example.park.yapp_1team.utils.URL.LOTTE_MOVIE_PICTURE_URL;
 import static com.example.park.yapp_1team.utils.URL.NAVER_SELECT;
 import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private List<MovieListItem> movieCrawling() {
-        MovieInfoCrawling test = new MovieInfoCrawling(NAVER_URL, NAVER_SELECT);
+        MovieInfoCrawling test = new MovieInfoCrawling(LOTTE_MOVIE_PICTURE_URL);
 
         List<MovieListItem> items = new ArrayList<>();
         try {
