@@ -2,6 +2,7 @@ package com.example.park.yapp_1team.views;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -18,20 +19,26 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
+import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import com.example.park.yapp_1team.views.fragments.MapViewFragment;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class MapActivity extends BaseActivity {
 
     private static final String TAG = MapActivity.class.getSimpleName();
     private Toolbar mapToolbar;
 
+    private List<SelectMovieInfoItem> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        Intent intent = getIntent();
 
         statusBarChange();
         getKeyHash();
@@ -46,7 +53,6 @@ public class MapActivity extends BaseActivity {
 //        setSupportActionBar(mapToolbar);
 
         mapToolbar.setContentInsetsAbsolute(0, 0);
-
 
         MapViewFragment fragment = new MapViewFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();

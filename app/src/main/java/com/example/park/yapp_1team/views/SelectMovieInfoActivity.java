@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -84,7 +85,9 @@ public class SelectMovieInfoActivity extends BaseActivity {
         @Override
         public void itemClick(int position) {
             // TODO: 2017-09-08 item click event
-            startActivity(new Intent(getApplicationContext(), MapActivity.class));
+            Intent it = new Intent(getApplicationContext(), MapActivity.class);
+            it.putExtra("info", (Serializable) adapter.getListItems().get(position));
+            startActivity(it);
         }
     };
 
@@ -113,8 +116,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         fabSelectMovieInfoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LocationSetupActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
