@@ -1,13 +1,10 @@
 package com.example.park.yapp_1team.views;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,8 +22,6 @@ import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.MovieListItem;
 import com.example.park.yapp_1team.items.TheaterCodeItem;
 import com.example.park.yapp_1team.network.MegaboxInfo;
-import com.example.park.yapp_1team.network.MegaboxInfoCrawling;
-import com.example.park.yapp_1team.network.MegaboxTheaterCrawling;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
 import com.example.park.yapp_1team.network.MovieListCrawling;
 import com.example.park.yapp_1team.network.TheaterInfoCrawling;
@@ -49,8 +44,6 @@ import io.realm.RealmResults;
 import static com.example.park.yapp_1team.utils.Strings.CGV;
 import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 import static com.example.park.yapp_1team.utils.URL.LOTTE_MOVIE_PICTURE_URL;
-import static com.example.park.yapp_1team.utils.URL.NAVER_SELECT;
-import static com.example.park.yapp_1team.utils.URL.NAVER_URL;
 
 public class MainActivity extends BaseActivity {
 
@@ -62,6 +55,7 @@ public class MainActivity extends BaseActivity {
 
     private List<MovieListItem> dataArray;
     private List<String> movieNames = new ArrayList<>();
+    private List<String> movieImages = new ArrayList<>();
 
     private RealmRest realmRest;
 
@@ -76,10 +70,12 @@ public class MainActivity extends BaseActivity {
                 movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder() + 1);
                 items.get(position).setCheck(1);
                 movieNames.add(items.get(position).getName());
+                movieImages.add(items.get(position).getUrl());
                 items.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
             } else {
                 items.get(position).setCheck(0);
                 movieNames.remove(items.get(position).getName());
+                movieImages.remove(items.get(position).getUrl());
                 items.get(position).setCurrentOrder(items.get(position).getOriginalOrder());
             }
 
@@ -128,9 +124,9 @@ public class MainActivity extends BaseActivity {
         }
 
         RealmResults<MegaboxRealmModel> r = realmRest.getMegaInfo();
-        for(int i=0;i<r.size();i++) {
-            Log.e(TAG, r.get(i).getName() + " : " + r.get(i).getWww());
-        }
+//        for (int i = 0; i < r.size(); i++) {
+//            Log.e(TAG, r.get(i).getName() + " : " + r.get(i).getWww());
+//        }
     }
 
     @Override
@@ -146,6 +142,7 @@ public class MainActivity extends BaseActivity {
                 if (movieNames.size() > 0) {
                     Intent it = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
                     it.putExtra("names", (Serializable) movieNames);
+                    it.putExtra("images", (Serializable) movieImages);
                     startActivity(it);
                 } else {
                     Toast.makeText(getApplicationContext(), "영화를 한 개 이상 선택하세요.", Toast.LENGTH_SHORT).show();
@@ -197,6 +194,7 @@ public class MainActivity extends BaseActivity {
         Gson gson = new Gson();
         LotteGsonModel model = gson.fromJson(info, LotteGsonModel.class);
         Log.e(TAG, model.getCinemases().getItems().length + "");
+        Log.e(TAG,"cinemas : " + model.getCinemases().getItems().length);
         for (int i = 0; i < model.getCinemases().getItems().length; i++) {
             realmRest.insertLotteInfo(model.getCinemases().getItems()[i]);
         }
