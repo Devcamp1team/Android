@@ -1,10 +1,6 @@
 package com.example.park.yapp_1team.views;
 
-<<<<<<< HEAD
-=======
-import android.app.ProgressDialog;
 import android.content.Context;
->>>>>>> bd8ba7c0fd263517b671ac12591bc2b37242c8d3
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -198,6 +194,7 @@ public class MainActivity extends BaseActivity {
         Gson gson = new Gson();
         LotteGsonModel model = gson.fromJson(info, LotteGsonModel.class);
         Log.e(TAG, model.getCinemases().getItems().length + "");
+        Log.e(TAG,"cinemas : " + model.getCinemases().getItems().length);
         for (int i = 0; i < model.getCinemases().getItems().length; i++) {
             realmRest.insertLotteInfo(model.getCinemases().getItems()[i]);
         }

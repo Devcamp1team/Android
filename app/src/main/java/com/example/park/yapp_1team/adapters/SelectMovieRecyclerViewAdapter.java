@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.holder.SelectMovieHolder;
 import com.example.park.yapp_1team.interfaces.RcvClickListener;
@@ -68,6 +69,13 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
     public void onBindViewHolder(SelectMovieHolder holder, final int position) {
         Log.e(TAG, "onBindViewHolder");
         if (getItemViewType(position) == HEAD) {
+
+            RequestOptions requestOptions = new RequestOptions();
+            Glide.with(context)
+                    .load(listItems.get(position).getImgThumbnail())
+                    .apply(requestOptions.centerCrop())
+                    .into(holder.imgFullThumbnail);
+            holder.txtFullTitle.setText(listItems.get(position).getTitle());
         } else {
             if (isMulti) {
                 holder.imgThumbnail.setVisibility(View.VISIBLE);

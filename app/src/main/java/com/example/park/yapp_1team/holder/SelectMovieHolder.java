@@ -22,6 +22,7 @@ public class SelectMovieHolder extends RecyclerView.ViewHolder {
     public TextView txtLocation;
 
     public ImageView imgFullThumbnail;
+    public TextView txtFullTitle;
 
     public SelectMovieHolder(View itemView) {
         super(itemView);
@@ -35,5 +36,6 @@ public class SelectMovieHolder extends RecyclerView.ViewHolder {
         txtLocation = (TextView) itemView.findViewById(R.id.txt_item_movie_info_location);
 
         imgFullThumbnail = (ImageView)itemView.findViewById(R.id.img_item_main_movie_full_thumbnail);
+        txtFullTitle = (TextView)itemView.findViewById(R.id.txt_item_main_movie_full_title);
     }
 }
