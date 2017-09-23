@@ -17,11 +17,6 @@
         <activity
             android:name=".views.MainActivity"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- activity_splash -->
@@ -37,6 +32,14 @@
         <activity
             android:name=".views.MapActivity"
             android:theme="@style/MapBar" />
+
+        <activity android:name=".views.IntroActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

@@ -40,4 +40,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:11.0.4'
     compile 'com.google.android.gms:play-services-location:11.0.4'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.apl-devs:appintro:v4.2.2'
 }

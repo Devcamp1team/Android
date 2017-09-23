@@ -108,6 +108,11 @@ public class MainActivity extends BaseActivity {
         if (realmRest.getMegaInfo() == null || realmRest.getMegaInfo().size() == 0) {
             saveMegaAsset();
         }
+
+        RealmResults<MegaboxRealmModel> r = realmRest.getMegaInfo();
+        for(int i=0;i<r.size();i++) {
+            Log.e(TAG, r.get(i).getName() + " : " + r.get(i).getWww());
+        }
     }
 
     @Override

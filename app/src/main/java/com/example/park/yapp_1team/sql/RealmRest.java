@@ -7,7 +7,6 @@ import com.example.park.yapp_1team.items.LotteGsonModel;
 import com.example.park.yapp_1team.items.LotteRealmModel;
 import com.example.park.yapp_1team.items.MegaboxRealmModel;
 import com.example.park.yapp_1team.items.SearchListItem;
-import com.example.park.yapp_1team.network.MegaboxInfo;
 import com.example.park.yapp_1team.utils.Strings;
 
 import io.realm.Realm;
@@ -80,6 +79,18 @@ public class RealmRest {
 
     public RealmResults<CGVRealmModel> getCGVInfo() {
         return realm.where(CGVRealmModel.class).findAll();
+    }
+
+    public RealmResults<CGVRealmModel> getCGVInfo(String name) {
+        return realm.where(CGVRealmModel.class).contains("name", name).findAll();
+    }
+
+    public RealmResults<LotteRealmModel> getLotteInfo(String name) {
+        return realm.where(LotteRealmModel.class).contains("name",name).findAll();
+    }
+
+    public RealmResults<MegaboxRealmModel> getMegaInfo(String name) {
+        return realm.where(MegaboxRealmModel.class).contains("name",name).findAll();
     }
 
     public RealmResults<SearchListItem> getUserList() {

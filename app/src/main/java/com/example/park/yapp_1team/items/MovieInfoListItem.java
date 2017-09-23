@@ -7,6 +7,17 @@ package com.example.park.yapp_1team.items;
 public class MovieInfoListItem {
 
     private int id;
+    private String theater;
+    private double distance;
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
     private String title;
     private String time;
     private String seat;
@@ -15,6 +26,14 @@ public class MovieInfoListItem {
         this.title = title;
         this.time = time;
         this.seat = seat;
+    }
+
+    public String getTheater() {
+        return theater;
+    }
+
+    public void setTheater(String theater) {
+        this.theater = theater;
     }
 
     public int getId() {

@@ -13,4 +13,7 @@
     
     <color name="colorTextUsingSeat">#6A7482</color>
     <color name="colorTextRemainderSeat">#D3D3D3</color>
+
+    <color name="colorBar">#3F51B5</color>
+    <color name="colorSeparator">#2196F3</color>
 </resources>
