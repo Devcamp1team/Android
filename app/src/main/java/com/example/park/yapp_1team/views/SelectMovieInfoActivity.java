@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private Toolbar selectToolbar;
 
     private TextView txtCurrentLocation;
+    private LinearLayout layoutShowLocation;
 
     private SelectMovieRecyclerViewAdapter adapter;
     private int count = 0;
@@ -144,6 +146,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         selectToolbar.setContentInsetsAbsolute(0, 0);
 
         txtCurrentLocation = (TextView) findViewById(R.id.txt_select_location_title);
+        layoutShowLocation = (LinearLayout)findViewById(R.id.layout_show_location);
 
         rcvSelectMovie = (RecyclerView) findViewById(R.id.rcv_select_movie_info);
         fabSelectMovieInfoBack = (FloatingActionButton) findViewById(R.id.btn_select_movie_info_back);
@@ -163,6 +166,13 @@ public class SelectMovieInfoActivity extends BaseActivity {
         rcvSelectMovie.setAdapter(adapter);
 
         realmRest = new RealmRest();
+
+        layoutShowLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LocationSetupActivity.class));
+            }
+        });
 
     }
 
