@@ -9,6 +9,24 @@ public class MovieInfoListItem {
     private int id;
     private String theater;
     private double distance;
+    private String title;
+    private String time;
+    private String seat;
+    private String thumbnail;
+
+    public MovieInfoListItem(String title, String time, String seat) {
+        this.title = title;
+        this.time = time;
+        this.seat = seat;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
     public double getDistance() {
         return distance;
@@ -16,16 +34,6 @@ public class MovieInfoListItem {
 
     public void setDistance(double distance) {
         this.distance = distance;
-    }
-
-    private String title;
-    private String time;
-    private String seat;
-
-    public MovieInfoListItem(String title, String time, String seat){
-        this.title = title;
-        this.time = time;
-        this.seat = seat;
     }
 
     public String getTheater() {

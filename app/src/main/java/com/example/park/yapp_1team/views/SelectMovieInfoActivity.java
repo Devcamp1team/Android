@@ -1,10 +1,12 @@
 package com.example.park.yapp_1team.views;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
@@ -58,10 +61,13 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private FloatingActionButton fabMovieFilter;
     private Toolbar selectToolbar;
 
+    private TextView txtCurrentLocation;
+
     private SelectMovieRecyclerViewAdapter adapter;
     private int count = 0;
 
     private List<String> names;
+    private List<String> images;
 
     private RealmRest realmRest;
 
@@ -86,6 +92,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         // TODO: 2017-09-02 intent로 count 받아오기
         Intent intent = getIntent();
         names = intent.getStringArrayListExtra("names");
+        images = intent.getStringArrayListExtra("images");
 
         count = names.size();
 
@@ -121,6 +128,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
         setSupportActionBar(selectToolbar);
         selectToolbar.setContentInsetsAbsolute(0, 0);
 
+        txtCurrentLocation = (TextView)findViewById(R.id.txt_select_location_title);
+
         rcvSelectMovie = (RecyclerView) findViewById(R.id.rcv_select_movie_info);
         fabSelectMovieInfoBack = (FloatingActionButton) findViewById(R.id.btn_select_movie_info_back);
         fabMovieFilter = (FloatingActionButton) findViewById(R.id.btn_select_movie_info_filter);
@@ -147,12 +156,18 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         for (int i = 0; i < totalListItems.size(); i++) {
             SelectMovieInfoItem infoItem = new SelectMovieInfoItem();
+            for(int j=0;j<names.size();j++) {
+                if(totalListItems.get(i).getTitle().equals(names.get(j))) {
+                    infoItem.setImgThumbnail(images.get(j));
+                    break;
+                }
+            }
 //            infoItem.setTitle();
             infoItem.setTitle(totalListItems.get(i).getTitle());
             infoItem.setLeftSeat("/" + totalListItems.get(i).getSeat());
             infoItem.setUseSeat(totalListItems.get(i).getSeat());
             infoItem.setStartTime(totalListItems.get(i).getTime());
-            infoItem.setLocation(totalListItems.get(i).getTheater() + "·"+totalListItems.get(i).getDistance()/1000+"km");
+            infoItem.setLocation(totalListItems.get(i).getTheater() + "·" + totalListItems.get(i).getDistance() / 1000 + "km");
             infoItem.setEndTIme("");
             list.add(infoItem);
         }
@@ -394,8 +409,10 @@ public class SelectMovieInfoActivity extends BaseActivity {
                             for (int k = 0; k < listItems.size(); k++) {
                                 MovieInfoListItem item = listItems.get(k);
                                 item.setId(3);
+ //                               item.setThumbnail(disInfo.get(i).);
                                 item.setTheater(disInfo.get(i).name);
                                 item.setDistance(disInfo.get(i).distance);
+
                                 totalListItems.add(item);
                             }
                         } catch (InterruptedException e) {
@@ -484,7 +501,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 getLocation();
             }
         } else {
-            getLocation();
+            startLocationService();
         }
     }
 
@@ -492,5 +509,84 @@ public class SelectMovieInfoActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_select_movie_info, menu);
         return true;
+    }
+
+    boolean isFind = false;
+
+    private class GPSListener implements LocationListener {
+
+        public void onLocationChanged(Location location) {
+            Double latitude = location.getLatitude();
+            Double longitude = location.getLongitude();
+
+            if(!isFind) {
+                findTheater(latitude, longitude);
+            }
+            isFind = true;
+            Log.e(TAG,"location" + latitude + " : " + longitude);
+
+
+
+
+
+//            msg = "Latitude : " + latitude + "\nLongitude : " + longitude;
+//            Log.i("GPSListener", msg);
+
+
+//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    }
+
+    private void startLocationService() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        GPSListener gpsListener = new GPSListener();
+        long minTime = 0;
+        float minDistance = 0;
+
+
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
+
+            Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastLocation != null) {
+                Double latitude = lastLocation.getLatitude();
+                Double longitude = lastLocation.getLongitude();
+
+                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
+
+                findTheater(latitude, longitude);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Toast.makeText(getApplicationContext(), "위치 확인이 시작되었습니다. 로그를 확인하세요.", Toast.LENGTH_SHORT).show();
     }
 }
