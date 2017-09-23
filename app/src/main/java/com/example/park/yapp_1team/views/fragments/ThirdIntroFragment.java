@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import com.example.park.yapp_1team.R;
 
 /**
- * Created by HunJin on 2017-09-23.
+ * Created by Park on 2017-09-24.
  */
 
-public class FirstIntroFragment extends Fragment {
+public class ThirdIntroFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_onboard1, container, false);
+        return inflater.inflate(R.layout.fragment_onboard3, container, false);
     }
 }
