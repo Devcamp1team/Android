@@ -110,6 +110,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
         fabMovieFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),FilterActivity.class);
+                startActivity(intent);
 
             }
         });

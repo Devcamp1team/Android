@@ -17,23 +17,19 @@
         <activity
             android:name=".views.MainActivity"
             android:theme="@style/SplashTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".views.LocationSetupActivity"
             android:theme="@style/MapBar" />
         <activity
             android:name=".views.MapActivity"
             android:theme="@style/MapBar" />
-
-        <activity android:name=".views.IntroActivity">
-        </activity>
+        <activity android:name=".views.IntroActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -45,6 +41,7 @@
         <activity
             android:name=".views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
+        <activity android:name=".views.FilterActivity"></activity>
     </application>
 
 </manifest>
