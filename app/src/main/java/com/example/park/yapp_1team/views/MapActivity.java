@@ -28,12 +28,6 @@ public class MapActivity extends BaseActivity {
 
     private static final String TAG = MapActivity.class.getSimpleName();
     private Toolbar mapToolbar;
-    NGeoPoint nGeoPoint;
-
-    public MapActivity(double longitude, double latitude)
-    {
-        nGeoPoint = new NGeoPoint(longitude, latitude);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
