@@ -13,11 +13,29 @@ public class MovieInfoListItem {
     private String time;
     private String seat;
     private String thumbnail;
+    private double lat;
+    private double lng;
 
     public MovieInfoListItem(String title, String time, String seat) {
         this.title = title;
         this.time = time;
         this.seat = seat;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public String getThumbnail() {

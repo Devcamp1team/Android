@@ -7,8 +7,7 @@
     <ImageView
         android:id="@+id/img_item_main_movie_full_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY" />
+        android:layout_height="200dp" />
 
     <TextView
         android:id="@+id/txt_item_main_movie_full_title"

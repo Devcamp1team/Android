@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
@@ -30,10 +32,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.nhn.android.maps.NMapContext;
 import com.nhn.android.maps.NMapController;
+import com.nhn.android.maps.NMapOverlayItem;
 import com.nhn.android.maps.NMapView;
 import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
+import com.nhn.android.maps.overlay.NMapPOIdata;
+import com.nhn.android.maps.overlay.NMapPOIitem;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
+import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 import com.nhn.android.mapviewer.overlay.NMapResourceProvider;
 
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
@@ -55,12 +61,29 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
     private NMapContext context;
     private NMapController controller;
 
-    private NMapResourceProvider nMapResourceProvider;
-    private NMapOverlayManager overlayManager;
 
     private NMapView mapView;
 
     private ImageView imgCurrentLocation;
+
+    private double movieLat;
+    private double movieLng;
+
+    public double getMovieLat() {
+        return movieLat;
+    }
+
+    public void setMovieLat(double movieLat) {
+        this.movieLat = movieLat;
+    }
+
+    public double getMovieLng() {
+        return movieLng;
+    }
+
+    public void setMovieLng(double movieLng) {
+        this.movieLng = movieLng;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,6 +147,140 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
         NGeoPoint nGeoPoint = new NGeoPoint();
         nGeoPoint.set(lng, lat);
         controller.setMapCenter(nGeoPoint);
+
+//        NMapOverlayItem item = new NMapOverlayItem(nGeoPoint, "현재위치", "", getResources().getDrawable(R.drawable.ic_add_location_pink_24dp));
+
+        NMapResourceProvider nMapResourceProvider = new NMapResourceProvider(getContext()) {
+            @Override
+            protected int findResourceIdForMarker(int i, boolean b) {
+                return 0;
+            }
+
+            @Override
+            protected Drawable getDrawableForMarker(int i, boolean b, NMapOverlayItem nMapOverlayItem) {
+                Log.e(TAG, "get drawable" + i);
+                if (i == 1) {
+                    return getResources().getDrawable(R.drawable.ic_add_location_pink_24dp);
+                } else {
+                    return getResources().getDrawable(R.drawable.ic_place_black_24dp);
+                }
+
+            }
+
+            @Override
+            public Drawable getCalloutBackground(NMapOverlayItem nMapOverlayItem) {
+                return null;
+            }
+
+            @Override
+            public String getCalloutRightButtonText(NMapOverlayItem nMapOverlayItem) {
+                return null;
+            }
+
+            @Override
+            public Drawable[] getCalloutRightButton(NMapOverlayItem nMapOverlayItem) {
+                return new Drawable[0];
+            }
+
+            @Override
+            public Drawable[] getCalloutRightAccessory(NMapOverlayItem nMapOverlayItem) {
+                return new Drawable[0];
+            }
+
+            @Override
+            public int[] getCalloutTextColors(NMapOverlayItem nMapOverlayItem) {
+                return new int[0];
+            }
+
+            @Override
+            public Drawable[] getLocationDot() {
+                return new Drawable[0];
+            }
+
+            @Override
+            public Drawable getDirectionArrow() {
+                return null;
+            }
+
+            @Override
+            public int getParentLayoutIdForOverlappedListView() {
+                return 0;
+            }
+
+            @Override
+            public int getOverlappedListViewId() {
+                return 0;
+            }
+
+            @Override
+            public int getLayoutIdForOverlappedListView() {
+                return 0;
+            }
+
+            @Override
+            public void setOverlappedListViewLayout(ListView listView, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public int getListItemLayoutIdForOverlappedListView() {
+                return 0;
+            }
+
+            @Override
+            public int getListItemTextViewId() {
+                return 0;
+            }
+
+            @Override
+            public int getListItemTailTextViewId() {
+                return 0;
+            }
+
+            @Override
+            public int getListItemImageViewId() {
+                return 0;
+            }
+
+            @Override
+            public int getListItemDividerId() {
+                return 0;
+            }
+
+            @Override
+            public void setOverlappedItemResource(NMapPOIitem nMapPOIitem, ImageView imageView) {
+
+            }
+        };
+
+        NMapOverlayManager mapOverlayManager = new NMapOverlayManager(getContext(), mapView, nMapResourceProvider);
+
+
+        int markerId = 1;
+
+// set POI data
+        Log.e(TAG, "location : " + movieLat + " : " + movieLng);
+        NMapPOIdata poiData = new NMapPOIdata(2, nMapResourceProvider);
+        poiData.beginPOIdata(2);
+        poiData.addPOIitem(lng, lat, "현재", markerId, 0);
+        poiData.addPOIitem(movieLng, movieLat, "영화관", 2, 1);
+        poiData.endPOIdata();
+
+        NMapPOIdataOverlay poiDataOverlay = mapOverlayManager.createPOIdataOverlay(poiData, null);
+        poiDataOverlay.showAllPOIdata(0);
+
+        poiDataOverlay.setOnStateChangeListener(new NMapPOIdataOverlay.OnStateChangeListener() {
+            @Override
+            public void onFocusChanged(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem nMapPOIitem) {
+                return;
+            }
+
+            @Override
+            public void onCalloutClick(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem nMapPOIitem) {
+                return;
+            }
+        });
+
     }
 
     @SuppressWarnings("MissingPermission")

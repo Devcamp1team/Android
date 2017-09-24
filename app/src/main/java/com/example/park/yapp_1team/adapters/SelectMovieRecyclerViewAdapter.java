@@ -39,6 +39,10 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
         this.rcvClickListener = rcvClickListener;
     }
 
+    public List<SelectMovieInfoItem> getListItems() {
+        return listItems;
+    }
+
     public SelectMovieRecyclerViewAdapter(Context context, boolean isMulti) {
         this.context = context;
         this.isMulti = isMulti;
@@ -73,7 +77,6 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
             RequestOptions requestOptions = new RequestOptions();
             Glide.with(context)
                     .load(listItems.get(position).getImgThumbnail())
-                    .apply(requestOptions.centerCrop())
                     .into(holder.imgFullThumbnail);
             holder.txtFullTitle.setText(listItems.get(position).getTitle());
         } else {
@@ -95,7 +98,7 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rcvClickListener.itemClick(position);
+                    rcvClickListener.itemClick(position, listItems);
                 }
             });
         }

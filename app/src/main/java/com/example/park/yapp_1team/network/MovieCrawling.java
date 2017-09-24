@@ -112,7 +112,9 @@ public class MovieCrawling extends AsyncTask {
 
                     String remain = t.select("span.txt-lightblue").text();
 
-                    remain = remain.substring(4,remain.length());
+                    if(remain.length()>4) {
+                        remain = remain.substring(4, remain.length());
+                    }
 
                     MovieInfoListItem item = new MovieInfoListItem(name, start, remain);
 
