@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import com.example.park.yapp_1team.views.fragments.MapViewFragment;
+import com.nhn.android.maps.maplib.NGeoPoint;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
