@@ -98,6 +98,7 @@ public class MainActivity extends BaseActivity {
         if (!hasVisited) {
 
             startActivity(new Intent(this, IntroActivity.class));
+            finish();
 
             SharedPreferences.Editor e = sp.edit();
             e.putBoolean("hasVisited", true);
@@ -194,7 +195,7 @@ public class MainActivity extends BaseActivity {
         Gson gson = new Gson();
         LotteGsonModel model = gson.fromJson(info, LotteGsonModel.class);
         Log.e(TAG, model.getCinemases().getItems().length + "");
-        Log.e(TAG,"cinemas : " + model.getCinemases().getItems().length);
+        Log.e(TAG, "cinemas : " + model.getCinemases().getItems().length);
         for (int i = 0; i < model.getCinemases().getItems().length; i++) {
             realmRest.insertLotteInfo(model.getCinemases().getItems()[i]);
         }

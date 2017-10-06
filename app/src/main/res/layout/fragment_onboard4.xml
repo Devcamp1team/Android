@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f4f5"
+    android:orientation="vertical">
 
     <ImageView
-        android:scaleType="fitXY"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:src="@drawable/onboarding_4"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/onboarding_4" />
 
     <Button
         android:id="@+id/onboard_button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_height="50dp"
         android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
         android:background="#ff007e"
+        android:lineSpacingExtra="12sp"
         android:text="시작하기"
-        android:textSize="16sp"
         android:textAlignment="center"
-        android:lineSpacingExtra="12sp"/>
-
-
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

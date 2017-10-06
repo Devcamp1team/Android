@@ -56,6 +56,7 @@ import java.util.concurrent.ExecutionException;
 import io.realm.RealmResults;
 
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
+import static java.security.AccessController.getContext;
 
 public class SelectMovieInfoActivity extends BaseActivity {
 
@@ -650,5 +651,21 @@ public class SelectMovieInfoActivity extends BaseActivity {
         }
 
         Toast.makeText(getApplicationContext(), "위치 확인이 시작되었습니다. 로그를 확인하세요.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case LOCATION_PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getLocation();
+                } else {
+                    Toast.makeText(this, "지도 체크를 할건데 권한 체크 안하면 뭐... 제약이 있을 수 있어", Toast.LENGTH_SHORT).show();
+//                    moveMapCenter();
+                }
+                break;
+            }
+        }
     }
 }
