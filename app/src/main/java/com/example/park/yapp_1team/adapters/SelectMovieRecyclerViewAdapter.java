@@ -17,6 +17,8 @@ import com.example.park.yapp_1team.items.SelectMovieInfoItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 /**
  * Created by HunJin on 2017-09-02.
  */
@@ -77,7 +79,11 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
             RequestOptions requestOptions = new RequestOptions();
             Glide.with(context)
                     .load(listItems.get(position).getImgThumbnail())
+                    .apply(requestOptions.centerCrop().transform(new BlurTransformation(50)))
                     .into(holder.imgFullThumbnail);
+            Glide.with(context)
+                    .load(listItems.get(position).getImgThumbnail())
+                    .into(holder.imgSmallThumbnail);
             holder.txtFullTitle.setText(listItems.get(position).getTitle());
         } else {
             if (isMulti) {

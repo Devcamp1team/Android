@@ -21,7 +21,9 @@ public class SelectMovieHolder extends RecyclerView.ViewHolder {
     public TextView txtUseSeat;
     public TextView txtLocation;
 
+    // just one
     public ImageView imgFullThumbnail;
+    public ImageView imgSmallThumbnail;
     public TextView txtFullTitle;
 
     public SelectMovieHolder(View itemView) {
@@ -35,7 +37,8 @@ public class SelectMovieHolder extends RecyclerView.ViewHolder {
         txtUseSeat = (TextView) itemView.findViewById(R.id.txt_item_movie_info_using_seat);
         txtLocation = (TextView) itemView.findViewById(R.id.txt_item_movie_info_location);
 
-        imgFullThumbnail = (ImageView)itemView.findViewById(R.id.img_item_main_movie_full_thumbnail);
-        txtFullTitle = (TextView)itemView.findViewById(R.id.txt_item_main_movie_full_title);
+        imgFullThumbnail = (ImageView) itemView.findViewById(R.id.img_item_main_movie_full_thumbnail);
+        imgSmallThumbnail = (ImageView) itemView.findViewById(R.id.img_item_main_movie_full_thumbnail_small_size);
+        txtFullTitle = (TextView) itemView.findViewById(R.id.txt_item_main_movie_full_title);
     }
 }

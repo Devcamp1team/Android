@@ -1,5 +1,6 @@
 package com.example.park.yapp_1team.interfaces;
 
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -7,5 +8,5 @@ import android.widget.ImageView;
  */
 
 public interface CheckEvent {
-    void check(int position, ImageView imgMovieThumbnail, ImageView imgLine);
+    void check(int position, ImageView imgMovieThumbnail, View imgLine);
 }

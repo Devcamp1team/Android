@@ -56,7 +56,6 @@ import java.util.concurrent.ExecutionException;
 import io.realm.RealmResults;
 
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
-import static java.security.AccessController.getContext;
 
 public class SelectMovieInfoActivity extends BaseActivity {
 
@@ -88,7 +87,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         public void itemClick(int position, List<SelectMovieInfoItem> listItems) {
             // TODO: 2017-09-08 item click event
             Intent it = new Intent(getApplicationContext(), MapActivity.class);
-            Log.e(TAG,"list item loc : " + listItems.get(position).getLat() + " : " + listItems.get(position).getLat());
+//            Log.e(TAG,"list item loc : " + listItems.get(position).getLat() + " : " + listItems.get(position).getLat());
 
             it.putExtra("title", listItems.get(position).getTitle());
             it.putExtra("time", listItems.get(position).getStartTime());
@@ -113,7 +112,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         count = names.size();
 
-        Log.e(TAG, String.valueOf(count));
+//        Log.e(TAG, String.valueOf(count));
 
         initialize();
 //        addItem();
@@ -147,7 +146,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         selectToolbar.setContentInsetsAbsolute(0, 0);
 
         txtCurrentLocation = (TextView) findViewById(R.id.txt_select_location_title);
-        layoutShowLocation = (LinearLayout)findViewById(R.id.layout_show_location);
+        layoutShowLocation = (LinearLayout) findViewById(R.id.layout_show_location);
 
         rcvSelectMovie = (RecyclerView) findViewById(R.id.rcv_select_movie_info);
         fabSelectMovieInfoBack = (FloatingActionButton) findViewById(R.id.btn_select_movie_info_back);
@@ -171,7 +170,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         layoutShowLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LocationSetupActivity.class));
+                startActivity(new Intent(getApplicationContext(), LocationSetupActivity.class));
             }
         });
 
@@ -191,37 +190,21 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
 //            infoItem.setTitle();
             infoItem.setTitle(totalListItems.get(i).getTitle());
-            Log.e(TAG, "what lotte" + totalListItems.get(i).getTitle());
-            infoItem.setLeftSeat("/" + totalListItems.get(i).getSeat());
-            infoItem.setUseSeat(totalListItems.get(i).getSeat());
+//            Log.e(TAG, "what lotte" + totalListItems.get(i).getTitle());
+            infoItem.setLeftSeat("/" + totalListItems.get(i).getTotalSeat());
+            infoItem.setUseSeat(totalListItems.get(i).getRemindSeat());
             infoItem.setStartTime(totalListItems.get(i).getTime());
             infoItem.setLat(totalListItems.get(i).getLat());
             infoItem.setLng(totalListItems.get(i).getLng());
-            double d = totalListItems.get(i).getDistance() / 1000;
-            int e = (int) (d * 1000);
-            double f = (double) e / 1000;
+            int d = (int) totalListItems.get(i).getDistance() / 1000;
+            int f = (int) totalListItems.get(i).getDistance() % 1000 / 100;
 
-            String theater = totalListItems.get(i).getTheater();
-            Log.e(TAG, "theater : " + theater);
-
-            infoItem.setLocation(totalListItems.get(i).getTheater() + "·" + f + "km");
+            infoItem.setLocation(totalListItems.get(i).getTheater() + " · " + d + "." + f + "km" + " · " + totalListItems.get(i).getTypeTheater());
             infoItem.setEndTIme("");
             list.add(infoItem);
         }
         adapter.setListItems(list);
 
-//        for (int i = 0; i < 10; i++) {
-//            SelectMovieInfoItem item = new SelectMovieInfoItem();
-//            item.setTitle(names.get(0));
-//            item.setStartTime("9:00");
-//            item.setEndTIme(" - 13:00");
-//            item.setLocation("CGV 청담·2.20km·프리미엄");
-//            item.setUseSeat("13");
-//            item.setLeftSeat("/200");
-//
-//            list.add(item);
-//            adapter.setListItems(list);
-//        }
     }
 
 
@@ -255,7 +238,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
                 } else {
                     try {
-                        Log.e(TAG, "CurrentLocation exception");
+//                        Log.e(TAG, "CurrentLocation exception");
                         throw task.getException();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -313,7 +296,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         }
 
         RealmResults<LotteRealmModel> lotteResult = realmRest.getLotteInfo();
-        Log.e(TAG, "lotte size : " + lotteResult.size() + "");
+//        Log.e(TAG, "lotte size : " + lotteResult.size() + "");
         for (int i = 0; i < lotteResult.size(); i++) {
             Location lotteLocation = new Location("Lotte");
             double lotteLat = lotteResult.get(i).getLat();
@@ -325,11 +308,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             TheaterDisInfo theaterDisInfo = new TheaterDisInfo();
 
-            Log.e(TAG, "lotte result" + lotteResult.get(i).getName());
-
             theaterDisInfo.name = lotteResult.get(i).getName();
 
-            Log.e(TAG, "lotte name : " + theaterDisInfo.name);
             theaterDisInfo.lat = lotteLat;
             theaterDisInfo.lng = lotteLng;
             theaterDisInfo.distance = dis;
@@ -374,8 +354,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
                     break;
                 }
             }
-            String tag = brand + " " + disInfo.get(i).name + " : " + disInfo.get(i).distance;
-            Log.e(TAG, tag);
+//            String tag = "info : " +  brand + " " + disInfo.get(i).name + " : " + disInfo.get(i).distance;
+//            Log.e(TAG, tag);
         }
     }
 
@@ -391,7 +371,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
         List<MovieInfoListItem> totalListItems = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            Log.e(TAG, "dis code : " + disInfo.get(i).code + "");
+//            Log.e(TAG, "dis code : " + disInfo.get(i).code + "");
             switch (disInfo.get(i).code) {
                 case 1: {
                     // cgv
@@ -409,7 +389,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                                 item.setTheater(disInfo.get(i).name);
                                 item.setLat(disInfo.get(i).lat);
                                 item.setLng(disInfo.get(i).lng);
-                                Log.e(TAG, "cgv dis info " + disInfo.get(i).name);
+//                                Log.e(TAG, "cgv dis info " + disInfo.get(i).name);
                                 totalListItems.add(item);
                             }
 
@@ -430,21 +410,23 @@ public class SelectMovieInfoActivity extends BaseActivity {
 //                    Log.e(TAG,results.get(i).getWww());
                     for (int j = 0; j < results.size(); j++) {
                         String url = results.get(j).getWww();
-                        Log.e(TAG, url);
+//                        Log.e(TAG, url);
 
                         String cinema = url.substring(url.lastIndexOf("=") + 1, url.length());
 
                         MovieCrawling movieCrawling = new MovieCrawling(cinema, (ArrayList) names);
                         try {
                             List<MovieInfoListItem> listItems = (List<MovieInfoListItem>) movieCrawling.execute().get();
+//                            Log.e(TAG,"megabox crawling size : " + listItems.size());
+
                             for (int k = 0; k < listItems.size(); k++) {
                                 MovieInfoListItem item = listItems.get(k);
                                 item.setId(2);
                                 item.setDistance(disInfo.get(i).distance);
                                 item.setLat(disInfo.get(i).lat);
                                 item.setLng(disInfo.get(i).lng);
-                                Log.e(TAG, "mega dis info " + disInfo.get(i).name);
-                                item.setTheater(disInfo.get(i).name);
+//                                Log.e(TAG, "mega dis info " + disInfo.get(i).name);
+                                item.setTheater("메가박스 " + disInfo.get(i).name);
                                 totalListItems.add(item);
                             }
                         } catch (InterruptedException e) {
@@ -454,16 +436,16 @@ public class SelectMovieInfoActivity extends BaseActivity {
                         }
 
 
-                        Log.e(TAG, url.substring(url.lastIndexOf("=") + 1, url.length()));
+//                        Log.e(TAG, url.substring(url.lastIndexOf("=") + 1, url.length()));
                     }
 
                     break;
                 }
                 case 3: {
                     // lotte
-                    Log.e(TAG, "dis info name : " + disInfo.get(i).name.trim());
+//                    Log.e(TAG, "dis info name : " + disInfo.get(i).name.trim());
                     RealmResults<LotteRealmModel> results = realmRest.getLotteInfo(disInfo.get(i).name.trim());
-                    Log.e(TAG, "lotte info : " + results.size());
+//                    Log.e(TAG, "lotte info : " + results.size());
                     for (int j = 0; j < results.size(); j++) {
                         MovieCrawling movieCrawling = new MovieCrawling(results.get(j).getCinemaID(), results.get(j).getDivisionCode(), results.get(j).getDetailDivisionCode(), (ArrayList) names);
                         try {
@@ -473,7 +455,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                                 item.setId(3);
                                 //                               item.setThumbnail(disInfo.get(i).);
 
-                                Log.e(TAG, "lotte dis info " + disInfo.get(i).name);
+//                                Log.e(TAG, "lotte dis info " + disInfo.get(i).name);
                                 item.setTheater("롯데 " + disInfo.get(i).name);
                                 item.setDistance(disInfo.get(i).distance);
                                 item.setLat(disInfo.get(i).lat);
@@ -524,7 +506,15 @@ public class SelectMovieInfoActivity extends BaseActivity {
         addItem(totalListItems);
 
         for (int i = 0; i < totalListItems.size(); i++) {
-            Log.e(TAG, totalListItems.get(i).getTheater() + " " + totalListItems.get(i).getId() + " " + totalListItems.get(i).getTitle() + " " + totalListItems.get(i).getTime());
+            Log.e(TAG, "total name : " + totalListItems.get(i).getTheater() + " " +
+                    totalListItems.get(i).getId() + " " +
+                    "title : " + totalListItems.get(i).getTitle() + " " +
+                    "time : " + totalListItems.get(i).getTime() + " " +
+                    "auditorium : " + totalListItems.get(i).getAuditorium() + " " +
+                    "type : " + totalListItems.get(i).getTypeTheater() + " " +
+                    "total seat : " + totalListItems.get(i).getTotalSeat() + " " +
+                    "remind seat : " + totalListItems.get(i).getRemindSeat() + " " +
+                    "distance : " + totalListItems.get(i).getDistance());
         }
     }
 

@@ -11,15 +11,42 @@ public class MovieInfoListItem {
     private double distance;
     private String title;
     private String time;
-    private String seat;
+    private String remindSeat;
+    private String auditorium;
+    private String typeTheater;
+    private String totalSeat;
     private String thumbnail;
     private double lat;
     private double lng;
 
-    public MovieInfoListItem(String title, String time, String seat) {
+    public MovieInfoListItem(String title, String time, String remindSeat) {
         this.title = title;
         this.time = time;
-        this.seat = seat;
+        this.remindSeat = remindSeat;
+    }
+
+    public void setAuditorium(String auditorium) {
+        this.auditorium = auditorium;
+    }
+
+    public void setTypeTheater(String typeTheater) {
+        this.typeTheater = typeTheater;
+    }
+
+    public void setTotalSeat(String totalSeat) {
+        this.totalSeat = totalSeat;
+    }
+
+    public String getAuditorium() {
+        return auditorium;
+    }
+
+    public String getTypeTheater() {
+        return typeTheater;
+    }
+
+    public String getTotalSeat() {
+        return totalSeat;
     }
 
     public double getLat() {
@@ -86,11 +113,11 @@ public class MovieInfoListItem {
         this.time = time;
     }
 
-    public String getSeat() {
-        return seat;
+    public String getRemindSeat() {
+        return remindSeat;
     }
 
-    public void setSeat(String seat) {
-        this.seat = seat;
+    public void setRemindSeat(String remindSeat) {
+        this.remindSeat = remindSeat;
     }
 }

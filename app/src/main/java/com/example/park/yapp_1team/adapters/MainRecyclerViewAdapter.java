@@ -2,16 +2,17 @@ package com.example.park.yapp_1team.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
 import com.example.park.yapp_1team.items.MovieListItem;
-import com.example.park.yapp_1team.views.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +65,17 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
-        ImageView imgLine;
+        RelativeLayout imgLine;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imgThumbnail = (ImageView) itemView.findViewById(R.id.img_item_main_movie_thumbnail);
-            imgLine = (ImageView) itemView.findViewById(R.id.img_item_main_movie_line);
+            imgLine = (RelativeLayout) itemView.findViewById(R.id.layout_item_main_movie_line);
         }
+    }
+
+    private int changeDP(View v, float value) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, v.getResources().getDisplayMetrics());
     }
 
     public void clear() {

@@ -30,7 +30,10 @@
                 <TextView
                     android:id="@+id/txt_select_location_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="24dp"

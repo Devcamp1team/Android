@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -15,42 +16,42 @@ import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.MainRecyclerViewAdapter;
+import com.example.park.yapp_1team.adapters.MainSelectItemViewAdapter;
 import com.example.park.yapp_1team.interfaces.CheckEvent;
+import com.example.park.yapp_1team.interfaces.SelectItemClikListener;
 import com.example.park.yapp_1team.items.LotteGsonModel;
 import com.example.park.yapp_1team.items.MegaboxRealmModel;
-import com.example.park.yapp_1team.items.MovieInfoListItem;
 import com.example.park.yapp_1team.items.MovieListItem;
-import com.example.park.yapp_1team.items.TheaterCodeItem;
 import com.example.park.yapp_1team.network.MegaboxInfo;
 import com.example.park.yapp_1team.network.MovieInfoCrawling;
-import com.example.park.yapp_1team.network.MovieListCrawling;
-import com.example.park.yapp_1team.network.TheaterInfoCrawling;
 import com.example.park.yapp_1team.sql.RealmRest;
 import com.example.park.yapp_1team.utils.CustomComparator;
 import com.example.park.yapp_1team.utils.JSON;
+import com.example.park.yapp_1team.utils.RecyclerViewItemDecoration;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.realm.RealmResults;
 
-import static com.example.park.yapp_1team.utils.Strings.CGV;
-import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 import static com.example.park.yapp_1team.utils.URL.LOTTE_MOVIE_PICTURE_URL;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private static final int DIVISION_SIZE = 8;
+
     private RecyclerView movieListRecyclerView;
     private MainRecyclerViewAdapter movieListRecyclerViewAdapter;
+    private MainSelectItemViewAdapter mainSelectItemViewAdapter;
+    private RecyclerView selectMovieRecyclerView;
     private LinearLayout layoutShowMovieTIme;
 
     private List<MovieListItem> dataArray;
@@ -63,7 +64,7 @@ public class MainActivity extends BaseActivity {
 
     private CheckEvent checkEvent = new CheckEvent() {
         @Override
-        public void check(int position, ImageView imgMovieThumbnail, ImageView imgLine) {
+        public void check(int position, ImageView imgMovieThumbnail, View imgLine) {
             List<MovieListItem> items = movieListRecyclerViewAdapter.getDatas();
             Log.e(TAG, items.get(position).getName() + " " + items.get(position).getOriginalOrder() + " : " + items.get(position).getCurrentOrder());
             if (items.get(position).getCheck() == 0) {
@@ -71,17 +72,38 @@ public class MainActivity extends BaseActivity {
                 items.get(position).setCheck(1);
                 movieNames.add(items.get(position).getName());
                 movieImages.add(items.get(position).getUrl());
-                items.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
+//                items.get(position).setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder());
             } else {
                 items.get(position).setCheck(0);
                 movieNames.remove(items.get(position).getName());
                 movieImages.remove(items.get(position).getUrl());
-                items.get(position).setCurrentOrder(items.get(position).getOriginalOrder());
+//                items.get(position).setCurrentOrder(items.get(position).getOriginalOrder());
             }
 
-            Collections.sort(items, customComparator);
-            movieListRecyclerViewAdapter.addList(items);
-            movieListRecyclerViewAdapter.notifyDataSetChanged();
+            movieListRecyclerViewAdapter.notifyItemChanged(position);
+            mainSelectItemViewAdapter.notifyDataSetChanged();
+
+//            Collections.sort(items, customComparator);
+//            movieListRecyclerViewAdapter.addList(items);
+//          movieListRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    };
+
+    private SelectItemClikListener clikListener = new SelectItemClikListener() {
+        @Override
+        public void click(View view, int position) {
+            String name = movieNames.get(position).toString();
+            movieNames.remove(name);
+            List<MovieListItem> items = movieListRecyclerViewAdapter.getDatas();
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).getName().equals(name)) {
+                    movieImages.remove(items.get(i).getUrl());
+                    items.get(i).setCheck(0);
+                    movieListRecyclerViewAdapter.notifyItemChanged(i);
+                    break;
+                }
+            }
+            mainSelectItemViewAdapter.notifyDataSetChanged();
         }
     };
 
@@ -153,12 +175,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initialize() {
-        movieListRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_start);
         layoutShowMovieTIme = (LinearLayout) findViewById(R.id.layout_show_movie_time);
+
+        movieListRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_start);
         movieListRecyclerView.setHasFixedSize(true);
         movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this, checkEvent);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        RecyclerViewItemDecoration itemDecoration = new RecyclerViewItemDecoration(DIVISION_SIZE);
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
+        movieListRecyclerView.addItemDecoration(itemDecoration);
+
+        selectMovieRecyclerView = (RecyclerView) findViewById(R.id.rcv_select_main_movie_name);
+        selectMovieRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        selectMovieRecyclerView.setLayoutManager(linearLayoutManager);
+        mainSelectItemViewAdapter = new MainSelectItemViewAdapter();
+        mainSelectItemViewAdapter.setClikListener(clikListener);
+        selectMovieRecyclerView.setAdapter(mainSelectItemViewAdapter);
 
         realmRest = new RealmRest();
 
@@ -168,6 +202,8 @@ public class MainActivity extends BaseActivity {
             movieListRecyclerViewAdapter.add((MovieListItem) iterator.next());
         }
         movieListRecyclerView.setAdapter(movieListRecyclerViewAdapter);
+
+        mainSelectItemViewAdapter.setSelectMovieList(movieNames);
     }
 
     private List<MovieListItem> movieCrawling() {
@@ -247,52 +283,6 @@ public class MainActivity extends BaseActivity {
 
         } catch (IOException ie) {
             ie.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 이게 왜 있는지 이해가 안감
-     */
-    private void crawling() {
-        // cgv theater info crawling
-        TheaterInfoCrawling theaterInfoCrawling = new TheaterInfoCrawling(CGV);
-        ArrayList<TheaterCodeItem> cgv_theater = new ArrayList<>();
-
-        try {
-            cgv_theater = (ArrayList<TheaterCodeItem>) theaterInfoCrawling.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // cgv movie time crawling
-        MovieListCrawling movieListCrawling = new MovieListCrawling(cgv_theater.get(1).getTheater(), cgv_theater.get(1).getArea());
-        ArrayList<MovieInfoListItem> cgv_movie = new ArrayList<>();
-
-        try {
-            cgv_movie = (ArrayList<MovieInfoListItem>) movieListCrawling.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // lotte theater info crawling
-        theaterInfoCrawling = new TheaterInfoCrawling(LOTTE);
-        ArrayList<TheaterCodeItem> lotte_theater = new ArrayList<>();
-
-        try {
-            lotte_theater = (ArrayList<TheaterCodeItem>) theaterInfoCrawling.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // lotte movie time crawling
-        movieListCrawling = new MovieListCrawling(lotte_theater.get(1).getTheater(), lotte_theater.get(1).getArea(), lotte_theater.get(1).getDetailarea());
-        ArrayList<MovieInfoListItem> lotte_movie = new ArrayList<>();
-
-        try {
-            lotte_movie = (ArrayList<MovieInfoListItem>) movieListCrawling.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

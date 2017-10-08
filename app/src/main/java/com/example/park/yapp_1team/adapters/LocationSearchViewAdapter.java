@@ -27,8 +27,7 @@ public class LocationSearchViewAdapter
     private Realm realm;
     private PlaceAutocompleteFragment autocompleteFragment;
 
-    public LocationSearchViewAdapter(Context context, RealmResults<SearchListItem> realmResults, boolean automaticUpdate, boolean animate, PlaceAutocompleteFragment autocompleteFragment)
-    {
+    public LocationSearchViewAdapter(Context context, RealmResults<SearchListItem> realmResults, boolean automaticUpdate, boolean animate, PlaceAutocompleteFragment autocompleteFragment) {
         super(context, realmResults, automaticUpdate, animate);
 
         this.autocompleteFragment = autocompleteFragment;
@@ -85,7 +84,7 @@ public class LocationSearchViewAdapter
         private TextView searchText;
         private FrameLayout removeImg;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
             this.searchText = (TextView) itemView.findViewById(R.id.search_location_item);
             this.removeImg = (FrameLayout) itemView.findViewById(R.id.search_location_remove);

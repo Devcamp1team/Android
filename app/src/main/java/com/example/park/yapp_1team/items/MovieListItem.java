@@ -10,10 +10,9 @@ public class MovieListItem {
     private int currentOrder;
     private String name;
     private String url;
-    private int check=0;
+    private int check = 0;
 
-    public MovieListItem(String name, String url)
-    {
+    public MovieListItem(String name, String url) {
         this.name = name;
         this.url = url;
     }
@@ -49,8 +48,7 @@ public class MovieListItem {
         this.url = url;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
