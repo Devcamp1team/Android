@@ -29,6 +29,7 @@
                 android:id="@+id/txt_item_main_movie_full_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/img_item_main_movie_full_thumbnail_small_size"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/colorWhite"
