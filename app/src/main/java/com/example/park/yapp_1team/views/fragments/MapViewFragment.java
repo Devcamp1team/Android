@@ -361,6 +361,7 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
         mapView.setOnMapStateChangeListener(this);
 
         controller = mapView.getMapController();
+        permissionCheck();
     }
 
     @Override

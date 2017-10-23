@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -560,12 +561,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_select_movie_info, menu);
-        return true;
-    }
-
     boolean isFind = false;
 
     private class GPSListener implements LocationListener {
@@ -657,5 +652,22 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_select_movie_info, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_1: {
+                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                break;
+            }
+        }
+        return false;
     }
 }
