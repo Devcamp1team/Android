@@ -92,6 +92,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             it.putExtra("title", listItems.get(position).getTitle());
             it.putExtra("time", listItems.get(position).getStartTime());
+            it.putExtra("totalSeat", listItems.get(position).getLeftSeat());
+            it.putExtra("useSeat", listItems.get(position).getUseSeat());
             it.putExtra("location", listItems.get(position).getLocation());
             it.putExtra("thumbnail", listItems.get(position).getImgThumbnail());
             it.putExtra("lat", listItems.get(position).getLat());
