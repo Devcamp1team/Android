@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -150,8 +149,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
                 returnTime = pairStr.first[bottomDate.getValue()] + " " + pairStr.second[bottomTime.getValue()].toString();
 
-                Log.e("Time setup", returnTime);
-
                 bottomSheetDialog.hide();
             }
         });
@@ -173,7 +170,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.e("get info", "Place : " + place.getName());
 
                 realmRest.insertUserData(place.getName().toString());
 
@@ -182,7 +178,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
             @Override
             public void onError(Status status) {
-                Log.e("suggestion system error", "Error occur" + status);
             }
         });
     }
@@ -298,7 +293,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-        Log.e("Connection Fail", connectionResult.toString());
     }
 
 

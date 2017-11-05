@@ -47,9 +47,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -88,7 +90,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
         public void itemClick(int position, List<SelectMovieInfoItem> listItems) {
             // TODO: 2017-09-08 item click event
             Intent it = new Intent(getApplicationContext(), MapActivity.class);
-//            Log.e(TAG,"list item loc : " + listItems.get(position).getLat() + " : " + listItems.get(position).getLat());
 
             it.putExtra("title", listItems.get(position).getTitle());
             it.putExtra("time", listItems.get(position).getStartTime());
@@ -115,10 +116,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         count = names.size();
 
-//        Log.e(TAG, String.valueOf(count));
-
         initialize();
-//        addItem();
         event();
 
         permissionCheck();
@@ -191,9 +189,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 }
             }
 
-//            infoItem.setTitle();
             infoItem.setTitle(totalListItems.get(i).getTitle());
-//            Log.e(TAG, "what lotte" + totalListItems.get(i).getTitle());
             infoItem.setLeftSeat("/" + totalListItems.get(i).getTotalSeat());
             infoItem.setUseSeat(totalListItems.get(i).getRemindSeat());
             infoItem.setStartTime(totalListItems.get(i).getTime());
@@ -241,7 +237,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
                 } else {
                     try {
-//                        Log.e(TAG, "CurrentLocation exception");
                         throw task.getException();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -299,7 +294,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
         }
 
         RealmResults<LotteRealmModel> lotteResult = realmRest.getLotteInfo();
-//        Log.e(TAG, "lotte size : " + lotteResult.size() + "");
         for (int i = 0; i < lotteResult.size(); i++) {
             Location lotteLocation = new Location("Lotte");
             double lotteLat = lotteResult.get(i).getLat();
@@ -338,43 +332,17 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
 
         getMovieInfo(disInfo);
-
-        // 가까운 영화관 3개로부터 정보 get
-        for (int i = 0; i < 10; i++) {
-
-            String brand = "";
-            switch (disInfo.get(i).code) {
-                case 1: {
-                    brand = "CGV";
-                    break;
-                }
-                case 2: {
-                    brand = "MEGA BOX";
-                    break;
-                }
-                case 3: {
-                    brand = "Lotte Cinema";
-                    break;
-                }
-            }
-//            String tag = "info : " +  brand + " " + disInfo.get(i).name + " : " + disInfo.get(i).distance;
-//            Log.e(TAG, tag);
-        }
     }
 
+
+    // CGV : http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=103&theatercode=0040
+    // Megabox : http://www.megabox.co.kr/?menuId=theater-detail&region=10&cinema=1372#menu3
+    // lotte cinema : http://www.lottecinema.co.kr/LCHS/Contents/Cinema/Cinema-Detail.aspx?divisionCode=1&detailDivisionCode=1&cinemaID=1013
     private void getMovieInfo(List<TheaterDisInfo> disInfo) {
-        // TODO: 2017-09-22 크롤링을 통해 영화 이름 비교 + 시간과 정보 가져오기
-        // TODO: 2017-09-22 CGV 주소 : http://www.cgv.co.kr/common/showtimes/iframeTheater.aspx?areacode=01&theatercode=0060&date=20170922
-        // TODO: 2017-09-23 CGV 주소2 : http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=103&theatercode=0040 
-        // TODO: 2017-09-23 MEGA 주소 : http://www.megabox.co.kr/?menuId=theater-detail&region=10&cinema=1372#menu3
-        // TODO: 2017-09-23 lotte 주소 :  http://www.lottecinema.co.kr/LCHS/Contents/Cinema/Cinema-Detail.aspx?divisionCode=1&detailDivisionCode=1&cinemaID=1013
-        // areacode와 theatercode, date를 변경해가며 검색 (date는 기본 오늘)
-        // TODO: 2017-09-22 가져온 값을 하나의 리스트에 저장하고 시간 순으로 정렬
 
         List<MovieInfoListItem> totalListItems = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-//            Log.e(TAG, "dis code : " + disInfo.get(i).code + "");
             switch (disInfo.get(i).code) {
                 case 1: {
                     // cgv
@@ -392,7 +360,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
                                 item.setTheater(disInfo.get(i).name);
                                 item.setLat(disInfo.get(i).lat);
                                 item.setLng(disInfo.get(i).lng);
-//                                Log.e(TAG, "cgv dis info " + disInfo.get(i).name);
                                 totalListItems.add(item);
                             }
 
@@ -410,17 +377,14 @@ public class SelectMovieInfoActivity extends BaseActivity {
                     // megabox
 
                     RealmResults<MegaboxRealmModel> results = realmRest.getMegaInfo(disInfo.get(i).name);
-//                    Log.e(TAG,results.get(i).getWww());
                     for (int j = 0; j < results.size(); j++) {
                         String url = results.get(j).getWww();
-//                        Log.e(TAG, url);
 
                         String cinema = url.substring(url.lastIndexOf("=") + 1, url.length());
 
                         MovieCrawling movieCrawling = new MovieCrawling(cinema, (ArrayList) names);
                         try {
                             List<MovieInfoListItem> listItems = (List<MovieInfoListItem>) movieCrawling.execute().get();
-//                            Log.e(TAG,"megabox crawling size : " + listItems.size());
 
                             for (int k = 0; k < listItems.size(); k++) {
                                 MovieInfoListItem item = listItems.get(k);
@@ -428,7 +392,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
                                 item.setDistance(disInfo.get(i).distance);
                                 item.setLat(disInfo.get(i).lat);
                                 item.setLng(disInfo.get(i).lng);
-//                                Log.e(TAG, "mega dis info " + disInfo.get(i).name);
                                 item.setTheater("메가박스 " + disInfo.get(i).name);
                                 totalListItems.add(item);
                             }
@@ -438,17 +401,13 @@ public class SelectMovieInfoActivity extends BaseActivity {
                             e.printStackTrace();
                         }
 
-
-//                        Log.e(TAG, url.substring(url.lastIndexOf("=") + 1, url.length()));
                     }
 
                     break;
                 }
                 case 3: {
                     // lotte
-//                    Log.e(TAG, "dis info name : " + disInfo.get(i).name.trim());
                     RealmResults<LotteRealmModel> results = realmRest.getLotteInfo(disInfo.get(i).name.trim());
-//                    Log.e(TAG, "lotte info : " + results.size());
                     for (int j = 0; j < results.size(); j++) {
                         MovieCrawling movieCrawling = new MovieCrawling(results.get(j).getCinemaID(), results.get(j).getDivisionCode(), results.get(j).getDetailDivisionCode(), (ArrayList) names);
                         try {
@@ -456,9 +415,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                             for (int k = 0; k < listItems.size(); k++) {
                                 MovieInfoListItem item = listItems.get(k);
                                 item.setId(3);
-                                //                               item.setThumbnail(disInfo.get(i).);
 
-//                                Log.e(TAG, "lotte dis info " + disInfo.get(i).name);
                                 item.setTheater("롯데 " + disInfo.get(i).name);
                                 item.setDistance(disInfo.get(i).distance);
                                 item.setLat(disInfo.get(i).lat);
@@ -481,15 +438,28 @@ public class SelectMovieInfoActivity extends BaseActivity {
             @Override
             public int compare(MovieInfoListItem o1, MovieInfoListItem o2) {
                 if (!o1.getTime().equals("") && !o2.getTime().equals("")) {
-                    String s = o1.getTime().replaceAll(":", "");
-                    String m = o2.getTime().replaceAll(":", "");
 
-                    int a1 = Integer.parseInt(s);
-                    int a2 = Integer.parseInt(m);
+                    // 시작 시간 : 단위 분
+                    int o1Time = converTime(o1.getTime());
+                    int o2Time = converTime(o2.getTime());
 
-                    if (a1 < a2) {
+                    // 가는 시간 : 단위 분 (km 당 10분으로 계산)
+                    int o1DisTime = (int) (o1.getDistance() / 100);
+                    int o2DisTime = (int) (o2.getDistance() / 100);
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                    String current = simpleDateFormat.format(new Date());
+
+                    // 현재 시간
+                    int currentTime = converTime(current);
+
+                    // 이동 시간 포함하여 남은 시간
+                    int o1AvailableTime = o1Time - (currentTime + o1DisTime);
+                    int o2AvailableTime = o2Time - (currentTime + o2DisTime);
+
+                    if (o1AvailableTime < o2AvailableTime) {
                         return -1;
-                    } else if (a1 > a2) {
+                    } else if (o1AvailableTime > o2AvailableTime) {
                         return 1;
                     } else {
                         return 0;
@@ -519,6 +489,13 @@ public class SelectMovieInfoActivity extends BaseActivity {
                     "remind seat : " + totalListItems.get(i).getRemindSeat() + " " +
                     "distance : " + totalListItems.get(i).getDistance());
         }
+    }
+
+    private int converTime(String time) {
+        String si = time.substring(0, time.indexOf(':'));
+        String bun = time.substring(time.indexOf(':') + 1);
+
+        return Integer.parseInt(si) * 60 + Integer.parseInt(bun);
     }
 
     private boolean checkGPS() {
@@ -575,14 +552,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 findTheater(latitude, longitude);
             }
             isFind = true;
-            Log.e(TAG, "location" + latitude + " : " + longitude);
 
-
-//            msg = "Latitude : " + latitude + "\nLongitude : " + longitude;
-//            Log.i("GPSListener", msg);
-
-
-//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         @Override

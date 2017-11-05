@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +35,8 @@ public class MapActivity extends BaseActivity {
 
         initialize();
     }
+
+
 
     private void initialize() {
 
@@ -71,8 +72,6 @@ public class MapActivity extends BaseActivity {
         txtUseSeat.setText(useSeat);
         txtTotalSeat.setText("/" + totalSeat);
         Glide.with(this).load(thumbnail).into(imgThumbnail);
-
-        Log.e(TAG, "location : " + lat + " : " + lng);
 
         MapViewFragment fragment = new MapViewFragment();
         fragment.setMovieLat(lat);

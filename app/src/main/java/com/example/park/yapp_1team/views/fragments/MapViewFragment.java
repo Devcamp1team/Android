@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +98,16 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mapView = (NMapView) getView().findViewById(R.id.map_view);
@@ -158,7 +167,6 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
 
             @Override
             protected Drawable getDrawableForMarker(int i, boolean b, NMapOverlayItem nMapOverlayItem) {
-                Log.e(TAG, "get drawable" + i);
                 if (i == 1) {
                     return getResources().getDrawable(R.drawable.ic_add_location_pink_24dp);
                 } else {
@@ -259,7 +267,6 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
         int markerId = 1;
 
 // set POI data
-        Log.e(TAG, "location : " + movieLat + " : " + movieLng);
         NMapPOIdata poiData = new NMapPOIdata(2, nMapResourceProvider);
         poiData.beginPOIdata(2);
         poiData.addPOIitem(lng, lat, "현재", markerId, 0);
@@ -301,7 +308,6 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
                     moveMapCenter();
                 } else {
                     try {
-                        Log.e(TAG, "CurrentLocation exception");
                         throw task.getException();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -396,7 +402,6 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
             controller.setZoomLevel(11);
             mapView.setBuiltInAppControl(true);
         } else {
-            Log.e("Naver", "onMapInitHandler: error=" + nMapError.toString());
         }
     }
 
@@ -435,14 +440,6 @@ public class MapViewFragment extends Fragment implements NMapView.OnMapStateChan
                 moveMapCenter();
             }
             isFind = true;
-            Log.e(TAG, "location" + latitude + " : " + longitude);
-
-
-//            msg = "Latitude : " + latitude + "\nLongitude : " + longitude;
-//            Log.i("GPSListener", msg);
-
-
-//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         @Override

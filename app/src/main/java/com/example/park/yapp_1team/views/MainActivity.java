@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,7 +65,6 @@ public class MainActivity extends BaseActivity {
         @Override
         public void check(int position, ImageView imgMovieThumbnail, View imgLine) {
             List<MovieListItem> items = movieListRecyclerViewAdapter.getDatas();
-            Log.e(TAG, items.get(position).getName() + " " + items.get(position).getOriginalOrder() + " : " + items.get(position).getCurrentOrder());
             if (items.get(position).getCheck() == 0) {
                 movieListRecyclerViewAdapter.setCurrentOrder(movieListRecyclerViewAdapter.getCurrentOrder() + 1);
                 items.get(position).setCheck(1);
@@ -147,9 +145,6 @@ public class MainActivity extends BaseActivity {
         }
 
         RealmResults<MegaboxRealmModel> r = realmRest.getMegaInfo();
-//        for (int i = 0; i < r.size(); i++) {
-//            Log.e(TAG, r.get(i).getName() + " : " + r.get(i).getWww());
-//        }
     }
 
     @Override
@@ -226,12 +221,8 @@ public class MainActivity extends BaseActivity {
     private void saveLotteInfo() {
         String info = JSON.LOTTE_THEATER_JSON;
 
-        Log.e(TAG, info);
-
         Gson gson = new Gson();
         LotteGsonModel model = gson.fromJson(info, LotteGsonModel.class);
-        Log.e(TAG, model.getCinemases().getItems().length + "");
-        Log.e(TAG, "cinemas : " + model.getCinemases().getItems().length);
         for (int i = 0; i < model.getCinemases().getItems().length; i++) {
             realmRest.insertLotteInfo(model.getCinemases().getItems()[i]);
         }
@@ -285,4 +276,5 @@ public class MainActivity extends BaseActivity {
             ie.printStackTrace();
         }
     }
+
 }
