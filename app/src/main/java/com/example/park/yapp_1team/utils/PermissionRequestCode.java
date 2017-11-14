@@ -6,4 +6,11 @@ package com.example.park.yapp_1team.utils;
 
 public class PermissionRequestCode {
     public static final int LOCATION_PERMISSION_CODE = 200;
+
+    public static final int FILTER_INTENT_RESULT_CODE = 1000;
+
+
+    public static final int CGV_THEATER_CODE = 1;
+    public static final int MEGA_THEATER_CODE = 2;
+    public static final int LOTTE_THEATER_CODE = 3;
 }

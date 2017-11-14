@@ -43,7 +43,6 @@
         <activity
             android:name=".views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
-        <activity android:name=".views.FilterActivity" />
         <activity
             android:name=".views.SettingActivity"
             android:theme="@style/MapBar" />
@@ -53,6 +52,9 @@
         <activity
             android:name=".views.LicenseActivity"
             android:theme="@style/MapBar" />
+        <activity
+            android:name=".views.FilterActivity"
+            android:theme="@style/MapBar"></activity>
     </application>
 
 </manifest>

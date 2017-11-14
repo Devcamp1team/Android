@@ -1,405 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context="com.example.park.yapp_1team.views.FilterActivity">
 
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_filter"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:onClick="close"
+            android:id="@+id/img_filter_close"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/ic_close_orange_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Filters"
+            android:textColor="#484848"
+            android:textSize="15dp" />
+
+        <TextView
+            android:onClick="reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="24dp"
+            android:text="Reset"
+            android:textColor="#ff4800"
+            android:textSize="15dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:id="@+id/btn_filter_result"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/filter_button_gradition"
+        android:onClick="onClick"
+        android:text="See results"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relative1_filter">
-        <RelativeLayout
+        android:layout_above="@id/btn_filter_result"
+        android:layout_below="@id/toolbar_filter">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:id="@+id/relative2_filter"
-            android:layout_marginLeft="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/icon_close_pink"
-                android:layout_marginTop="21dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:id="@+id/text1_relative2_filter"
-                android:textSize="20sp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:text="FILETER"/>
-
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:id="@+id/view_filter"
-            android:background="#000000"
-            android:layout_below="@id/relative2_filter"></View>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_filter">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relative3_filter"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text1_relative3_filter"
-                android:textSize="16sp"
-                android:textColor="#6a7482"
-                android:text="영화 브랜드"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:layout_width="77dp"
-                android:layout_height="36dp"
-                android:id="@+id/text2_relative3_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="CGV"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative3_filter"/>
-            <TextView
-                android:layout_width="111dp"
-                android:layout_height="36dp"
-                android:id="@+id/text3_relative3_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="롯데시네마"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative3_filter"
-                android:layout_toRightOf="@+id/text2_relative3_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="111dp"
-                android:layout_height="36dp"
-                android:id="@+id/text4_relative3_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="메가박스"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative3_filter"
-                android:layout_toRightOf="@+id/text3_relative3_filter"
-                android:layout_marginLeft="5dp"/>
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relative4_filter"
-            android:layout_below="@+id/relative3_filter"
-            android:layout_marginLeft="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text1_relative4_filter"
-                android:textSize="16sp"
-                android:textColor="#6a7482"
-                android:text="상영관 시스템"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:layout_width="68dp"
-                android:layout_height="36dp"
-                android:id="@+id/text2_relative4_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="2D"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative4_filter"/>
-            <TextView
-                android:layout_width="68dp"
-                android:layout_height="36dp"
-                android:id="@+id/text3_relative4_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="3D"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative4_filter"
-                android:layout_toRightOf="@+id/text2_relative4_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="68dp"
-                android:layout_height="36dp"
-                android:id="@+id/text4_relative4_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="4D"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative4_filter"
-                android:layout_toRightOf="@+id/text3_relative4_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="85dp"
-                android:layout_height="36dp"
-                android:id="@+id/text5_relative4_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="IMAX"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative4_filter"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/text4_relative4_filter"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relative5_filter"
-            android:layout_below="@+id/relative4_filter"
-            android:layout_marginLeft="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text1_relative5_filter"
-                android:textSize="16sp"
-                android:textColor="#6a7482"
-                android:text="영화 브랜드"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:layout_width="99dp"
-                android:layout_height="36dp"
-                android:id="@+id/text2_relative5_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="프리미엄"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative5_filter"/>
-            <TextView
-                android:layout_width="105dp"
-                android:layout_height="36dp"
-                android:id="@+id/text3_relative5_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="Screen X"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative5_filter"
-                android:layout_toRightOf="@+id/text2_relative5_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="71dp"
-                android:layout_height="36dp"
-                android:id="@+id/text4_relative5_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="MX"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative5_filter"
-                android:layout_toRightOf="@+id/text3_relative5_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="36dp"
-                android:id="@+id/text5_relative5_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="수퍼플렉스G"
-                android:background="#ffffff"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/text2_relative5_filter"
-             />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relative6_filter"
-            android:layout_below="@+id/relative5_filter"
-            android:layout_marginLeft="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text1_relative6_filter"
-                android:textSize="16sp"
-                android:textColor="#6a7482"
-                android:text="상영관 시스템"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text2_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="100"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative6_filter"/>
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text3_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="200"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative6_filter"
-                android:layout_toRightOf="@+id/text2_relative6_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text4_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="300"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative6_filter"
-                android:layout_toRightOf="@+id/text3_relative6_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text5_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="400"
-                android:background="#ffffff"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/text1_relative6_filter"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/text4_relative6_filter"/>
-
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text6_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="500"
-                android:background="#ffffff"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/text2_relative6_filter"/>
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text7_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="600"
-                android:background="#ffffff"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/text2_relative6_filter"
-                android:layout_toRightOf="@+id/text6_relative6_filter"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:layout_width="74dp"
-                android:layout_height="36dp"
-                android:id="@+id/text8_relative6_filter"
-                android:textSize="14dp"
-                android:textColor="#6a7482"
-                android:gravity="center"
-                android:text="700"
-                android:background="#ffffff"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/text2_relative6_filter"
-                android:layout_toRightOf="@+id/text7_relative6_filter"
-                android:layout_marginLeft="5dp"/>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relative7_filter"
-            android:layout_below="@+id/relative6_filter"
-            android:layout_marginLeft="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text1_relative7_filter"
-                android:textSize="16sp"
-                android:textColor="#6a7482"
-                android:text="잔여 좌석 여유 순으로"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="80dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:src="@drawable/switch_off_copy"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="80dp"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
-        </RelativeLayout>
-        </ScrollView>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#ff007e"
-            android:id="@+id/relaitve8_filter"
-            android:layout_alignParentBottom="true">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:lineSpacingExtra="12sp"
-                android:text="APPLY!"
-                android:layout_centerInParent="true"/>
+                android:text="Brand"
+                android:textColor="#484848"
+                android:textSize="18dp" />
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_filter_cgv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="CGV"
+                    android:textSize="18dp" />
+
+                <CheckBox
+                    android:id="@+id/cb_filter_cgv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray" />
+
+            <RelativeLayout
+                android:id="@+id/layout_filter_mega"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Megabox"
+                    android:textSize="18dp" />
+
+                <CheckBox
+                    android:id="@+id/cb_filter_mega"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray" />
+
+            <RelativeLayout
+                android:id="@+id/layout_filter_lotte"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Lotte cinema"
+                    android:textSize="18dp" />
+
+                <CheckBox
+                    android:id="@+id/cb_filter_lotte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="System"
+                android:textColor="#484848"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:id="@+id/layout_filter_system_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
+            </LinearLayout>
 
+        </LinearLayout>
 
-
-
-
-    </RelativeLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

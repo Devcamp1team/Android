@@ -37,7 +37,6 @@ public class MapActivity extends BaseActivity {
     }
 
 
-
     private void initialize() {
 
         mapToolbar = (Toolbar) findViewById(R.id.toolbar_map);

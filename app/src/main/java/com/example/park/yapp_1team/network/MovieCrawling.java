@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.park.yapp_1team.utils.PermissionRequestCode.CGV_THEATER_CODE;
+import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOTTE_THEATER_CODE;
+import static com.example.park.yapp_1team.utils.PermissionRequestCode.MEGA_THEATER_CODE;
 import static com.example.park.yapp_1team.utils.Strings.CGV;
 import static com.example.park.yapp_1team.utils.Strings.LOTTE;
 import static com.example.park.yapp_1team.utils.Strings.MEGA;
@@ -129,10 +132,10 @@ public class MovieCrawling extends AsyncTask {
                         String remain = t.select("span.txt-lightblue").text();
 
                         if (remain.length() > 4) {
-                            remain = remain.substring(4, remain.length()-1);
+                            remain = remain.substring(4, remain.length() - 1);
                         }
 
-                        MovieInfoListItem item = new MovieInfoListItem(name, start, remain);
+                        MovieInfoListItem item = new MovieInfoListItem(CGV_THEATER_CODE, name, start, remain);
                         item.setAuditorium(auditoriumTheater);
                         item.setTotalSeat(total);
                         item.setTypeTheater(typeTheater);
@@ -233,7 +236,7 @@ public class MovieCrawling extends AsyncTask {
                     filmName = film.get(filmCode).toString();
                 }
 
-                MovieInfoListItem item = new MovieInfoListItem(movieName, startTime, bookingSeat);
+                MovieInfoListItem item = new MovieInfoListItem(LOTTE_THEATER_CODE, movieName, startTime, bookingSeat);
 
 //                Log.e("lotte data", "movie code : " + movieCode + " movie name : " + movieName + " start time : " + startTime +
 //                        " end time : " + endTime + " total seat : " + totalSeat + " booking seat : " + bookingSeat + " screen number : " + screenNum + " film name : " + filmName);
@@ -320,7 +323,7 @@ public class MovieCrawling extends AsyncTask {
                         String total = seat.substring(seat.indexOf("/") + 1, seat.length());
 
 
-                        MovieInfoListItem item = new MovieInfoListItem(name, start, remain);
+                        MovieInfoListItem item = new MovieInfoListItem(MEGA_THEATER_CODE, name, start, remain);
                         item.setTotalSeat(total);
                         item.setAuditorium(auditorium);
                         item.setTypeTheater(theaterType);

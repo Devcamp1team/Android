@@ -52,12 +52,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import io.realm.RealmResults;
 
+import static com.example.park.yapp_1team.utils.PermissionRequestCode.FILTER_INTENT_RESULT_CODE;
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
 
 public class SelectMovieInfoActivity extends BaseActivity {
@@ -84,6 +87,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private Location mCurrentLocation;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+    private List<MovieInfoListItem> originalList = new ArrayList<>();
 
     private RcvClickListener clickListener = new RcvClickListener() {
         @Override
@@ -133,9 +137,20 @@ public class SelectMovieInfoActivity extends BaseActivity {
         fabMovieFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
-                startActivity(intent);
 
+                Set<String> set = new HashSet<>();
+                for (MovieInfoListItem item : originalList) {
+                    set.add(item.getTypeTheater());
+                }
+                String value = "";
+                for (String s : set) {
+                    value += s + "|";
+                }
+
+                value = value.substring(0, value.length() - 1);
+                Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+                intent.putExtra("type", value);
+                startActivityForResult(intent, FILTER_INTENT_RESULT_CODE);
             }
         });
 
@@ -475,8 +490,9 @@ public class SelectMovieInfoActivity extends BaseActivity {
         };
 
         Collections.sort(totalListItems, comparator);
-
         addItem(totalListItems);
+
+        originalList = totalListItems;
 
         for (int i = 0; i < totalListItems.size(); i++) {
             Log.e(TAG, "total name : " + totalListItems.get(i).getTheater() + " " +
@@ -641,5 +657,78 @@ public class SelectMovieInfoActivity extends BaseActivity {
             }
         }
         return false;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(data==null) {
+            return;
+        }
+
+        Bundle bundle = data.getExtras().getBundle("data");
+
+        String brandValue = bundle.getString("brand");
+        String[] dump = new String[0];
+        if (brandValue.length() > 0) {
+            dump = brandValue.split("\\|");
+        }
+        String optionValue = bundle.getString("option");
+        String[] option = new String[0];
+        if (optionValue.length() > 0) {
+            option = optionValue.split("\\|");
+        }
+
+        int[] brand = new int[dump.length];
+
+        for (int i = 0; i < dump.length; i++) {
+            brand[i] = Integer.parseInt(dump[i]);
+        }
+
+        boolean isBrandFilter = false;
+        boolean isRoomFilter = false;
+
+        if (brand.length > 0) {
+            isBrandFilter = true;
+        }
+        if (option.length > 0) {
+            isRoomFilter = true;
+        }
+
+
+
+        List<MovieInfoListItem> items = new ArrayList<>();
+
+        for (MovieInfoListItem item : originalList) {
+            if (isBrandFilter && isRoomFilter) {
+                for (int i = 0; i < brand.length; i++) {
+                    if (item.getTheaterCode() == brand[i]) {
+                        for (int j = 0; j < option.length; j++) {
+                            if (item.getTypeTheater().equals(option[j])) {
+                                items.add(item);
+                            }
+                        }
+                    }
+                }
+            } else if (isBrandFilter) {
+                for (int i = 0; i < brand.length; i++) {
+                    if (brand[i] == item.getTheaterCode()) {
+                        items.add(item);
+                    }
+                }
+            } else if (isRoomFilter) {
+                for (int i = 0; i < option.length; i++) {
+                    if (option[i].equals(item.getTypeTheater())) {
+                        items.add(item);
+                    }
+                }
+            } else {
+                items = originalList;
+            }
+        }
+
+        addItem(items);
     }
 }

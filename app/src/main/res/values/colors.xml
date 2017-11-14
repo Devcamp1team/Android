@@ -18,4 +18,7 @@
 
     <color name="colorBar">#3F51B5</color>
     <color name="colorSeparator">#2196F3</color>
+
+    <color name="gradationStart">#ff277f</color>
+    <color name="gradationEnd">#ff4800</color>
 </resources>
