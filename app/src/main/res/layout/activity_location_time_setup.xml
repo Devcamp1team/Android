@@ -39,7 +39,7 @@
             android:background="@android:color/white"
             app:rrvEmptyLayoutId="@layout/layout_location_search_empty"
             app:rrvLayoutType="LinearLayout"
-            app:rrvSwipeToDelete="true" />
+            app:rrvSwipeToDelete="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="15dp"
+                android:textSize="16sp"
                 android:gravity="center_vertical"
                 android:text="시간"
                 android:textColor="#6a7482" />
@@ -68,10 +69,10 @@
                 android:weightSum="4">
 
                 <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="15dp"
-                    android:background="@drawable/clock_test" />
+                    android:background="@drawable/fill_1" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -79,14 +80,15 @@
                     android:layout_marginStart="15dp"
                     android:layout_weight="4"
                     android:gravity="center_vertical"
-                    android:text="현재 시간" />
+                    android:textSize="16sp"
+                    android:text="지금 바로" />
 
                 <ImageView
                     android:id="@+id/check_time1"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginEnd="15dp"
-                    android:background="@drawable/check_test"
+                    android:background="@drawable/rectangle_3"
                     android:focusableInTouchMode="true" />
 
             </LinearLayout>
@@ -100,17 +102,18 @@
                 android:weightSum="4">
 
                 <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="15dp"
-                    android:background="@drawable/alarm_test" />
+                    android:background="@drawable/fill_2" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_weight="4"
+                    android:textSize="16sp"
                     android:gravity="center_vertical"
                     android:text="영화 시간 설정" />
 
@@ -126,6 +129,18 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/setup_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:background="#ff007e"
+        android:text="APPLY!"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        />
 
     <View
         android:layout_width="match_parent"

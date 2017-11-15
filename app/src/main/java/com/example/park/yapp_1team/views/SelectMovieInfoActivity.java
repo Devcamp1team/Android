@@ -62,6 +62,7 @@ import io.realm.RealmResults;
 
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.FILTER_INTENT_RESULT_CODE;
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
+import static com.example.park.yapp_1team.utils.PermissionRequestCode.SETUP_REQUEST_CODE;
 
 public class SelectMovieInfoActivity extends BaseActivity {
 
@@ -88,6 +89,9 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     private List<MovieInfoListItem> originalList = new ArrayList<>();
+
+    private boolean curTimeFlag = true;
+    private int hour = -1, min = -1;
 
     private RcvClickListener clickListener = new RcvClickListener() {
         @Override
@@ -186,7 +190,17 @@ public class SelectMovieInfoActivity extends BaseActivity {
         layoutShowLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LocationSetupActivity.class));
+//                startActivity(new Intent(getApplicationContext(), LocationSetupActivity.class));
+
+                Log.e("give", "lat : " + lat + "lng : " + lng);
+
+                Intent intent = new Intent(getApplicationContext(), LocationSetupActivity.class);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
+                intent.putExtra("hour",hour);
+                intent.putExtra("min", min);
+                startActivityForResult(intent, SETUP_REQUEST_CODE);
+
             }
         });
 
@@ -607,6 +621,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
             manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
 
@@ -668,67 +683,112 @@ public class SelectMovieInfoActivity extends BaseActivity {
             return;
         }
 
-        Bundle bundle = data.getExtras().getBundle("data");
+        // TODO: 맞는지 모르겠음?? 질문
+        if(requestCode == FILTER_INTENT_RESULT_CODE) {
 
-        String brandValue = bundle.getString("brand");
-        String[] dump = new String[0];
-        if (brandValue.length() > 0) {
-            dump = brandValue.split("\\|");
-        }
-        String optionValue = bundle.getString("option");
-        String[] option = new String[0];
-        if (optionValue.length() > 0) {
-            option = optionValue.split("\\|");
-        }
+            Bundle bundle = data.getExtras().getBundle("data");
 
-        int[] brand = new int[dump.length];
+            String brandValue = bundle.getString("brand");
+            String[] dump = new String[0];
+            if (brandValue.length() > 0) {
+                dump = brandValue.split("\\|");
+            }
+            String optionValue = bundle.getString("option");
+            String[] option = new String[0];
+            if (optionValue.length() > 0) {
+                option = optionValue.split("\\|");
+            }
 
-        for (int i = 0; i < dump.length; i++) {
-            brand[i] = Integer.parseInt(dump[i]);
-        }
+            int[] brand = new int[dump.length];
 
-        boolean isBrandFilter = false;
-        boolean isRoomFilter = false;
+            for (int i = 0; i < dump.length; i++) {
+                brand[i] = Integer.parseInt(dump[i]);
+            }
 
-        if (brand.length > 0) {
-            isBrandFilter = true;
-        }
-        if (option.length > 0) {
-            isRoomFilter = true;
-        }
+            boolean isBrandFilter = false;
+            boolean isRoomFilter = false;
+
+            if (brand.length > 0) {
+                isBrandFilter = true;
+            }
+            if (option.length > 0) {
+                isRoomFilter = true;
+            }
 
 
+            List<MovieInfoListItem> items = new ArrayList<>();
 
-        List<MovieInfoListItem> items = new ArrayList<>();
-
-        for (MovieInfoListItem item : originalList) {
-            if (isBrandFilter && isRoomFilter) {
-                for (int i = 0; i < brand.length; i++) {
-                    if (item.getTheaterCode() == brand[i]) {
-                        for (int j = 0; j < option.length; j++) {
-                            if (item.getTypeTheater().equals(option[j])) {
-                                items.add(item);
+            for (MovieInfoListItem item : originalList) {
+                if (isBrandFilter && isRoomFilter) {
+                    for (int i = 0; i < brand.length; i++) {
+                        if (item.getTheaterCode() == brand[i]) {
+                            for (int j = 0; j < option.length; j++) {
+                                if (item.getTypeTheater().equals(option[j])) {
+                                    items.add(item);
+                                }
                             }
                         }
                     }
-                }
-            } else if (isBrandFilter) {
-                for (int i = 0; i < brand.length; i++) {
-                    if (brand[i] == item.getTheaterCode()) {
-                        items.add(item);
+                } else if (isBrandFilter) {
+                    for (int i = 0; i < brand.length; i++) {
+                        if (brand[i] == item.getTheaterCode()) {
+                            items.add(item);
+                        }
                     }
-                }
-            } else if (isRoomFilter) {
-                for (int i = 0; i < option.length; i++) {
-                    if (option[i].equals(item.getTypeTheater())) {
-                        items.add(item);
+                } else if (isRoomFilter) {
+                    for (int i = 0; i < option.length; i++) {
+                        if (option[i].equals(item.getTypeTheater())) {
+                            items.add(item);
+                        }
                     }
+                } else {
+                    items = originalList;
                 }
-            } else {
+            }
+
+            addItem(items);
+
+        }
+        else if(requestCode == SETUP_REQUEST_CODE) {
+            // TODO: 설정했을 때 안햇을 때 구분, 날짜 문제 해결
+
+            Bundle bundle = data.getExtras().getBundle("setupdata");
+
+            findTheater(bundle.getDouble("lat"),bundle.getDouble("lng"));
+
+            int setupHour, setupMin, totalTime;
+
+            setupHour = bundle.getInt("hour");
+            setupMin = bundle.getInt("min");
+
+            if(setupHour != -1) {
+
+                hour = setupHour;
+                min = setupMin;
+
+                totalTime = setupHour * 60 + setupMin;
+
+                List<MovieInfoListItem> items = new ArrayList<>();
+
+                for (MovieInfoListItem item : originalList) {
+                    String[] tmpTime = item.getTime().split(":");
+                    int tmpTotalTime = Integer.parseInt(tmpTime[0]) * 60 + Integer.parseInt(tmpTime[1]);
+
+                    if(tmpTotalTime >= totalTime)
+                        items.add(item);
+                }
+
+                addItem(items);
+            }
+            else
+            {
+                hour = -1;
+                min = -1;
+
+                List<MovieInfoListItem> items = new ArrayList<>();
                 items = originalList;
+                addItem(items);
             }
         }
-
-        addItem(items);
     }
 }
