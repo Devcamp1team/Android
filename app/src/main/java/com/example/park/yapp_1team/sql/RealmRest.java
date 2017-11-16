@@ -86,11 +86,11 @@ public class RealmRest {
     }
 
     public RealmResults<LotteRealmModel> getLotteInfo(String name) {
-        return realm.where(LotteRealmModel.class).contains("name",name).findAll();
+        return realm.where(LotteRealmModel.class).contains("name", name).findAll();
     }
 
     public RealmResults<MegaboxRealmModel> getMegaInfo(String name) {
-        return realm.where(MegaboxRealmModel.class).contains("name",name).findAll();
+        return realm.where(MegaboxRealmModel.class).contains("name", name).findAll();
     }
 
     public RealmResults<SearchListItem> getUserList() {
@@ -101,7 +101,7 @@ public class RealmRest {
         return realm.where(SearchListItem.class).equalTo("location", location).findAll();
     }
 
-    public void insertUserData(String location) {
+    public void insertUserData(String location, double lat, double lng) {
         realm.beginTransaction();
 
         RealmResults<SearchListItem> tmpItem = getUserList(location);
@@ -113,7 +113,9 @@ public class RealmRest {
         }
 
         if (tmpItem.size() == 0) {
-            realm.createObject(SearchListItem.class, location);
+            SearchListItem item = realm.createObject(SearchListItem.class, location);
+            item.setLng(lng);
+            item.setLat(lat);
         }
 
         realm.commitTransaction();

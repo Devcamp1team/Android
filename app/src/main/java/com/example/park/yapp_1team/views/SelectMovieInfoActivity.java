@@ -259,7 +259,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     Address a = addr.get(0);
-                    txtCurrentLocation.setText(a.getThoroughfare());
+                    txtCurrentLocation.setText(a.getSubLocality());
 
                     findTheater(lat, lng);
 
@@ -757,6 +757,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             int setupHour, setupMin, totalTime;
 
+            String name = bundle.getString("name");
+            txtCurrentLocation.setText(name);
             setupHour = bundle.getInt("hour");
             setupMin = bundle.getInt("min");
 

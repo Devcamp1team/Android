@@ -14,10 +14,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.example.park.yapp_1team.R;
 import com.example.park.yapp_1team.adapters.LocationSearchViewAdapter;
+import com.example.park.yapp_1team.interfaces.SearchRealmClick;
 import com.example.park.yapp_1team.items.SearchListItem;
 import com.example.park.yapp_1team.sql.RealmRest;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +38,6 @@ import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
 import io.realm.RealmResults;
 
 import static android.util.Pair.create;
-import static com.example.park.yapp_1team.utils.PermissionRequestCode.FILTER_INTENT_RESULT_CODE;
 import static com.example.park.yapp_1team.utils.PermissionRequestCode.SETUP_REQUEST_CODE;
 
 /**
@@ -62,6 +61,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     private Toolbar locationToolbar;
     private PlaceAutocompleteFragment autocompleteFragment;
 
+    private String name;
     private double lat;
     private double lng;
     private int rntHour = -1;
@@ -133,7 +133,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         lng = it.getExtras().getDouble("lng");
         rntHour = it.getExtras().getInt("hour");
         rntMin = it.getExtras().getInt("min");
-        if(rntHour != -1){
+        if (rntHour != -1) {
             setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
             curTime.setBackgroundColor(Color.WHITE);
         }
@@ -148,6 +148,16 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         RealmResults<SearchListItem> searchList = realmRest.getUserList();
 
         LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList, true, false, autocompleteFragment);
+        searchAdapter.setClick(new SearchRealmClick() {
+            @Override
+            public void click(String name) {
+                autocompleteFragment.setText(name);
+                LocationSetupActivity.this.name = name;
+                RealmResults<SearchListItem> listItems = realmRest.getUserList(name);
+                LocationSetupActivity.this.lat = listItems.get(0).getLat();
+                LocationSetupActivity.this.lng = listItems.get(0).getLng();
+            }
+        });
 
         RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.location_setup_recycle_view);
 
@@ -172,15 +182,15 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 //                returnTime = pairStr.first[bottomDate.getValue()] + " " + pairStr.second[bottomTime.getValue()].toString();
 
                 String tmpTime = pairStr.second[bottomTime.getValue()].toString();
-                String ampm = tmpTime.substring(0,2);
+                String ampm = tmpTime.substring(0, 2);
                 tmpTime = tmpTime.substring(0, tmpTime.length() - 3);
                 tmpTime = tmpTime.substring(3);
 
                 String[] tmpStr = tmpTime.split(":");
                 rntHour = Integer.parseInt(tmpStr[0]);
                 rntMin = Integer.parseInt(tmpStr[1]);
-                if(ampm.equals("오후"))
-                    if(rntHour != 12)
+                if (ampm.equals("오후"))
+                    if (rntHour != 12)
                         rntHour += 12;
 
                 bottomSheetDialog.hide();
@@ -208,10 +218,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
             @Override
             public void onPlaceSelected(Place place) {
 
-                realmRest.insertUserData(place.getName().toString());
+                name = place.getName().toString();
 
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
+
+                realmRest.insertUserData(place.getName().toString(), lat, lng);
             }
 
             @Override
@@ -224,12 +236,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
             public void onClick(View v) {
                 // TODO: Place 객체와 date string 전달 후 refresh
 
-
                 Bundle bundle = new Bundle();
+                bundle.putString("name", name);
                 bundle.putDouble("lat", lat);
                 bundle.putDouble("lng", lng);
-                bundle.putInt("hour",rntHour);
-                bundle.putInt("min",rntMin);
+                bundle.putInt("hour", rntHour);
+                bundle.putInt("min", rntMin);
                 setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
                 finish();
             }
@@ -293,7 +305,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         int curHour = calendar.get(Calendar.HOUR_OF_DAY);
         int curMin = calendar.get(Calendar.MINUTE);
 
-        if(rntHour == -1)
+        if (rntHour == -1)
             defaultValue = curHour * 2 + 1;
         else
             defaultValue = rntHour * 2 + 1;
