@@ -749,7 +749,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         }
         else if(requestCode == SETUP_REQUEST_CODE) {
-            // TODO: 설정했을 때 안햇을 때 구분, 날짜 문제 해결
+            // TODO: 날짜 문제 해결
 
             Bundle bundle = data.getExtras().getBundle("setupdata");
 
