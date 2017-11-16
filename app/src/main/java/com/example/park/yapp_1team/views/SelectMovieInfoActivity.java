@@ -190,7 +190,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
         layoutShowLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), LocationSetupActivity.class));
 
                 Log.e("give", "lat : " + lat + "lng : " + lng);
 

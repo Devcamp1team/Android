@@ -232,7 +232,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
                 bundle.putInt("min",rntMin);
                 setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
                 finish();
-//                returnTime;
             }
         });
     }
