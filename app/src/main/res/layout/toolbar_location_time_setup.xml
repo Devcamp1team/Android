@@ -4,7 +4,6 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@android:color/white"
     android:focusable="true"
-    android:focusableInTouchMode="true"
     android:gravity="center_vertical">
 
     <android.support.v7.widget.Toolbar
@@ -14,11 +13,11 @@
 
         <ImageView
             android:id="@+id/img_location_setup_back"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/location_setup_test" />
+            android:src="@drawable/icon_close_pink" />
 
         <TextView
             android:layout_width="match_parent"

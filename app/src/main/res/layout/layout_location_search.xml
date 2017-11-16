@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/search_location_icon"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="15dp"
-        android:background="@drawable/location_search_test" />
+        android:background="@drawable/clock" />
 
     <TextView
         android:id="@+id/search_location_item"
@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:textSize="16sp"
         android:layout_weight="4"
         android:gravity="center_vertical" />
 
