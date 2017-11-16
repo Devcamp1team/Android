@@ -753,7 +753,10 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             Bundle bundle = data.getExtras().getBundle("setupdata");
 
-            findTheater(bundle.getDouble("lat"),bundle.getDouble("lng"));
+            lat = bundle.getDouble("lat");
+            lng = bundle.getDouble("lng");
+
+            findTheater(lat, lng);
 
             int setupHour, setupMin, totalTime;
 
