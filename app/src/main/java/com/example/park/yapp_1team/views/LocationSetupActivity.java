@@ -66,6 +66,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     private double lng;
     private int rntHour = -1;
     private int rntMin = -1;
+    private String placeName = "";
 
     private RealmRest realmRest;
 
@@ -212,10 +213,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
+                placeName = place.getName().toString();
             }
 
             @Override
             public void onError(Status status) {
+                Log.e("Autocomplete ERROR", status.toString());
             }
         });
 
@@ -230,6 +233,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
                 bundle.putDouble("lng", lng);
                 bundle.putInt("hour",rntHour);
                 bundle.putInt("min",rntMin);
+                bundle.putString("place", placeName);
                 setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
                 finish();
             }

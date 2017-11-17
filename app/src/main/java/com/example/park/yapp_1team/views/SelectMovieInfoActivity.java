@@ -92,6 +92,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
     private boolean curTimeFlag = true;
     private int hour = -1, min = -1;
+    private String placeName;
 
     private RcvClickListener clickListener = new RcvClickListener() {
         @Override
@@ -249,7 +250,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
                     mCurrentLocation = task.getResult();
                     lat = mCurrentLocation.getLatitude();
                     lng = mCurrentLocation.getLongitude();
-
 
                     Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     List<Address> addr = null;
@@ -577,6 +577,20 @@ public class SelectMovieInfoActivity extends BaseActivity {
             Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
 
+            lat = latitude;
+            lng = longitude;
+
+            Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            List<Address> addr = null;
+            try {
+                addr = gCoder.getFromLocation(lat, lng, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address a = addr.get(0);
+
+            txtCurrentLocation.setText(a.getThoroughfare());
+
             if (!isFind) {
                 findTheater(latitude, longitude);
             }
@@ -625,9 +639,24 @@ public class SelectMovieInfoActivity extends BaseActivity {
             manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
 
             Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
             if (lastLocation != null) {
                 Double latitude = lastLocation.getLatitude();
                 Double longitude = lastLocation.getLongitude();
+
+                lat = latitude;
+                lng = longitude;
+
+                Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                List<Address> addr = null;
+                try {
+                    addr = gCoder.getFromLocation(lat, lng, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Address a = addr.get(0);
+
+                txtCurrentLocation.setText(a.getThoroughfare());
 
                 Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
 
@@ -762,6 +791,10 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             setupHour = bundle.getInt("hour");
             setupMin = bundle.getInt("min");
+            placeName = bundle.getString("place");
+
+            if(!placeName.equals(""))
+                txtCurrentLocation.setText(placeName);
 
             if(setupHour != -1) {
 
