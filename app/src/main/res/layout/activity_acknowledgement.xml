@@ -18,6 +18,7 @@
         android:src="@drawable/ic_clear_black_24dp" />
 
     <LinearLayout
+        android:id="@+id/golab_linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -38,11 +39,20 @@
             android:src="@drawable/golab" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/total_golab"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/total_golab"
+        android:layout_below="@+id/img_acknowledge_cancel"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_acknowledge_maker_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/img_acknowledge_cancel"
-        android:layout_marginTop="16dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/total_golab"
+        android:layout_marginTop="16dp" />
 
 </RelativeLayout>

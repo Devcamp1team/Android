@@ -8,12 +8,13 @@ public class AcknowledgementItem {
     private int id;
     private String nickname;
     private String email;
-    private String thumbnail;
+    private int thumbnail;
 
-    public AcknowledgementItem(int id, String nickname, String email) {
+    public AcknowledgementItem(int id, String nickname, String email, int thumbnail) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
+        this.thumbnail = thumbnail;
     }
 
     public int getId() {
@@ -40,11 +41,11 @@ public class AcknowledgementItem {
         this.email = email;
     }
 
-    public String getThumbnail() {
+    public int getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
+    public void setThumbnail(int thumbnail) {
         this.thumbnail = thumbnail;
     }
 }
