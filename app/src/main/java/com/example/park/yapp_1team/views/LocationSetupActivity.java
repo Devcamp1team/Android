@@ -61,11 +61,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     private Toolbar locationToolbar;
     private PlaceAutocompleteFragment autocompleteFragment;
 
-    private String name;
+    private String name = "";
     private double lat;
     private double lng;
     private int rntHour = -1;
     private int rntMin = -1;
+    private String placeName = "";
 
     private RealmRest realmRest;
 
@@ -179,8 +180,6 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
                 setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
                 curTime.setBackgroundColor(Color.WHITE);
 
-//                returnTime = pairStr.first[bottomDate.getValue()] + " " + pairStr.second[bottomTime.getValue()].toString();
-
                 String tmpTime = pairStr.second[bottomTime.getValue()].toString();
                 String ampm = tmpTime.substring(0, 2);
                 tmpTime = tmpTime.substring(0, tmpTime.length() - 3);
@@ -222,12 +221,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
-
                 realmRest.insertUserData(place.getName().toString(), lat, lng);
             }
 
             @Override
             public void onError(Status status) {
+                Log.e("Autocomplete ERROR", status.toString());
             }
         });
 
@@ -240,8 +239,10 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
                 bundle.putString("name", name);
                 bundle.putDouble("lat", lat);
                 bundle.putDouble("lng", lng);
-                bundle.putInt("hour", rntHour);
-                bundle.putInt("min", rntMin);
+
+                bundle.putInt("hour",rntHour);
+                bundle.putInt("min",rntMin);
+
                 setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
                 finish();
             }
