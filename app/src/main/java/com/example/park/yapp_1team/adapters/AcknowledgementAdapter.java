@@ -38,6 +38,7 @@ public class AcknowledgementAdapter extends RecyclerView.Adapter<Acknowledgement
         AcknowledgementItem item = list.get(position);
         holder.txtNickname.setText(item.getNickname());
         holder.txtEmail.setText(item.getEmail());
+//        holder.imgThumbnail.setImageResource(item.getThumbnail());
         Glide.with(context).load(item.getThumbnail()).into(holder.imgThumbnail);
     }
 

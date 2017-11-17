@@ -30,12 +30,14 @@ public class AcknowledgementActivity extends BaseActivity {
         rcvMakerInfo.setAdapter(adapter);
 
         List<AcknowledgementItem> items = new ArrayList<>();
-        AcknowledgementItem acknowledgementItemMinji = new AcknowledgementItem(0, "고라니", "kinm1020@gmail.com");
-        AcknowledgementItem acknowledgementItemTaeyoung = new AcknowledgementItem(1, "고래", "kazun1429@gmail.com");
-        AcknowledgementItem acknowledgementItemYoungjun = new AcknowledgementItem(2, "고니", "lee99200473@gmail.com");
-        AcknowledgementItem acknowledgementItemYuri = new AcknowledgementItem(3, "고양이", "2460yuri@gmail.com");
-        AcknowledgementItem acknowledgementItemYungjun = new AcknowledgementItem(4, "고릴라", "dudwns4971@gmail.com");
-        AcknowledgementItem acknowledgementItemHunjin = new AcknowledgementItem(5, "고슴도치", "ysg01129@gmail.com");
+
+        AcknowledgementItem acknowledgementItemMinji = new AcknowledgementItem(0, "고라니", "kinm1020@gmail.com", R.drawable.gorani);
+        AcknowledgementItem acknowledgementItemTaeyoung = new AcknowledgementItem(1, "고래", "kazun1429@gmail.com", R.drawable.gorae);
+        AcknowledgementItem acknowledgementItemYoungjun = new AcknowledgementItem(2, "고니", "lee99200473@gmail.com", R.drawable.gonea);
+        AcknowledgementItem acknowledgementItemYuri = new AcknowledgementItem(3, "고양이", "2460yuri@gmail.com", R.drawable.goyang);
+        AcknowledgementItem acknowledgementItemYungjun = new AcknowledgementItem(4, "고릴라", "dudwns4971@gmail.com", R.drawable.gorilla);
+        AcknowledgementItem acknowledgementItemHunjin = new AcknowledgementItem(5, "고슴도치", "ysg01129@gmail.com", R.drawable.gosum);
+
         items.add(acknowledgementItemMinji);
         items.add(acknowledgementItemYuri);
         items.add(acknowledgementItemTaeyoung);
