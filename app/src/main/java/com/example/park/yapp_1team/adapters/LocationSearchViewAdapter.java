@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.park.yapp_1team.R;
+import com.example.park.yapp_1team.interfaces.SearchRealmClick;
 import com.example.park.yapp_1team.items.SearchListItem;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 
@@ -26,6 +27,12 @@ public class LocationSearchViewAdapter
 
     private Realm realm;
     private PlaceAutocompleteFragment autocompleteFragment;
+
+    private SearchRealmClick click;
+
+    public void setClick(SearchRealmClick click) {
+        this.click = click;
+    }
 
     public LocationSearchViewAdapter(Context context, RealmResults<SearchListItem> realmResults, boolean automaticUpdate, boolean animate, PlaceAutocompleteFragment autocompleteFragment) {
         super(context, realmResults, automaticUpdate, animate);
@@ -73,7 +80,8 @@ public class LocationSearchViewAdapter
         viewHolder.searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autocompleteFragment.setText(viewHolder.searchText.getText());
+                click.click(viewHolder.searchText.getText().toString());
+//                autocompleteFragment.setText(viewHolder.searchText.getText());
             }
         });
 

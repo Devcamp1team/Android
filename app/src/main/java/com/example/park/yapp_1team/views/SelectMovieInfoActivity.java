@@ -93,6 +93,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private boolean curTimeFlag = true;
     private int hour = -1, min = -1;
     private String placeName;
+    private boolean firstLocation = true;
 
     private RcvClickListener clickListener = new RcvClickListener() {
         @Override
@@ -259,7 +260,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     Address a = addr.get(0);
-                    txtCurrentLocation.setText(a.getThoroughfare());
+                    placeName = a.getSubLocality();
+                    txtCurrentLocation.setText(a.getSubLocality());
 
                     findTheater(lat, lng);
 
@@ -577,20 +579,25 @@ public class SelectMovieInfoActivity extends BaseActivity {
             Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
 
-            lat = latitude;
-            lng = longitude;
+            if(firstLocation) {
 
-            Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-            List<Address> addr = null;
-            try {
-                addr = gCoder.getFromLocation(lat, lng, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
+                lat = latitude;
+                lng = longitude;
+
+                Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                List<Address> addr = null;
+                try {
+                    addr = gCoder.getFromLocation(lat, lng, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Address a = addr.get(0);
+
+                placeName = a.getThoroughfare();
+                txtCurrentLocation.setText(a.getThoroughfare());
+
+                firstLocation = false;
             }
-            Address a = addr.get(0);
-
-            txtCurrentLocation.setText(a.getThoroughfare());
-
             if (!isFind) {
                 findTheater(latitude, longitude);
             }
@@ -656,7 +663,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
                 }
                 Address a = addr.get(0);
 
-                txtCurrentLocation.setText(a.getThoroughfare());
+                placeName = a.getThoroughfare();
+                txtCurrentLocation.setText(placeName);
 
                 Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
 
@@ -789,9 +797,9 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             int setupHour, setupMin, totalTime;
 
+            placeName = bundle.getString("name");
             setupHour = bundle.getInt("hour");
             setupMin = bundle.getInt("min");
-            placeName = bundle.getString("place");
 
             if(!placeName.equals(""))
                 txtCurrentLocation.setText(placeName);

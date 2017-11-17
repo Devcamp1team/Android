@@ -2,7 +2,6 @@ package com.example.park.yapp_1team.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +56,7 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
 
     @Override
     public SelectMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e(TAG, "onCreateViewHolder");
         View v = null;
-        Log.e(TAG, String.valueOf(viewType));
 
         if (viewType == HEAD && isMulti == false) {
             v = LayoutInflater.from(context).inflate(R.layout.item_rcv_movie_full_thumbnail, parent, false);
@@ -73,7 +70,6 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
 
     @Override
     public void onBindViewHolder(SelectMovieHolder holder, final int position) {
-        Log.e(TAG, "onBindViewHolder");
         if (getItemViewType(position) == HEAD) {
 
             RequestOptions requestOptions = new RequestOptions();
