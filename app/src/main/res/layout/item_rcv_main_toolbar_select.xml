@@ -5,7 +5,7 @@
     android:layout_margin="3dp"
     android:orientation="vertical">
 
-    <com.example.park.yapp_1team.utils.CircularTextView
+    <com.yapp.no_11.yapp_1team.utils.CircularTextView
         android:id="@+id/txt_item_main_movie_select"
         android:layout_width="36dp"
         android:layout_height="36dp"

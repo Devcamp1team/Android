@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.example.park.yapp_1team.views.FilterActivity">
+    tools:context="com.yapp.no_11.yapp_1team.views.FilterActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_filter"

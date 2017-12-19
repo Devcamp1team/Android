@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:paddingTop="4dp">
 
     <ImageView
         android:id="@+id/img_search_movie"

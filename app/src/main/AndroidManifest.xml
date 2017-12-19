@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.park.yapp_1team">
+    package="com.yapp.no_11.yapp_1team">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.yapp.no_11.yapp_1team.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -15,46 +15,47 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.MainActivity"
-            android:theme="@style/SplashTheme">
+            android:name="com.yapp.no_11.yapp_1team.views.IntroActivity"
+            android:theme="@style/AppFullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".views.LocationSetupActivity"
-            android:theme="@style/MapBar" />
-        <activity
-            android:name=".views.MapActivity"
-            android:theme="@style/MapBar" />
-        <activity
-            android:name=".views.IntroActivity"
-            android:theme="@style/AppFullScreenTheme" />
 
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/app_key" />
+        <activity android:name="com.yapp.no_11.yapp_1team.views.MainActivity"
+            android:theme="@style/SplashTheme"/>
+
+        <activity
+            android:name="com.yapp.no_11.yapp_1team.views.LocationSetupActivity"
+            android:theme="@style/MapBar" />
+        <activity
+            android:name="com.yapp.no_11.yapp_1team.views.MapActivity"
+            android:theme="@style/MapBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s" />
 
         <activity
-            android:name=".views.SelectMovieInfoActivity"
+            android:name="com.yapp.no_11.yapp_1team.views.SelectMovieInfoActivity"
             android:theme="@style/MapBar" />
         <activity
-            android:name=".views.SettingActivity"
+            android:name="com.yapp.no_11.yapp_1team.views.SettingActivity"
             android:theme="@style/MapBar" />
         <activity
-            android:name=".views.AcknowledgementActivity"
+            android:name="com.yapp.no_11.yapp_1team.views.AcknowledgementActivity"
             android:theme="@style/MapBar" />
         <activity
-            android:name=".views.LicenseActivity"
+            android:name="com.yapp.no_11.yapp_1team.views.LicenseActivity"
             android:theme="@style/MapBar" />
         <activity
-            android:name=".views.FilterActivity"
+            android:name="com.yapp.no_11.yapp_1team.views.FilterActivity"
             android:theme="@style/MapBar"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0b45b13ba1a0fda239106af4bebc4ba839917655" />
     </application>
 
 </manifest>

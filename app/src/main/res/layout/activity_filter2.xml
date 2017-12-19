@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.park.yapp_1team.views.FilterActivity2">
+    tools:context="com.yapp.no_11.yapp_1team.views.FilterActivity2">
 
     <RelativeLayout
         android:layout_width="match_parent"

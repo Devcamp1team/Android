@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/img_onboard_3"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:src="@drawable/onboarding_3"/>
+        android:layout_width="match_parent"/>
 
 </LinearLayout>
