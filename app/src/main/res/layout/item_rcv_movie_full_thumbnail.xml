@@ -22,6 +22,7 @@
 
             <ImageView
                 android:id="@+id/img_item_main_movie_full_thumbnail_small_size"
+                android:layout_centerHorizontal="true"
                 android:layout_width="84dp"
                 android:layout_height="120dp" />
 

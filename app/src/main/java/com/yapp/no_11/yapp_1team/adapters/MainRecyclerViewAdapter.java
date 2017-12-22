@@ -1,8 +1,9 @@
 package com.yapp.no_11.yapp_1team.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.yapp.no_11.yapp_1team.R;
 import com.yapp.no_11.yapp_1team.interfaces.CheckEvent;
 import com.yapp.no_11.yapp_1team.items.MovieListItem;
+import com.yapp.no_11.yapp_1team.utils.CircularTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,16 +68,14 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
         RelativeLayout imgLine;
+        CircularTextView txtRanking;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imgThumbnail = (ImageView) itemView.findViewById(R.id.img_item_main_movie_thumbnail);
             imgLine = (RelativeLayout) itemView.findViewById(R.id.layout_item_main_movie_line);
+            txtRanking = (CircularTextView) itemView.findViewById(R.id.txt_item_main_movie_ranking);
         }
-    }
-
-    private int changeDP(View v, float value) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, v.getResources().getDisplayMetrics());
     }
 
     public void clear() {
@@ -90,6 +90,17 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) holder.itemView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int deviceWidth = displayMetrics.widthPixels;
+        deviceWidth = deviceWidth / 2;
+        int deviceHeight = (int) (deviceWidth * 1.5);
+
+        holder.itemView.getLayoutParams().height = deviceHeight;
+
+        holder.itemView.requestLayout();
 
         final MovieListItem MovieListItem = datas.get(position);
 
@@ -106,14 +117,10 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             holder.imgLine.setVisibility(View.INVISIBLE);
         }
 
-        holder.imgThumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEvent.check(position, holder.imgThumbnail, holder.imgLine);
+        holder.imgThumbnail.setOnClickListener(v -> checkEvent.check(position, holder.imgThumbnail, holder.imgLine));
 
-            }
-        });
-
+        holder.txtRanking.setText((position + 1) + "");
+        holder.txtRanking.setSolidColor("#FF4081");
     }
 
     @Override

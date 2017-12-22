@@ -14,12 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
-import com.yapp.no_11.yapp_1team.R;
-import com.yapp.no_11.yapp_1team.adapters.LocationSearchViewAdapter;
-import com.yapp.no_11.yapp_1team.interfaces.SearchRealmClick;
-import com.yapp.no_11.yapp_1team.items.SearchListItem;
-import com.yapp.no_11.yapp_1team.sql.RealmRest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -27,6 +23,10 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.yapp.no_11.yapp_1team.R;
+import com.yapp.no_11.yapp_1team.adapters.LocationSearchViewAdapter;
+import com.yapp.no_11.yapp_1team.items.SearchListItem;
+import com.yapp.no_11.yapp_1team.sql.RealmRest;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,6 +57,8 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     private ImageView backBtn;
     private Button applyBtn;
     private int defaultValue;
+    private TextView txtSelectTime;
+    private boolean isTimeChange = false;
 
     private Toolbar locationToolbar;
     private PlaceAutocompleteFragment autocompleteFragment;
@@ -64,6 +66,10 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     private String name = "";
     private double lat;
     private double lng;
+
+    private int originalHour;
+    private int originalMin;
+
     private int rntHour = -1;
     private int rntMin = -1;
     private String placeName = "";
@@ -94,6 +100,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         locationToolbar = (Toolbar) findViewById(R.id.toolbar_location_setup);
         locationToolbar.setContentInsetsAbsolute(0, 0);
         setSupportActionBar(locationToolbar);
+
+        txtSelectTime = (TextView) findViewById(R.id.txt_select_time);
+
+        Calendar rightNow = Calendar.getInstance();
+        originalHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        originalMin = rightNow.get(Calendar.MINUTE);
 
         realmRest = new RealmRest();
 
@@ -134,13 +146,15 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         lng = it.getExtras().getDouble("lng");
         rntHour = it.getExtras().getInt("hour");
         rntMin = it.getExtras().getInt("min");
-        if (rntHour != -1) {
+        isTimeChange = it.getExtras().getBoolean("isTimeChange");
+
+        if (isTimeChange) {
             setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
             curTime.setBackgroundColor(Color.WHITE);
         }
 
 
-        Log.e("receive", "lat : " + lat + "lng : " + lng);
+        timeChange(rntHour, rntMin);
 
         /*
          *  Realm
@@ -149,15 +163,12 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
         RealmResults<SearchListItem> searchList = realmRest.getUserList();
 
         LocationSearchViewAdapter searchAdapter = new LocationSearchViewAdapter(this, searchList, true, false, autocompleteFragment);
-        searchAdapter.setClick(new SearchRealmClick() {
-            @Override
-            public void click(String name) {
-                autocompleteFragment.setText(name);
-                LocationSetupActivity.this.name = name;
-                RealmResults<SearchListItem> listItems = realmRest.getUserList(name);
-                LocationSetupActivity.this.lat = listItems.get(0).getLat();
-                LocationSetupActivity.this.lng = listItems.get(0).getLng();
-            }
+        searchAdapter.setClick(name -> {
+            autocompleteFragment.setText(name);
+            LocationSetupActivity.this.name = name;
+            RealmResults<SearchListItem> listItems = realmRest.getUserList(name);
+            LocationSetupActivity.this.lat = listItems.get(0).getLat();
+            LocationSetupActivity.this.lng = listItems.get(0).getLng();
         });
 
         RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.location_setup_recycle_view);
@@ -166,52 +177,44 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
     }
 
     private void event() {
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        backBtn.setOnClickListener(view -> finish());
 
         final Pair<String[], String[]> pairStr = setDate();
-        bottomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
-                curTime.setBackgroundColor(Color.WHITE);
+        bottomButton.setOnClickListener(v -> {
+            setupTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
+            curTime.setBackgroundColor(Color.WHITE);
 
-                String tmpTime = pairStr.second[bottomTime.getValue()].toString();
-                String ampm = tmpTime.substring(0, 2);
-                tmpTime = tmpTime.substring(0, tmpTime.length() - 3);
-                tmpTime = tmpTime.substring(3);
+            String tmpTime = pairStr.second[bottomTime.getValue()].toString();
+            String ampm = tmpTime.substring(0, 2);
+            tmpTime = tmpTime.substring(0, tmpTime.length() - 3);
+            tmpTime = tmpTime.substring(3);
 
-                String[] tmpStr = tmpTime.split(":");
-                rntHour = Integer.parseInt(tmpStr[0]);
-                rntMin = Integer.parseInt(tmpStr[1]);
-                if (ampm.equals("오후"))
-                    if (rntHour != 12)
-                        rntHour += 12;
+            String[] tmpStr = tmpTime.split(":");
+            rntHour = Integer.parseInt(tmpStr[0]);
+            rntMin = Integer.parseInt(tmpStr[1]);
+            if (ampm.equals("오후"))
+                if (rntHour != 12)
+                    rntHour += 12;
 
-                bottomSheetDialog.hide();
-            }
+            isTimeChange = true;
+
+            timeChange(rntHour, rntMin);
+
+            bottomSheetDialog.hide();
         });
 
-        curTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                curTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
-                setupTime.setBackgroundColor(Color.WHITE);
+        curTimeLayout.setOnClickListener(v -> {
+            curTime.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_3));
+            setupTime.setBackgroundColor(Color.WHITE);
 
-                rntHour = -1;
-                rntMin = -1;
-            }
+            rntHour = originalHour;
+            rntMin = originalMin;
+
+            isTimeChange = false;
+
+            timeChange(rntHour, rntMin);
         });
-        setTimeLayout.setOnClickListener(new LinearLayout.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.show();
-            }
-        });
+        setTimeLayout.setOnClickListener(v -> bottomSheetDialog.show());
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -230,23 +233,27 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
             }
         });
 
-        applyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Place 객체와 date string 전달 후 refresh
+        applyBtn.setOnClickListener(v -> {
+            // TODO: Place 객체와 date string 전달 후 refresh
 
-                Bundle bundle = new Bundle();
-                bundle.putString("name", name);
-                bundle.putDouble("lat", lat);
-                bundle.putDouble("lng", lng);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", name);
+            bundle.putDouble("lat", lat);
+            bundle.putDouble("lng", lng);
 
-                bundle.putInt("hour",rntHour);
-                bundle.putInt("min",rntMin);
+            bundle.putInt("hour", rntHour);
+            bundle.putInt("min", rntMin);
+            bundle.putBoolean("isTimeChange", isTimeChange);
 
-                setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
-                finish();
-            }
+            setResult(SETUP_REQUEST_CODE, new Intent().putExtra("setupdata", bundle));
+
+
+            finish();
         });
+    }
+
+    private void timeChange(int hour, int min) {
+        txtSelectTime.setText(hour + "시 " + min + "분");
     }
 
     private Pair<String[], String[]> setDate() {
@@ -259,12 +266,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
         bottomDate.setMinValue(0);
         bottomDate.setMaxValue(dateStr.length - 1);
-        bottomDate.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int value) {
-                return dateStr[value];
-            }
-        });
+        bottomDate.setFormatter(value -> dateStr[value]);
         bottomDate.setDisplayedValues(dateStr);
         bottomDate.setWrapSelectorWheel(false);
 
@@ -276,12 +278,7 @@ public class LocationSetupActivity extends BaseActivity implements GoogleApiClie
 
         bottomTime.setMinValue(0);
         bottomTime.setMaxValue(timeStr.length - 1);
-        bottomTime.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int value) {
-                return timeStr[value];
-            }
-        });
+        bottomTime.setFormatter(value -> timeStr[value]);
         bottomTime.setDisplayedValues(timeStr);
         bottomTime.setWrapSelectorWheel(false);
 

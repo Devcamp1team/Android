@@ -97,13 +97,13 @@ public class SelectMovieRecyclerViewAdapter extends RecyclerView.Adapter<SelectM
             holder.txtLeftSeat.setText(listItems.get(position).getLeftSeat());
             holder.txtLocation.setText(listItems.get(position).getLocation());
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rcvClickListener.itemClick(position, listItems);
-                }
-            });
+            holder.itemView.setOnClickListener(v -> rcvClickListener.itemClick(position, listItems));
         }
+    }
+
+    public void clear() {
+        listItems.clear();
+        notifyDataSetChanged();
     }
 
     @Override

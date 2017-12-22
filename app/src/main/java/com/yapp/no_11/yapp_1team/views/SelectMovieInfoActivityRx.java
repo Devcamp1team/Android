@@ -1,25 +1,18 @@
 package com.yapp.no_11.yapp_1team.views;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationRequest;
+import com.patloew.rxlocation.RxLocation;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yapp.no_11.yapp_1team.R;
 import com.yapp.no_11.yapp_1team.adapters.SelectMovieRecyclerViewAdapter;
 import com.yapp.no_11.yapp_1team.interfaces.RcvClickListener;
@@ -40,32 +36,32 @@ import com.yapp.no_11.yapp_1team.items.TheaterDisInfo;
 import com.yapp.no_11.yapp_1team.network.MovieCrawling;
 import com.yapp.no_11.yapp_1team.sql.RealmRest;
 import com.yapp.no_11.yapp_1team.utils.Strings;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-import java.io.IOException;
+import junit.framework.Assert;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import io.realm.RealmResults;
 
 import static com.yapp.no_11.yapp_1team.utils.PermissionRequestCode.FILTER_INTENT_RESULT_CODE;
-import static com.yapp.no_11.yapp_1team.utils.PermissionRequestCode.LOCATION_PERMISSION_CODE;
 import static com.yapp.no_11.yapp_1team.utils.PermissionRequestCode.SETUP_REQUEST_CODE;
 
-public class SelectMovieInfoActivity extends BaseActivity {
+public class SelectMovieInfoActivityRx extends BaseActivity {
 
-    private static final String TAG = SelectMovieInfoActivity.class.getSimpleName();
+    private static final String TAG = SelectMovieInfoActivityRx.class.getSimpleName();
+    private static final int MAX_THEATER = 5;
+
+    private RxPermissions rxPermissions;
+    private RxLocation rxLocation;
 
     private RecyclerView rcvSelectMovie;
     private FloatingActionButton fabMovieFilter;
@@ -76,6 +72,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private RelativeLayout layoutBlank;
 
     private SelectMovieRecyclerViewAdapter adapter;
+
     private int count = 0;
 
     private List<String> names;
@@ -84,18 +81,23 @@ public class SelectMovieInfoActivity extends BaseActivity {
     private RealmRest realmRest;
 
     private double lat, lng;
-    private Location mCurrentLocation;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private double originalLat, originalLng;
+    private int setupHour, setupMin, totalTime;
 
     private List<MovieInfoListItem> originalList = new ArrayList<>();
+    private List<MovieInfoListItem> currentList = new ArrayList<>();
 
 
-    private boolean curTimeFlag = true;
     private int hour = -1, min = -1;
-    private String placeName;
-    private boolean firstLocation = true;
+    private int originalHour;
+    private int originalMin;
 
-    private boolean isProgress = false;
+    private String placeName;
+    private String originalName;
+
+    private boolean isFirst = true;
+    private boolean isTimeChange = false;
+
 
     private RcvClickListener clickListener = new RcvClickListener() {
         @Override
@@ -111,6 +113,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
             it.putExtra("thumbnail", listItems.get(position).getImgThumbnail());
             it.putExtra("lat", listItems.get(position).getLat());
             it.putExtra("lng", listItems.get(position).getLng());
+            it.putExtra("currentLat", lat);
+            it.putExtra("currentLng", lng);
 
             startActivity(it);
         }
@@ -128,10 +132,19 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         count = names.size();
 
+        rxPermissions = new RxPermissions(this);
+        rxLocation = new RxLocation(this);
+
         initialize();
         event();
 
         permissionCheck();
+    }
+
+    private void setTime() {
+        Calendar rightNow = Calendar.getInstance();
+        originalHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        originalMin = rightNow.get(Calendar.MINUTE);
     }
 
     private void event() {
@@ -164,6 +177,9 @@ public class SelectMovieInfoActivity extends BaseActivity {
         layoutShowLocation = (LinearLayout) findViewById(R.id.layout_show_location);
         layoutBlank = (RelativeLayout) findViewById(R.id.layout_blank_movie_info);
 
+
+        setTime();
+
         rcvSelectMovie = (RecyclerView) findViewById(R.id.rcv_select_movie_info);
         fabMovieFilter = (FloatingActionButton) findViewById(R.id.btn_select_movie_info_filter);
 
@@ -183,14 +199,18 @@ public class SelectMovieInfoActivity extends BaseActivity {
         realmRest = new RealmRest();
 
         layoutShowLocation.setOnClickListener(v -> {
-
-//            Log.e("give", "lat : " + lat + "lng : " + lng);
-
             Intent intent = new Intent(getApplicationContext(), LocationSetupActivity.class);
             intent.putExtra("lat", lat);
             intent.putExtra("lng", lng);
-            intent.putExtra("hour", hour);
-            intent.putExtra("min", min);
+            if (isTimeChange) {
+                intent.putExtra("hour", hour);
+                intent.putExtra("min", min);
+            } else {
+                intent.putExtra("hour", originalHour);
+                intent.putExtra("min", originalMin);
+            }
+            intent.putExtra("isTimeChange", isTimeChange);
+
             startActivityForResult(intent, SETUP_REQUEST_CODE);
 
         });
@@ -199,6 +219,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
     private void addItem(List<MovieInfoListItem> totalListItems) {
         List<SelectMovieInfoItem> list = new ArrayList<>();
+
+        adapter.clear();
 
         for (int i = 0; i < totalListItems.size(); i++) {
             SelectMovieInfoItem infoItem = new SelectMovieInfoItem();
@@ -230,8 +252,6 @@ public class SelectMovieInfoActivity extends BaseActivity {
             rcvSelectMovie.setVisibility(View.GONE);
             layoutBlank.setVisibility(View.VISIBLE);
         }
-
-        isProgress = false;
     }
 
 
@@ -242,37 +262,22 @@ public class SelectMovieInfoActivity extends BaseActivity {
             return;
         }
 
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        OnCompleteListener<Location> onCompleteListener = (Task<Location> task) -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                mCurrentLocation = task.getResult();
-                lat = mCurrentLocation.getLatitude();
-                lng = mCurrentLocation.getLongitude();
+        rxLocation.location().updates(locationRequest)
+                .flatMap(location -> rxLocation.geocoding().fromLocation(location).toObservable())
+                .subscribe(address -> {
+                    originalLat = address.getLatitude();
+                    originalLng = address.getLongitude();
+                    originalName = address.getSubLocality();
 
-                Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                List<Address> addr = null;
-                try {
-                    addr = gCoder.getFromLocation(lat, lng, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Address a = addr != null ? addr.get(0) : null;
-                placeName = a != null ? a.getSubLocality() : null;
-                assert a != null;
-                txtCurrentLocation.setText(a.getSubLocality());
-                findTheater(lat, lng);
-
-
-            } else {
-                try {
-                    throw task.getException();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, onCompleteListener);
+                    lat = originalLat;
+                    lng = originalLng;
+                    placeName = originalName;
+                    txtCurrentLocation.setText(placeName);
+                    findTheater(lat, lng);
+                });
     }
 
 
@@ -368,7 +373,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
         List<MovieInfoListItem> totalListItems = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_THEATER; i++) {
             switch (disInfo.get(i).code) {
                 case 1: {
                     // cgv
@@ -492,9 +497,40 @@ public class SelectMovieInfoActivity extends BaseActivity {
         };
 
         Collections.sort(totalListItems, comparator);
-        addItem(totalListItems);
 
-        originalList = totalListItems;
+        currentList = totalListItems;
+
+//        addItem(currentList);
+
+        if (isFirst) {
+            originalList = totalListItems;
+            isFirst = false;
+            addItem(currentList);
+        } else {
+            if (isTimeChange) {
+
+                hour = setupHour;
+                min = setupMin;
+
+                totalTime = setupHour * 60 + setupMin;
+
+                List<MovieInfoListItem> items = new ArrayList<>();
+
+                for (MovieInfoListItem item : currentList) {
+                    String[] tmpTime = item.getTime().split(":");
+                    int tmpTotalTime = Integer.parseInt(tmpTime[0]) * 60 + Integer.parseInt(tmpTime[1]);
+
+                    if (tmpTotalTime >= totalTime) {
+                        items.add(item);
+                    }
+                }
+                addItem(items);
+            } else {
+                hour = originalHour;
+                min = originalMin;
+                addItem(currentList);
+            }
+        }
 
 //        for (int i = 0; i < totalListItems.size(); i++) {
 //            Log.e(TAG, "total name : " + totalListItems.get(i).getTheater() + " " +
@@ -529,8 +565,8 @@ public class SelectMovieInfoActivity extends BaseActivity {
                         startActivity(it);
                     });
             builder.setNegativeButton("No",
-                    (dialog, which) -> {
-                    });
+                    (dialog, which) ->
+                            Toast.makeText(this, "이용에 제약이 있을 수 있습니다.", Toast.LENGTH_SHORT).show());
             builder.show();
             return false;
         } else {
@@ -539,143 +575,19 @@ public class SelectMovieInfoActivity extends BaseActivity {
     }
 
     private void permissionCheck() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
-            } else {
-                // TODO: 2017-08-11 already has permission granted, go to next step.
-                getLocation();
-            }
-        } else {
-            startLocationService();
-        }
+
+        rxPermissions
+                .request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(granted -> {
+                    if (granted) {
+                        getLocation();
+                    } else {
+                        Toast.makeText(this, "권한을 거부하셨습니다. 이용에 제한이 생길 수 있습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    boolean isFind = false;
-
-    private class GPSListener implements LocationListener {
-
-        public void onLocationChanged(Location location) {
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-
-            if (firstLocation) {
-
-                lat = latitude;
-                lng = longitude;
-
-                Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                List<Address> addr = null;
-                try {
-                    addr = gCoder.getFromLocation(lat, lng, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert addr != null;
-                Address a = addr.get(0);
-
-                placeName = a.getThoroughfare();
-                txtCurrentLocation.setText(a.getThoroughfare());
-
-                firstLocation = false;
-            }
-            if (!isFind) {
-                findTheater(latitude, longitude);
-            }
-            isFind = true;
-
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-    }
-
-    private void startLocationService() {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        GPSListener gpsListener = new GPSListener();
-        long minTime = 0;
-        float minDistance = 0;
-
-
-        try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-
-            assert manager != null;
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
-            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
-
-            Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-            if (lastLocation != null) {
-                Double latitude = lastLocation.getLatitude();
-                Double longitude = lastLocation.getLongitude();
-
-                lat = latitude;
-                lng = longitude;
-
-                Geocoder gCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                List<Address> addr = null;
-                try {
-                    addr = gCoder.getFromLocation(lat, lng, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert addr != null;
-                Address a = addr.get(0);
-
-                placeName = a.getThoroughfare();
-                txtCurrentLocation.setText(placeName);
-
-                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
-
-                findTheater(latitude, longitude);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        Toast.makeText(getApplicationContext(), "위치 확인이 시작되었습니다. 로그를 확인하세요.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_PERMISSION_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
-                } else {
-                    Toast.makeText(this, "지도 체크를 할건데 권한 체크 안하면 뭐... 제약이 있을 수 있어", Toast.LENGTH_SHORT).show();
-//                    moveMapCenter();
-                }
-                break;
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -688,6 +600,16 @@ public class SelectMovieInfoActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.menu_item_1: {
                 startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                break;
+            }
+            case R.id.menu_item_2: {
+                lat = originalLat;
+                lng = originalLng;
+                txtCurrentLocation.setText(originalName);
+                isTimeChange = false;
+                isFirst = true;
+                setTime();
+                addItem(originalList);
                 break;
             }
         }
@@ -703,27 +625,31 @@ public class SelectMovieInfoActivity extends BaseActivity {
             return;
         }
 
-        // TODO: 맞는지 모르겠음?? 질문
         if (requestCode == FILTER_INTENT_RESULT_CODE) {
 
             Bundle bundle = data.getExtras().getBundle("data");
-
-            assert bundle != null;
             String brandValue = bundle.getString("brand");
+            String optionValue = bundle.getString("option");
+
+            if (bundle == null) {
+                return;
+            }
+
+            Assert.assertNotNull("filter bundle is null", bundle);
+            Assert.assertNotNull("filter brand is null", brandValue);
+            Assert.assertNotNull("filter option is null", optionValue);
+
             String[] dump = new String[0];
-            assert brandValue != null;
             if (brandValue.length() > 0) {
                 dump = brandValue.split("\\|");
             }
-            String optionValue = bundle.getString("option");
+
             String[] option = new String[0];
-            assert optionValue != null;
             if (optionValue.length() > 0) {
                 option = optionValue.split("\\|");
             }
 
             int[] brand = new int[dump.length];
-
             for (int i = 0; i < dump.length; i++) {
                 brand[i] = Integer.parseInt(dump[i]);
             }
@@ -741,7 +667,7 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             List<MovieInfoListItem> items = new ArrayList<>();
 
-            for (MovieInfoListItem item : originalList) {
+            for (MovieInfoListItem item : currentList) {
                 if (isBrandFilter && isRoomFilter) {
                     for (int aBrand : brand) {
                         if (item.getTheaterCode() == aBrand) {
@@ -776,46 +702,29 @@ public class SelectMovieInfoActivity extends BaseActivity {
 
             Bundle bundle = data.getExtras().getBundle("setupdata");
 
-            assert bundle != null;
+            if (bundle == null) {
+                return;
+            }
+
             lat = bundle.getDouble("lat");
             lng = bundle.getDouble("lng");
-
-            findTheater(lat, lng);
-
-            int setupHour, setupMin, totalTime;
 
             placeName = bundle.getString("name");
             setupHour = bundle.getInt("hour");
             setupMin = bundle.getInt("min");
 
-            if (!placeName.equals(""))
+            isTimeChange = bundle.getBoolean("isTimeChange");
+
+            hour = setupHour;
+            min = setupMin;
+
+
+            isFirst = false;
+
+            findTheater(lat, lng);
+
+            if (!placeName.equals("")) {
                 txtCurrentLocation.setText(placeName);
-
-            if (setupHour != -1) {
-
-                hour = setupHour;
-                min = setupMin;
-
-                totalTime = setupHour * 60 + setupMin;
-
-                List<MovieInfoListItem> items = new ArrayList<>();
-
-                for (MovieInfoListItem item : originalList) {
-                    String[] tmpTime = item.getTime().split(":");
-                    int tmpTotalTime = Integer.parseInt(tmpTime[0]) * 60 + Integer.parseInt(tmpTime[1]);
-
-                    if (tmpTotalTime >= totalTime)
-                        items.add(item);
-                }
-
-                addItem(items);
-            } else {
-                hour = -1;
-                min = -1;
-
-                List<MovieInfoListItem> items = new ArrayList<>();
-                items = originalList;
-                addItem(items);
             }
         }
     }

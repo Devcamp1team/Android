@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yapp.no_11.yapp_1team.R;
-import com.yapp.no_11.yapp_1team.views.fragments.MapViewFragment;
+import com.yapp.no_11.yapp_1team.views.fragments.MapViewFragmentDaum;
 
 public class MapActivity extends BaseActivity {
 
@@ -61,10 +61,14 @@ public class MapActivity extends BaseActivity {
         String thumbnail = it.getExtras().getString("thumbnail");
         String totalSeat = it.getExtras().getString("totalSeat");
         String useSeat = it.getExtras().getString("useSeat");
-        double lat = it.getExtras().getDouble("lat");
-        double lng = it.getExtras().getDouble("lng");
+        double theaterLat = it.getExtras().getDouble("lat");
+        double theaterLng = it.getExtras().getDouble("lng");
+        double currentLat = it.getExtras().getDouble("currentLat");
+        double currentLng = it.getExtras().getDouble("currentLng");
 
-        txtTheaterName.setText(location.substring(0, location.indexOf('·')));
+        String theaterName = location.substring(0, location.indexOf('·'));
+
+        txtTheaterName.setText(theaterName);
         txtItemMovieInfoTitle.setText(title);
         txtItemMovieInfoTime.setText(time);
         txtItemMovieInfoLocation.setText(location);
@@ -72,9 +76,12 @@ public class MapActivity extends BaseActivity {
         txtTotalSeat.setText("/" + totalSeat);
         Glide.with(this).load(thumbnail).into(imgThumbnail);
 
-        MapViewFragment fragment = new MapViewFragment();
-        fragment.setMovieLat(lat);
-        fragment.setMovieLng(lng);
+        MapViewFragmentDaum fragment = new MapViewFragmentDaum();
+        fragment.setMovieLat(theaterLat);
+        fragment.setMovieLng(theaterLng);
+        fragment.setLat(currentLat);
+        fragment.setLng(currentLng);
+        fragment.setTheaterName(theaterName);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.map_view_container, fragment);

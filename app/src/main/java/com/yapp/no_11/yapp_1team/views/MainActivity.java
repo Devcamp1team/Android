@@ -1,11 +1,16 @@
 package com.yapp.no_11.yapp_1team.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,10 +32,13 @@ import com.yapp.no_11.yapp_1team.utils.RecyclerViewItemDecoration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.kakao.util.maps.helper.Utility.getPackageInfo;
 import static com.yapp.no_11.yapp_1team.utils.URL.LOTTE_MOVIE_PICTURE_URL;
 
 public class MainActivity extends BaseActivity {
@@ -45,6 +53,8 @@ public class MainActivity extends BaseActivity {
     private RecyclerView selectMovieRecyclerView;
     private LinearLayout layoutShowMovieTIme;
     private ImageView imgMovieSearch;
+
+    private LinearLayout layoutMainTitle;
 
     private List<MovieListItem> dataArray;
     private List<String> movieNames = new ArrayList<>();
@@ -67,6 +77,12 @@ public class MainActivity extends BaseActivity {
                 movieImages.remove(items.get(position).getUrl());
             }
 
+            if (movieNames.size() > 0) {
+                layoutMainTitle.setVisibility(View.GONE);
+            } else {
+                layoutMainTitle.setVisibility(View.VISIBLE);
+            }
+
             movieListRecyclerViewAdapter.notifyItemChanged(position);
             mainSelectItemViewAdapter.notifyDataSetChanged();
         }
@@ -85,6 +101,11 @@ public class MainActivity extends BaseActivity {
                     movieListRecyclerViewAdapter.notifyItemChanged(i);
                     break;
                 }
+            }
+            if (movieNames.size() > 0) {
+                layoutMainTitle.setVisibility(View.GONE);
+            } else {
+                layoutMainTitle.setVisibility(View.VISIBLE);
             }
             mainSelectItemViewAdapter.notifyDataSetChanged();
         }
@@ -111,6 +132,7 @@ public class MainActivity extends BaseActivity {
             saveMegaAsset();
         }
 
+
     }
 
     @Override
@@ -127,7 +149,7 @@ public class MainActivity extends BaseActivity {
 
     private void intent() {
         if (movieNames.size() > 0) {
-            Intent it = new Intent(getApplicationContext(), SelectMovieInfoActivity.class);
+            Intent it = new Intent(getApplicationContext(), SelectMovieInfoActivityRx.class);
             it.putExtra("names", (Serializable) movieNames);
             it.putExtra("images", (Serializable) movieImages);
             startActivity(it);
@@ -139,11 +161,13 @@ public class MainActivity extends BaseActivity {
     private void initialize() {
         layoutShowMovieTIme = (LinearLayout) findViewById(R.id.layout_show_movie_time);
         imgMovieSearch = (ImageView) findViewById(R.id.img_search_movie);
+        layoutMainTitle = (LinearLayout) findViewById(R.id.layout_main_title);
 
         movieListRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_start);
         movieListRecyclerView.setHasFixedSize(true);
         movieListRecyclerViewAdapter = new MainRecyclerViewAdapter(this, checkEvent);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+
         RecyclerViewItemDecoration itemDecoration = new RecyclerViewItemDecoration(DIVISION_SIZE);
         movieListRecyclerView.setLayoutManager(gridLayoutManager);
         movieListRecyclerView.addItemDecoration(itemDecoration);
@@ -239,6 +263,23 @@ public class MainActivity extends BaseActivity {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
+    }
+
+    public static String getKeyHash(final Context context) {
+        PackageInfo packageInfo = getPackageInfo(context, PackageManager.GET_SIGNATURES);
+        if (packageInfo == null)
+            return null;
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+            } catch (NoSuchAlgorithmException e) {
+                Log.w(TAG, "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
+        return null;
     }
 
 }

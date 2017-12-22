@@ -3,6 +3,7 @@ package com.yapp.no_11.yapp_1team.views;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -26,7 +27,9 @@ public class SettingActivity extends BaseActivity {
                 break;
             }
             case R.id.btn_setting_evaluation: {
-
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id="+getPackageName()));
+                startActivity(intent);
                 break;
             }
             case R.id.img_setting_cancel: {

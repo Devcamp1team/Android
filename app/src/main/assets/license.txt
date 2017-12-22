@@ -1,8 +1,29 @@
 ﻿[jsoup]
 jsoup License
 The jsoup code-base (including source and compiled packages) are distributed under the open source MIT license as described below
+
 [glide]
 License for everything not in third_party and not otherwise marked:
+
+[RxPermission]
+Copyright (C) 2015 Thomas Bruyelle
+
+[RxLocation]
+Copyright 2016 Patrick Löwenstein
+
+[daum map]
+
+[gson]
+Gson is released under the Apache 2.0 license.
+
+[appintro]
+AppIntro library
+
+   Copyright 2015 Paolo Rotolo
+   Copyright 2016 Maximilian Narr
+
+[glide-transformation]
+apache license
 
 Copyright 2014 Google, Inc. All rights reserved.
 
@@ -96,24 +117,6 @@ limitation the rights to use, copy, modify, merge, publish, distribute,
 sublicense, and/or sell copies of the Software, and to permit persons who
 receive copies from any such party to do so, with the only requirement being
 that this copyright notice remain intact.
-[naver map]
-
-[gson]
-Gson is released under the Apache 2.0 license.
-
-[appintro]
-AppIntro library
-
-   Copyright 2015 Paolo Rotolo
-   Copyright 2016 Maximilian Narr
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-
-[glide-transformation]
-apache license
 
 
 [mit license]
@@ -395,4 +398,5 @@ Creative Commons is not a party to this License, and makes no warranty whatsoeve
 Except for the limited purpose of indicating to the public that the Work is licensed under the CCPL, Creative Commons does not authorize the use by either party of the trademark "Creative Commons" or any related trademark or logo of Creative Commons without the prior written consent of Creative Commons. Any permitted use will be in compliance with Creative Commons' then-current trademark usage guidelines, as may be published on its website or otherwise made available upon request from time to time. For the avoidance of doubt, this trademark restriction does not form part of this License.
 
 Creative Commons may be contacted at https://creativecommons.org/.
+
 

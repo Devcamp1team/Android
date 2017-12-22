@@ -6,6 +6,32 @@
     android:focusableInTouchMode="true"
     android:paddingTop="4dp">
 
+
+    <LinearLayout
+        android:id="@+id/layout_main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOVIE"
+            android:textColor="#6a7482"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GO"
+            android:textColor="@color/colorAccent"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/img_search_movie"
         android:layout_width="24dp"
