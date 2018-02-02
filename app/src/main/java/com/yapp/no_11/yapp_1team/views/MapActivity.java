@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yapp.no_11.yapp_1team.R;
-import com.yapp.no_11.yapp_1team.views.fragments.MapViewFragmentDaum;
+import com.yapp.no_11.yapp_1team.views.fragments.MapViewFragmentNaver;
 
 public class MapActivity extends BaseActivity {
 
@@ -76,7 +76,7 @@ public class MapActivity extends BaseActivity {
         txtTotalSeat.setText("/" + totalSeat);
         Glide.with(this).load(thumbnail).into(imgThumbnail);
 
-        MapViewFragmentDaum fragment = new MapViewFragmentDaum();
+        MapViewFragmentNaver fragment = new MapViewFragmentNaver();
         fragment.setMovieLat(theaterLat);
         fragment.setMovieLng(theaterLng);
         fragment.setLat(currentLat);

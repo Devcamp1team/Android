@@ -26,6 +26,7 @@ import com.yapp.no_11.yapp_1team.items.LotteGsonModel;
 import com.yapp.no_11.yapp_1team.items.MovieListItem;
 import com.yapp.no_11.yapp_1team.network.MovieInfoCrawling;
 import com.yapp.no_11.yapp_1team.sql.RealmRest;
+import com.yapp.no_11.yapp_1team.utils.BackPressCloseHandler;
 import com.yapp.no_11.yapp_1team.utils.JSON;
 import com.yapp.no_11.yapp_1team.utils.RecyclerViewItemDecoration;
 
@@ -61,6 +62,8 @@ public class MainActivity extends BaseActivity {
     private List<String> movieImages = new ArrayList<>();
 
     private RealmRest realmRest;
+
+    private BackPressCloseHandler backPressCloseHandler;
 
     private CheckEvent checkEvent = new CheckEvent() {
         @Override
@@ -159,6 +162,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initialize() {
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
+
         layoutShowMovieTIme = (LinearLayout) findViewById(R.id.layout_show_movie_time);
         imgMovieSearch = (ImageView) findViewById(R.id.img_search_movie);
         layoutMainTitle = (LinearLayout) findViewById(R.id.layout_main_title);
@@ -190,6 +196,8 @@ public class MainActivity extends BaseActivity {
         movieListRecyclerView.setAdapter(movieListRecyclerViewAdapter);
 
         mainSelectItemViewAdapter.setSelectMovieList(movieNames);
+
+
     }
 
     private List<MovieListItem> movieCrawling() {
@@ -282,4 +290,10 @@ public class MainActivity extends BaseActivity {
         return null;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+        Toast.makeText(getApplicationContext(), "한 번 더 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -2,9 +2,13 @@
     <string name="app_name">MOVIEGO</string>
     <string name="version">v 1.0</string>
     <string name="license"></string>
+    <string name="str_done">완료</string>
 
     <string name="daum_key">943e83fbeb647e81c18bb152894a4d0d</string>
     <string name="n_key">oYyy_QIQjRfhSeFYEEnb</string>
     <string name="google_key">AIzaSyB8jE0voZOLRMSy26LpYYrf2QEtYQUuZ4s</string>
     <string name="fabric_key">0b45b13ba1a0fda239106af4bebc4ba839917655</string>
+
+    <string name="admob_key">ca-app-pub-9763075603101547~7654625401</string>
+    <string name="first_banner_key">ca-app-pub-9763075603101547/9536561012</string>
 </resources>

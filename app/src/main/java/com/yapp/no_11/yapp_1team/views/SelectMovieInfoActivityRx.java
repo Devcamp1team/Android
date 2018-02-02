@@ -12,7 +12,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.location.LocationRequest;
 import com.patloew.rxlocation.RxLocation;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -70,6 +71,7 @@ public class SelectMovieInfoActivityRx extends BaseActivity {
     private TextView txtCurrentLocation;
     private LinearLayout layoutShowLocation;
     private RelativeLayout layoutBlank;
+    private AdView adView;
 
     private SelectMovieRecyclerViewAdapter adapter;
 
@@ -177,6 +179,10 @@ public class SelectMovieInfoActivityRx extends BaseActivity {
         layoutShowLocation = (LinearLayout) findViewById(R.id.layout_show_location);
         layoutBlank = (RelativeLayout) findViewById(R.id.layout_blank_movie_info);
 
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        adView.loadAd(adRequest);
 
         setTime();
 

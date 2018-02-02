@@ -136,7 +136,7 @@ public class MapViewFragmentDaum extends Fragment {
 
         theaterMarker.setMapPoint(theaterPoint);
         theaterMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        theaterMarker.setCustomImageResourceId(R.drawable.ic_adjust_black_24dp);
+        theaterMarker.setCustomImageResourceId(R.drawable.location_t);
         theaterMarker.setCustomImageAutoscale(false);
         theaterMarker.setCustomImageAnchor(0.5f, 1.0f);
 
@@ -153,7 +153,7 @@ public class MapViewFragmentDaum extends Fragment {
 
         currentMarker.setMapPoint(currentPoint);
         currentMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        currentMarker.setCustomImageResourceId(R.drawable.ic_place_black_36dp);
+        currentMarker.setCustomImageResourceId(R.drawable.location_my);
         currentMarker.setCustomImageAutoscale(false);
         currentMarker.setCustomImageAnchor(0.5f, 1.0f);
 

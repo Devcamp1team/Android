@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "3950491076",
+    "firebase_url": "https://movie-go-207dc.firebaseio.com",
+    "project_id": "movie-go-207dc",
+    "storage_bucket": "movie-go-207dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3950491076:android:338a0ad3ff74a6ef",
+        "android_client_info": {
+          "package_name": "com.no_11.park.yapp_1team"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3950491076-hkt3d8m7ob8i3j2s5hiitono1vqp2f12.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.no_11.park.yapp_1team",
+            "certificate_hash": "7915437488a4e3eebca6f42f52dcd75723be8b6f"
+          }
+        },
+        {
+          "client_id": "3950491076-f955sbru7ic1q7k7pq10ns9o4o78td2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgaHWAdyiEjYDl_S_IIsOjG1be3g_VBN8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3950491076-f955sbru7ic1q7k7pq10ns9o4o78td2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

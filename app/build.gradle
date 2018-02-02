@@ -24,8 +24,9 @@ android {
         applicationId "com.no_11.park.yapp_1team"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.2"
+        versionCode 5
+        versionName "1.4"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,15 +38,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi'
-            universalApk true
-        }
     }
 }
 
@@ -65,11 +57,18 @@ dependencies {
     compile 'com.naver.maps.open:naver-map-api:2.1.2@aar'
     compile 'com.github.thorbenprimke:realm-recyclerview:0.9.25'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.google.android.gms:play-services-places:11.0.4'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
+
+    compile 'com.google.android.gms:play-services-places:11.6.0'
+    compile 'com.google.android.gms:play-services-location:11.6.0'
+
+    // app intro
     compile 'com.github.apl-devs:appintro:v4.2.2'
     compile 'jp.wasabeef:glide-transformations:3.0.1'
 
+    // admob
+    compile 'com.google.firebase:firebase-ads:11.6.0'
+
+    // location
     compile 'com.patloew.rxlocation:rxlocation:1.0.4'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
@@ -78,3 +77,5 @@ dependencies {
         transitive = true;
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

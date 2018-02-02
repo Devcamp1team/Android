@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.IntroActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,42 +27,42 @@
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.MainActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.LocationSetupActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.MapActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.SettingActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.AcknowledgementActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.LicenseActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name="com.yapp.no_11.yapp_1team.views.FilterActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <activity
             android:name=".views.SelectMovieInfoActivityRx"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/MapBar" />
 
         <meta-data
