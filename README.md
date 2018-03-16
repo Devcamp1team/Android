@@ -37,16 +37,16 @@ Show me the movie info that near by location and time
 ## preview
 * movie list
 
-![Movie List (Main)](http://124.80.127.237:10080/git_image/movie.jpg)
+![Movie List (Main)](http://124.80.127.237:10081/git_image/movie.jpg)
 
 -------------------
 
 * select movie info
 
-![Select Movie Info](http://124.80.127.237:10080/git_image/select.jpg)
+![Select Movie Info](http://124.80.127.237:10081/git_image/select.jpg)
 
 -------------------
 
 * map
 
-![Map](http://124.80.127.237:10080/git_image/map.jpg)
+![Map](http://124.80.127.237:10081/git_image/map.jpg)
